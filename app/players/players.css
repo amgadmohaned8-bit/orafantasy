@@ -1,0 +1,445 @@
+/* Players dashboard — scoped under .pl-root so it can't leak into /squad */
+
+.pl-root {
+  --bg: #eaf1ec;
+  --ink: #0f2a1f;
+  --muted: #587062;
+  --line: #c5d5ca;
+  --card: #ffffff;
+  --grass-a: #2c7a4b;
+  --grass-b: #328655;
+  --chalk: #f6fbf7;
+  --gk: #b58314;
+  --def: #2b72ae;
+  --mid: #1f8f66;
+  --fwd: #cf4636;
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body), "Segoe UI", Tahoma, sans-serif;
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  .pl-root {
+    --bg: #0c1c16;
+    --ink: #e6f0e9;
+    --muted: #8fa99a;
+    --line: #223b31;
+    --card: #12271f;
+    --grass-a: #1d5a38;
+    --grass-b: #22653f;
+    --chalk: #dcebe1;
+    --gk: #e0b54a;
+    --def: #5aa6de;
+    --mid: #3fc08f;
+    --fwd: #f2705f;
+  }
+}
+
+.pl-root *,
+.pl-root *::before,
+.pl-root *::after {
+  box-sizing: border-box;
+}
+
+.pl-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ---------- Hero ---------- */
+
+.pl-hero {
+  padding-block: 40px 28px;
+}
+
+.pl-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.1rem, 6.4vw, 3.9rem);
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.pl-sub {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 60ch;
+}
+
+/* The pitch: four zones, goal -> attack, right to left */
+.pl-lanes {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 2px solid var(--chalk);
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    var(--grass-a) 0 25%,
+    var(--grass-b) 25% 50%,
+    var(--grass-a) 50% 75%,
+    var(--grass-b) 75% 100%
+  );
+}
+
+.pl-lanes::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset-inline-start: 50%;
+  top: 50%;
+  width: clamp(64px, 14vw, 104px);
+  aspect-ratio: 1;
+  border: 2px solid var(--chalk);
+  border-radius: 50%;
+  transform: translate(50%, -50%);
+  pointer-events: none;
+  animation: pl-kickoff 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+[dir="ltr"] .pl-lanes::before {
+  transform: translate(-50%, -50%);
+}
+
+@keyframes pl-kickoff {
+  from {
+    opacity: 0;
+    scale: 0.3;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.pl-lane {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  border: 0;
+  border-inline-start: 2px solid var(--chalk);
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  min-height: 136px;
+  padding: 16px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background-color 0.15s ease;
+}
+
+.pl-lane:first-child {
+  border-inline-start: 0;
+}
+
+/* attacking half: text hugs the far edge so it never meets the centre circle */
+.pl-lane:nth-child(n + 3) {
+  align-items: flex-end;
+  text-align: end;
+}
+
+.pl-lane:hover {
+  background: rgba(246, 251, 247, 0.12);
+}
+
+.pl-lane[aria-pressed="true"] {
+  background: rgba(246, 251, 247, 0.22);
+  box-shadow: inset 0 -5px 0 var(--chalk);
+}
+
+.pl-lane-count {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.9rem, 5.5vw, 3.2rem);
+  line-height: 1;
+}
+
+.pl-lane-name {
+  font-weight: 600;
+  font-size: clamp(0.85rem, 2.4vw, 1.1rem);
+}
+
+/* ---------- Toolbar ---------- */
+
+.pl-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.pl-bar-inner {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  padding-block: 12px;
+}
+
+.pl-field {
+  height: 44px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  padding: 0 14px;
+}
+
+.pl-field::placeholder {
+  color: var(--muted);
+}
+
+.pl-root :focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.pl-lane:focus-visible {
+  outline-color: var(--chalk);
+  outline-offset: -6px;
+}
+
+@media (max-width: 640px) {
+  .pl-bar-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pl-search {
+    grid-column: 1 / -1;
+  }
+  .pl-lane {
+    padding: 12px 10px;
+    min-height: 116px;
+  }
+}
+
+/* ---------- Results ---------- */
+
+.pl-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 20px 0 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.pl-link {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.pl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+.pl-card {
+  --pc: var(--muted);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 152px;
+  padding: 14px 14px 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-inline-start: 6px solid var(--pc);
+  border-radius: 14px;
+}
+
+.pl-card[data-pos="GK"] { --pc: var(--gk); }
+.pl-card[data-pos="DEF"] { --pc: var(--def); }
+.pl-card[data-pos="MID"] { --pc: var(--mid); }
+.pl-card[data-pos="FWD"] { --pc: var(--fwd); }
+
+/* the shirt number: big, outlined, behind the content */
+.pl-num {
+  position: absolute;
+  inset-block-start: -8px;
+  inset-inline-end: 8px;
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: 6rem;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--pc);
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pl-card > *:not(.pl-num) {
+  position: relative;
+}
+
+.pl-face {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--pc) 16%, var(--card));
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--pc) 45%, transparent);
+}
+
+.pl-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pl-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.pl-team {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.pl-foot {
+  margin-top: auto;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pl-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.pl-tag::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--pc);
+}
+
+.pl-price {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  direction: ltr;
+}
+
+/* ---------- States ---------- */
+
+.pl-more {
+  display: block;
+  margin: 0 auto 48px;
+  height: 46px;
+  padding: 0 28px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pl-more:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.pl-state {
+  margin: 32px 0 64px;
+  padding: 28px;
+  border: 2px dashed var(--line);
+  border-radius: 16px;
+  max-width: 64ch;
+}
+
+.pl-state h2 {
+  margin: 0 0 8px;
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: 1.5rem;
+}
+
+.pl-state p {
+  margin: 0 0 8px;
+}
+
+.pl-state code {
+  direction: ltr;
+  unicode-bidi: embed;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+  font-size: 0.9em;
+}
+
+.pl-skel {
+  height: 152px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  animation: pl-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pl-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pl-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-lanes::before,
+  .pl-skel {
+    animation: none;
+  }
+  .pl-lane {
+    transition: none;
+  }
+}

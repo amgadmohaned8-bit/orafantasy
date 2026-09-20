@@ -1,0 +1,3683 @@
+{
+  "season": "2026/27",
+  "updatedAt": "2026-09-20T17:58:17.054Z",
+  "teams": [
+    {
+      "id": "al-ahly",
+      "name": "Al Ahly",
+      "source": "Wikipedia: Al Ahly SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "zamalek",
+      "name": "Zamalek",
+      "source": "Wikipedia: Zamalek SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "pyramids",
+      "name": "Pyramids",
+      "source": "Wikipedia: Pyramids FC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "al-masry",
+      "name": "Al Masry",
+      "source": "Wikipedia: Al Masry SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "al-ittihad",
+      "name": "Al Ittihad",
+      "source": "Wikipedia: Al Ittihad Alexandria Club",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "enppi",
+      "name": "ENPPI",
+      "source": "Wikipedia: ENPPI SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "smouha",
+      "name": "Smouha",
+      "source": "AiScore: Smouha SC (manual)",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "petrojet",
+      "name": "Petrojet",
+      "source": "Wikipedia: Petrojet SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "tala-el-gaish",
+      "name": "Tala'ea El Gaish",
+      "source": "Wikipedia: Tala'ea El Gaish SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "mokawloon",
+      "name": "Al Mokawloon Al Arab",
+      "source": "Wikipedia: Al Mokawloon Al Arab SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "ghazl-el-mahalla",
+      "name": "Ghazl El Mahalla",
+      "source": "Wikipedia: Ghazl El Mahalla SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "el-qanah",
+      "name": "El Qanah",
+      "source": "Wikipedia: El Qanah FC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "el-gouna",
+      "name": "El Gouna",
+      "source": "Wikipedia: El Gouna FC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "ceramica-cleopatra",
+      "name": "Ceramica Cleopatra",
+      "source": "Wikipedia: Ceramica Cleopatra FC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "modern-sport",
+      "name": "Modern Sport",
+      "source": "Wikipedia: Modern Sport FC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "national-bank",
+      "name": "National Bank of Egypt",
+      "source": "Wikipedia: National Bank of Egypt SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "wadi-degla",
+      "name": "Wadi Degla",
+      "source": "Wikipedia: Wadi Degla SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "zed",
+      "name": "ZED",
+      "source": "Wikipedia: ZED FC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "abou-qir",
+      "name": "Abou Qir Fertilizers",
+      "source": "Wikipedia: Abou Qir Fertilizers SC",
+      "fetchedAt": "2026-09-20"
+    },
+    {
+      "id": "asyut-petroleum",
+      "name": "Asyut Petroleum",
+      "source": "Wikipedia: Asyut Petroleum SC",
+      "fetchedAt": "2026-09-20"
+    }
+  ],
+  "players": [
+    {
+      "name": "Mohamed El Shenawy",
+      "position": "GK",
+      "number": 1,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Yassin Marei",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Achraf Dari",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ahmed Eid",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Hady Reyad",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Yasser Ibrahim",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Taher Mohamed",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ahmed Reda",
+      "position": "MID",
+      "number": 8,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Soufiane Benjdida",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Monsef Bakrar",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Karim El Debes",
+      "position": "DEF",
+      "number": 11,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Akram Tawfik",
+      "position": "MID",
+      "number": 12,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Marwan Attia",
+      "position": "MID",
+      "number": 13,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Hussein El Shahat",
+      "position": "FWD",
+      "number": 14,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Omar El Saaiy",
+      "position": "MID",
+      "number": 15,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Achraf Bencharki",
+      "position": "FWD",
+      "number": 17,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Omar Moawad",
+      "position": "FWD",
+      "number": 18,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Afsha",
+      "position": "FWD",
+      "number": 19,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Youssef Belammari",
+      "position": "DEF",
+      "number": 20,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ali Mahmoud",
+      "position": "MID",
+      "number": 21,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Emam Ashour",
+      "position": "MID",
+      "number": 22,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Tawfik Mohamed",
+      "position": "DEF",
+      "number": 24,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Zizo",
+      "position": "FWD",
+      "number": 25,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Amr El Gazar",
+      "position": "DEF",
+      "number": 26,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Aqtay Abdallah",
+      "position": "FWD",
+      "number": 27,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Karim Fouad",
+      "position": "FWD",
+      "number": 28,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Reda Slim",
+      "position": "FWD",
+      "number": 29,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mohamed Hany",
+      "position": "DEF",
+      "number": 30,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mostafa Shobeir",
+      "position": "GK",
+      "number": 31,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mohamed Raafat",
+      "position": "FWD",
+      "number": 32,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Hamza Alaa",
+      "position": "GK",
+      "number": 33,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Kabaka",
+      "position": "MID",
+      "number": 34,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ahmed Nabil Koka",
+      "position": "MID",
+      "number": 36,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mohamed Abdallah",
+      "position": "FWD",
+      "number": 38,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mahmoud Salah",
+      "position": "FWD",
+      "number": 39,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ibrahim El Asyuti",
+      "position": "DEF",
+      "number": 49,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ahmad Hossam",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mahmoud Bentayg",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Omar Gaber",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mahmoud Gehad",
+      "position": "MID",
+      "number": 6,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Hossam Ashraf",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Nasser Mansi",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Ahmed Abdel Rahim",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Ahmed Rabie",
+      "position": "MID",
+      "number": 12,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Ahmed Abou El Fotouh",
+      "position": "DEF",
+      "number": 13,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Seif Gaafar",
+      "position": "MID",
+      "number": 14,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mohamed Sobhy",
+      "position": "GK",
+      "number": 16,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mohamed Shehata",
+      "position": "MID",
+      "number": 17,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Adam Kaied",
+      "position": "MID",
+      "number": 18,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Abdallah El Said",
+      "position": "MID",
+      "number": 19,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mostafa El Zenary",
+      "position": "DEF",
+      "number": 20,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Ahmed Jafeli",
+      "position": "FWD",
+      "number": 21,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mohamed Ismail",
+      "position": "DEF",
+      "number": 24,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mahmoud Hamdy",
+      "position": "DEF",
+      "number": 28,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Ahmed Sherif",
+      "position": "FWD",
+      "number": 31,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "El Mahdy Soliman",
+      "position": "GK",
+      "number": 37,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Omar AbdulAziz",
+      "position": "GK",
+      "number": 38,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mohamed El Sayed",
+      "position": "MID",
+      "number": 39,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Alsayed Osama",
+      "position": "DEF",
+      "number": 43,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Youssef Wael",
+      "position": "MID",
+      "number": 44,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mahmoud Ashraf",
+      "position": "GK",
+      "number": 46,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mohamed Ebrahim",
+      "position": "DEF",
+      "number": 52,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Muhammad Hamad",
+      "position": "MID",
+      "number": 55,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Ahmad Safwat",
+      "position": "MID",
+      "number": 56,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Adham Hasseib",
+      "position": "FWD",
+      "number": 57,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mohamed Faraj",
+      "position": "DEF",
+      "number": 58,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Chico Banza",
+      "position": "FWD",
+      "number": 81,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Amr Nasser",
+      "position": "FWD",
+      "number": 90,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Ahmed Alkhoudary",
+      "position": "DEF",
+      "number": 97,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Oday Dabbagh",
+      "position": "FWD",
+      "number": 98,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Mohamed Awad",
+      "position": "GK",
+      "number": 99,
+      "teamId": "zamalek"
+    },
+    {
+      "name": "Ahmed El Shenawy",
+      "position": "GK",
+      "number": 1,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mahmoud Marei",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Ahmed Samy",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Ali Gabr",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Osama Galal",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Youssef Obama",
+      "position": "MID",
+      "number": 7,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mahmoud Saber",
+      "position": "MID",
+      "number": 8,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Fiston Mayele",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Ramadan Sobhi",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mostafa Fathi",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Ahmed Tawfik",
+      "position": "DEF",
+      "number": 12,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mohanad Lasheen",
+      "position": "MID",
+      "number": 14,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mohamed Chibi",
+      "position": "DEF",
+      "number": 15,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Zalaka",
+      "position": "MID",
+      "number": 17,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Walid El Karti",
+      "position": "MID",
+      "number": 18,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Marwan Hamdy",
+      "position": "FWD",
+      "number": 19,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mohamed Hamdy",
+      "position": "DEF",
+      "number": 21,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Ahmed Atef",
+      "position": "MID",
+      "number": 23,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Odeh Al-Fakhouri",
+      "position": "FWD",
+      "number": 25,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mohamed El Gabbas",
+      "position": "FWD",
+      "number": 26,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Nasser Maher",
+      "position": "MID",
+      "number": 27,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mahmoud Gad",
+      "position": "GK",
+      "number": 28,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Karim Hafez",
+      "position": "DEF",
+      "number": 29,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mostafa Ziko",
+      "position": "FWD",
+      "number": 30,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Ewerton",
+      "position": "MID",
+      "number": 32,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Hamed Hamdan",
+      "position": "MID",
+      "number": 33,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Pascal Phiri",
+      "position": "FWD",
+      "number": 35,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Mohamed Reda",
+      "position": "MID",
+      "number": 77,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Ziad Haytham",
+      "position": "GK",
+      "number": 99,
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Emad Mayhoub",
+      "position": "FWD",
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Fawzi El Henawy",
+      "position": "DEF",
+      "teamId": "pyramids"
+    },
+    {
+      "name": "Essam Tharwat",
+      "position": "GK",
+      "number": 1,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Baher El Mohamady",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Khaled Sobhi",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mohamed Makhlouf",
+      "position": "MID",
+      "number": 6,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Karim El Eraki",
+      "position": "DEF",
+      "number": 7,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Hassan Ali",
+      "position": "MID",
+      "number": 8,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Salah Mohsen",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Karim Bambo",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mohammed Al Shamy",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mostafa Aboul-Kheir",
+      "position": "MID",
+      "number": 12,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Amr El Saadawy",
+      "position": "DEF",
+      "number": 13,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mahmoud Hamada",
+      "position": "MID",
+      "number": 14,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Ahmed El Armouty",
+      "position": "MID",
+      "number": 15,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mahmoud Hamdy",
+      "position": "GK",
+      "number": 16,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Youssef El Gohary",
+      "position": "MID",
+      "number": 17,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Ameed Sawafta",
+      "position": "MID",
+      "number": 18,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Moustafa Zeidan",
+      "position": "MID",
+      "number": 24,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mounder Temine",
+      "position": "FWD",
+      "number": 25,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mohamed Hashem",
+      "position": "DEF",
+      "number": 29,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Abderrahim Deghmoum",
+      "position": "MID",
+      "number": 30,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mohamed Shehata",
+      "position": "GK",
+      "number": 31,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Abdo Nader",
+      "position": "DEF",
+      "number": 36,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Ahmed Ashraf",
+      "position": "FWD",
+      "number": 37,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Ahmed Wahp",
+      "position": "GK",
+      "number": 39,
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Abdellah Ziani",
+      "position": "FWD",
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Ali Sulieman",
+      "position": "FWD",
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Hossam Hassan",
+      "position": "FWD",
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Kheireddine Toual",
+      "position": "MID",
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mohamed Seha",
+      "position": "GK",
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mohamed Shokry",
+      "position": "DEF",
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Mostafa El Aash",
+      "position": "DEF",
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Yassin El Mallah",
+      "position": "MID",
+      "teamId": "al-masry"
+    },
+    {
+      "name": "Sobhi Soliman",
+      "position": "GK",
+      "number": 1,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Mahmoud Alaa",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Mostafa Ibrahim",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Mahmoud Shabana",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Amr Saleh",
+      "position": "MID",
+      "number": 7,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Naser Naser",
+      "position": "MID",
+      "number": 8,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Fady Farid",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Mahmoud Agib",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Hesham Balaha",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Mohamed Samy",
+      "position": "DEF",
+      "number": 12,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Mohamed Tony",
+      "position": "MID",
+      "number": 13,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Abdelghani Mohamed",
+      "position": "MID",
+      "number": 14,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Abubakar Liadi",
+      "position": "FWD",
+      "number": 15,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Mahmoud Genish",
+      "position": "GK",
+      "number": 16,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Karim El Deeb",
+      "position": "MID",
+      "number": 17,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "John Ebuka",
+      "position": "FWD",
+      "number": 18,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Nour Alaa",
+      "position": "FWD",
+      "number": 19,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Bekale Aubame",
+      "position": "FWD",
+      "number": 20,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Body",
+      "position": "DEF",
+      "number": 22,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Saviour Isaac",
+      "position": "MID",
+      "number": 23,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Favour Akem",
+      "position": "FWD",
+      "number": 28,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Amr Gomaa",
+      "position": "FWD",
+      "number": 30,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Youssef Nader",
+      "position": "GK",
+      "number": 31,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Adham Alaa",
+      "position": "FWD",
+      "number": 32,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Ahmed Eid",
+      "position": "MID",
+      "number": 33,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Moamen Sherif",
+      "position": "DEF",
+      "number": 34,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Ahmed Menshawi",
+      "position": "GK",
+      "number": 40,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Canaria",
+      "position": "MID",
+      "number": 41,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Ahmed Mahmoud",
+      "position": "DEF",
+      "number": 88,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Islam Samir",
+      "position": "FWD",
+      "number": 99,
+      "teamId": "al-ittihad"
+    },
+    {
+      "name": "Abdelrahman Samir",
+      "position": "GK",
+      "number": 1,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Marwan Dawoud",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ahmed Kalosha",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ahmed Sabeha",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Rafik Kabou",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Hesham Adel",
+      "position": "DEF",
+      "number": 8,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ahmed Zaki",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Kahraba",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Mohamed Hathout",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ali Mahmoud",
+      "position": "MID",
+      "number": 12,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ahmed Kofta",
+      "position": "MID",
+      "number": 13,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Emad Mayhoub",
+      "position": "MID",
+      "number": 14,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Mohab Samy",
+      "position": "DEF",
+      "number": 15,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Reda El Sayed",
+      "position": "GK",
+      "number": 16,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Mody Naser",
+      "position": "MID",
+      "number": 17,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Youssef Oubaba",
+      "position": "FWD",
+      "number": 18,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ali Ehab",
+      "position": "FWD",
+      "number": 19,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Mohamed Samir",
+      "position": "DEF",
+      "number": 20,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ahmed Ismail",
+      "position": "FWD",
+      "number": 21,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ahmed El Agouz",
+      "position": "MID",
+      "number": 22,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Abdallah Adel",
+      "position": "DEF",
+      "number": 23,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Mohamed Samir",
+      "position": "DEF",
+      "number": 26,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Salah Zayed",
+      "position": "FWD",
+      "number": 27,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Hamed Abdallah",
+      "position": "MID",
+      "number": 28,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ramadan Mostafa",
+      "position": "GK",
+      "number": 29,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Aqtay Abdallah",
+      "position": "FWD",
+      "number": 30,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Hazem Temsah",
+      "position": "DEF",
+      "number": 32,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Ousseynou Bodian",
+      "position": "FWD",
+      "number": 35,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Arafat Masoud",
+      "position": "FWD",
+      "number": 38,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Suleiman Kirki",
+      "position": "MID",
+      "number": 39,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Hossam Ghanem",
+      "position": "FWD",
+      "number": 99,
+      "teamId": "enppi"
+    },
+    {
+      "name": "Abdel Ghani Mohamed",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Abdel Kader Yehia",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Abdelrahman Amer",
+      "position": "DEF",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ahmed Abdel Rasoul",
+      "position": "DEF",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ahmed Ali Amin",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ahmed Awad",
+      "position": "DEF",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ahmed Ehab",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ahmed El Nadry",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ahmed Fawzi",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ahmed Hakam",
+      "position": "DEF",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ahmed Khaled",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ahmed Mayhoub",
+      "position": "GK",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Ali Gamal",
+      "position": "DEF",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Amr El Sisi",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Attidjikou Samadou",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Emmanuel Nweke",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Fady Farid",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Gabriel Chukwudi",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Hady Amer Hussein",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Hesham Balaha",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Hesham Hafez",
+      "position": "DEF",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Hossam Ashraf",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Hussein Taimour",
+      "position": "GK",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Islam Ateia",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Khaled El Ghandour",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Mahmoud Abdelhalim",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Mahmoud Ismail",
+      "position": "GK",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Mahmoud Said Gomaa",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Marwan Hamdi",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Mohamed Abdelsamia",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Mohamed Adel",
+      "position": "DEF",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Mohamed Desouki",
+      "position": "DEF",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Mohamed Kone",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Mohamed Ragab",
+      "position": "DEF",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Mohamed Said Makrona",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Pape Abasse Badji",
+      "position": "FWD",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Samir Fekri",
+      "position": "MID",
+      "teamId": "smouha"
+    },
+    {
+      "name": "Omar Salah",
+      "position": "GK",
+      "number": 1,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Ahmed Ghoneim",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Islam Abdallah",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Mahmoud Shedid Kenawi",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Youssef Limouri",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Ammar Hamdy",
+      "position": "MID",
+      "number": 7,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Mohamed Ali Okasha",
+      "position": "MID",
+      "number": 8,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Bader Mousa",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Gabriel Chukwudi",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Mohamed Dodo",
+      "position": "MID",
+      "number": 11,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Amadou Bah",
+      "position": "MID",
+      "number": 13,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Mostafa El Gamal",
+      "position": "MID",
+      "number": 14,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Ahmed Bahbah",
+      "position": "DEF",
+      "number": 15,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Abdelkafi Ragab",
+      "position": "GK",
+      "number": 16,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Adham Hamed",
+      "position": "MID",
+      "number": 17,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Tawfik Mohamed",
+      "position": "DEF",
+      "number": 18,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Mostafa El Badry",
+      "position": "MID",
+      "number": 19,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Rasheed Ahmed",
+      "position": "FWD",
+      "number": 20,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Mahmoud Morsi",
+      "position": "FWD",
+      "number": 22,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Qobolwakhe Sibande",
+      "position": "DEF",
+      "number": 23,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Barakat Haggag",
+      "position": "DEF",
+      "number": 25,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Ahmed Yassin",
+      "position": "DEF",
+      "number": 29,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Omar Reda",
+      "position": "MID",
+      "number": 30,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Abdoulaye Diabaté",
+      "position": "MID",
+      "number": 39,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Sekou Sonko",
+      "position": "FWD",
+      "number": 40,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Mohamed Khalifa",
+      "position": "GK",
+      "number": 77,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Samir Mohamed",
+      "position": "FWD",
+      "number": 99,
+      "teamId": "petrojet"
+    },
+    {
+      "name": "Omar Radwan",
+      "position": "GK",
+      "number": 1,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Godwin Chika",
+      "position": "FWD",
+      "number": 2,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Amro Tarek",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Mohamed Camacho",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Farid Shawky",
+      "position": "MID",
+      "number": 5,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Khaled Stouhi",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Riga",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Ahmed Zola",
+      "position": "DEF",
+      "number": 8,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Basem Morsy",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Ahmed El Sheikh",
+      "position": "MID",
+      "number": 10,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Karim Tarek",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Islam Mohareb",
+      "position": "MID",
+      "number": 12,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Himid Mao",
+      "position": "MID",
+      "number": 13,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Emad Fathy",
+      "position": "MID",
+      "number": 14,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Hassan Magdy",
+      "position": "DEF",
+      "number": 15,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Mohamed Shaaban",
+      "position": "GK",
+      "number": 16,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Youssry Wahid",
+      "position": "FWD",
+      "number": 17,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Emad El Sayed",
+      "position": "GK",
+      "number": 18,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Ahmed Samir",
+      "position": "MID",
+      "number": 19,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Ali Hamdy",
+      "position": "MID",
+      "number": 20,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Ahmed Meteb",
+      "position": "DEF",
+      "number": 21,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Mostafa El Khawaga",
+      "position": "MID",
+      "number": 22,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Moussa Diawara",
+      "position": "FWD",
+      "number": 23,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Mohamed Hany",
+      "position": "MID",
+      "number": 26,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Ahmed Alaa",
+      "position": "DEF",
+      "number": 27,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Hamed El Gabry",
+      "position": "DEF",
+      "number": 28,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Moaz El Henawy",
+      "position": "DEF",
+      "number": 30,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Moamen Mahmoud",
+      "position": "DEF",
+      "number": 31,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Khaled Awad",
+      "position": "DEF",
+      "number": 33,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Fares Hatem",
+      "position": "FWD",
+      "number": 35,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Ahmed Abbas",
+      "position": "GK",
+      "number": 41,
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Ghaith Al-Madadha",
+      "position": "MID",
+      "teamId": "tala-el-gaish"
+    },
+    {
+      "name": "Mahmoud Abou El Saoud",
+      "position": "GK",
+      "number": 1,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Amir Abed",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Youssef El Gohary",
+      "position": "MID",
+      "number": 3,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Ahmed El Shimi",
+      "position": "MID",
+      "number": 4,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Mamadou Niass",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Mohamed Rizk",
+      "position": "MID",
+      "number": 8,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Mohamed Salem",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Omar Saviola",
+      "position": "MID",
+      "number": 10,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Louay Wael",
+      "position": "DEF",
+      "number": 11,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Ahmed Afifi",
+      "position": "MID",
+      "number": 12,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Gebna",
+      "position": "FWD",
+      "number": 14,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Hassan Mahmoud Shahin",
+      "position": "GK",
+      "number": 16,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Fady Farid",
+      "position": "FWD",
+      "number": 17,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Ahmed El Arabi",
+      "position": "GK",
+      "number": 18,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Mohamed Magli",
+      "position": "MID",
+      "number": 19,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Ahmed Alaa",
+      "position": "DEF",
+      "number": 20,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Farouck Kabore",
+      "position": "DEF",
+      "number": 21,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Mohamed Gharib",
+      "position": "DEF",
+      "number": 22,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Joseph Ochaya",
+      "position": "DEF",
+      "number": 23,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Luis Hinestroza",
+      "position": "FWD",
+      "number": 24,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Ahmed Eid",
+      "position": "DEF",
+      "number": 26,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Ammar Hamdy",
+      "position": "MID",
+      "number": 27,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "John Okoli",
+      "position": "FWD",
+      "number": 28,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Mahmoud Wadi",
+      "position": "FWD",
+      "number": 29,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Mohamed Hozian",
+      "position": "DEF",
+      "number": 32,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Ahmed Fawzi",
+      "position": "MID",
+      "number": 35,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Ahmed Atef",
+      "position": "FWD",
+      "number": 70,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Mostafa Mokhtar",
+      "position": "DEF",
+      "number": 74,
+      "teamId": "mokawloon"
+    },
+    {
+      "name": "Ahmed El Nafarawy",
+      "position": "GK",
+      "number": 1,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Bassam Walid",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Youssef Hassan",
+      "position": "MID",
+      "number": 3,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Ahmed Castelo",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Amr El Gazar",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Ahmed Hakam",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mohamed Gaber",
+      "position": "DEF",
+      "number": 7,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mohamed Osama",
+      "position": "MID",
+      "number": 8,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Abdo Yehia",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Ahmed Magdy",
+      "position": "MID",
+      "number": 10,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mohamed Hamdy",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Yehia Zakaria",
+      "position": "DEF",
+      "number": 12,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Ibrahim Hassan",
+      "position": "FWD",
+      "number": 13,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Khaled El Akhmimi",
+      "position": "MID",
+      "number": 14,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mohamed Ashraf",
+      "position": "MID",
+      "number": 15,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Amer Mohamed",
+      "position": "GK",
+      "number": 16,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Hazem Abosena",
+      "position": "FWD",
+      "number": 17,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Ahmed El Arabi",
+      "position": "GK",
+      "number": 18,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mohamed Essam",
+      "position": "MID",
+      "number": 19,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mohamed Ali Ben Hammouda",
+      "position": "FWD",
+      "number": 20,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Abdelrahman Body",
+      "position": "DEF",
+      "number": 21,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Abdelnaser Mohamed",
+      "position": "MID",
+      "number": 22,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Abdelrahim Amoory",
+      "position": "DEF",
+      "number": 24,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mohamed Ashraf",
+      "position": "MID",
+      "number": 25,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Hamidu Fatawu",
+      "position": "DEF",
+      "number": 26,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Hossam Greisha",
+      "position": "FWD",
+      "number": 28,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Osama El Nagar",
+      "position": "DEF",
+      "number": 30,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mahmoud Sotohi",
+      "position": "FWD",
+      "number": 32,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mory Touré",
+      "position": "MID",
+      "number": 33,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Abdo Semida",
+      "position": "DEF",
+      "number": 35,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Abdoul Aziz Coulibaly",
+      "position": "DEF",
+      "number": 38,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Mohamed Nabih",
+      "position": "DEF",
+      "number": 43,
+      "teamId": "ghazl-el-mahalla"
+    },
+    {
+      "name": "Fouad Taha",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Mahmoud Hersha",
+      "position": "MID",
+      "number": 8,
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Abdelrahman Qattawy(on loan from Wadi Degla FC",
+      "position": "GK",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Ahmed Castelo",
+      "position": "GK",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Ahmed Refaat",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Ahmed Zaki",
+      "position": "DEF",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Hazem Abosena (on loan from Ghazl El Mahalla",
+      "position": "FWD",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Hossam Greisha",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Hussein El Badry",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Ibrahim El Sayed",
+      "position": "FWD",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Ibrahim Galal",
+      "position": "FWD",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Ibrahim Hassan",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Ibrahim Samy",
+      "position": "DEF",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Islam Halima",
+      "position": "DEF",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Islam Magdy",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Karim Arafat",
+      "position": "DEF",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Kelvin Barclay",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Marwan Shahin",
+      "position": "FWD",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Mody Shalata",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Mohamed Diab",
+      "position": "DEF",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Mohamed El Kout",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Mohamed El Shebini",
+      "position": "DEF",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Mohamed Osama",
+      "position": "FWD",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Mohamed Sharkia",
+      "position": "DEF",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Momen Mahdy",
+      "position": "DEF",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Momen Rady",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Mostafa Hamada",
+      "position": "MID",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Mostafa Mahmoud",
+      "position": "GK",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Osama El Nagar (on loan from Ghazl El Mahalla",
+      "position": "DEF",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Ramy Najjarine",
+      "position": "FWD",
+      "teamId": "el-qanah"
+    },
+    {
+      "name": "Ahmed Masoud",
+      "position": "GK",
+      "number": 1,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Abdelgawad Taalab",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Khaled Ahmed",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Saber El Shimi",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Hafiz Ibrahim",
+      "position": "MID",
+      "number": 6,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Ahmed Refaat",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Reda Salah",
+      "position": "MID",
+      "number": 8,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Marwan Mohsen",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Mohamed Mahmoud",
+      "position": "MID",
+      "number": 10,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Ahmed Zaki",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Mahmoud Hassouna",
+      "position": "MID",
+      "number": 12,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Omar El Gazar",
+      "position": "MID",
+      "number": 13,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Nour El Sayed",
+      "position": "MID",
+      "number": 14,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Islam Reisha",
+      "position": "GK",
+      "number": 16,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Belal El Sayed",
+      "position": "MID",
+      "number": 19,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Ahmed Belia",
+      "position": "DEF",
+      "number": 20,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Mohamed Reda",
+      "position": "MID",
+      "number": 22,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Ali El Zahdi",
+      "position": "FWD",
+      "number": 24,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Abdallah El Said",
+      "position": "DEF",
+      "number": 25,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Ziad Askar",
+      "position": "GK",
+      "number": 26,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Salah Zayed",
+      "position": "FWD",
+      "number": 27,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Samuel Ojo",
+      "position": "FWD",
+      "number": 29,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Mohamed Emad",
+      "position": "MID",
+      "number": 30,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "David Simukonda",
+      "position": "MID",
+      "number": 33,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "AMarwan Essam",
+      "position": "DEF",
+      "number": 34,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Alpha Turay",
+      "position": "MID",
+      "number": 36,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Michael Egbemba",
+      "position": "MID",
+      "number": 42,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Ahmed Gamal",
+      "position": "FWD",
+      "number": 70,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Wilfried Teukeu",
+      "position": "MID",
+      "number": 90,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Badreldin Walid",
+      "position": "GK",
+      "number": 99,
+      "teamId": "el-gouna"
+    },
+    {
+      "name": "Mohamed Koko",
+      "position": "GK",
+      "number": 1,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Ahmed Hany",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Omar Kamal",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Karim Nedved",
+      "position": "MID",
+      "number": 4,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Ragab Nabil",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Saad Samir",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Islam Issa",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Abdallah Magdy",
+      "position": "MID",
+      "number": 8,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Nejc Gradišar",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Ahmed Belhadji",
+      "position": "MID",
+      "number": 10,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Peter Gwargis",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Mohamed Tarek",
+      "position": "GK",
+      "number": 13,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Hema Mohamed",
+      "position": "MID",
+      "number": 14,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Samir El Eraki",
+      "position": "FWD",
+      "number": 15,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Islam Reisha",
+      "position": "GK",
+      "number": 16,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Amr El Solia",
+      "position": "MID",
+      "number": 17,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Mohamed Bassam",
+      "position": "GK",
+      "number": 18,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Ayman Mukka",
+      "position": "FWD",
+      "number": 19,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Mohamed Sadek",
+      "position": "MID",
+      "number": 20,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Ahmed Moaz",
+      "position": "DEF",
+      "number": 21,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Khaled Al-Nabris",
+      "position": "FWD",
+      "number": 22,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Justice Arthur",
+      "position": "MID",
+      "number": 24,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Mohamed \"Shika\" Ibrahim",
+      "position": "FWD",
+      "number": 25,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Hussein El Sayed",
+      "position": "DEF",
+      "number": 27,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Amr Kalawa",
+      "position": "MID",
+      "number": 28,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Karim El Debes",
+      "position": "DEF",
+      "number": 33,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Ahmed Abdin",
+      "position": "DEF",
+      "number": 34,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Ashour Shika",
+      "position": "FWD",
+      "number": 35,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Mohamed Abdallah",
+      "position": "MID",
+      "number": 37,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Umar Abdulrauf",
+      "position": "FWD",
+      "number": 41,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Mohamed El Maghrabi",
+      "position": "DEF",
+      "number": 66,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Bobo",
+      "position": "FWD",
+      "number": 77,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Ahmed Samir",
+      "position": "FWD",
+      "number": 97,
+      "teamId": "ceramica-cleopatra"
+    },
+    {
+      "name": "Gabaski",
+      "position": "GK",
+      "number": 1,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mohamed Desouki",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mahmoud Rizk",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Tarek Mohamed",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Ali El Fil",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Walid Farag",
+      "position": "MID",
+      "number": 7,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mohamed Sabry",
+      "position": "MID",
+      "number": 8,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Fejiri Okenabirhie",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Ahmed Youssef",
+      "position": "MID",
+      "number": 12,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Ahmed Yehia",
+      "position": "GK",
+      "number": 13,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Ahmed Mostafa",
+      "position": "MID",
+      "number": 14,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mostafa Ashraf",
+      "position": "DEF",
+      "number": 15,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Karim Emad",
+      "position": "GK",
+      "number": 16,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Abdelrahman Shika",
+      "position": "MID",
+      "number": 17,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Hossam Hassan",
+      "position": "FWD",
+      "number": 18,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mohamed Mosaad",
+      "position": "MID",
+      "number": 19,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Emad Hamdi",
+      "position": "MID",
+      "number": 20,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mahmoud Shaaban",
+      "position": "DEF",
+      "number": 21,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Ali Zazaa",
+      "position": "MID",
+      "number": 22,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Godwin Chika",
+      "position": "FWD",
+      "number": 23,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Khaled Reda",
+      "position": "DEF",
+      "number": 24,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mohamed Helal",
+      "position": "MID",
+      "number": 25,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Ghanam Mohamed",
+      "position": "MID",
+      "number": 27,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Adem Redjem",
+      "position": "FWD",
+      "number": 28,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Ahmed Mazhoud",
+      "position": "DEF",
+      "number": 30,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Kamal El Sayed",
+      "position": "GK",
+      "number": 31,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Rashad El Metwaly",
+      "position": "MID",
+      "number": 33,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mahmoud Mamdouh",
+      "position": "FWD",
+      "number": 35,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mohamed Yousri",
+      "position": "DEF",
+      "number": 37,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Arnold Eba",
+      "position": "MID",
+      "number": 38,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Ali Fawzi",
+      "position": "MID",
+      "number": 77,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Hamdi Marcelo",
+      "position": "DEF",
+      "number": 90,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Mostafa Makhlouf",
+      "position": "GK",
+      "number": 99,
+      "teamId": "modern-sport"
+    },
+    {
+      "name": "Ahmed Sobhi",
+      "position": "GK",
+      "number": 1,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Saïdou Simporé",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Mohamed Fathy",
+      "position": "MID",
+      "number": 5,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Mahmoud El-Gazzar",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Hesham Salah",
+      "position": "DEF",
+      "number": 7,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Mahmoud Emad",
+      "position": "MID",
+      "number": 8,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Osama Faisal",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Mohamed Ibrahim",
+      "position": "MID",
+      "number": 10,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Ahmed Meteb",
+      "position": "DEF",
+      "number": 12,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Shefo",
+      "position": "DEF",
+      "number": 13,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Salah Bouchama",
+      "position": "MID",
+      "number": 15,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Ahmed El Nadry",
+      "position": "MID",
+      "number": 17,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Ahmed Reda",
+      "position": "MID",
+      "number": 18,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Mostafa Shehata",
+      "position": "FWD",
+      "number": 19,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Amir Medhat",
+      "position": "DEF",
+      "number": 20,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Ahmed Madbouly",
+      "position": "MID",
+      "number": 21,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Sayed Abdallah",
+      "position": "FWD",
+      "number": 22,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Oufa",
+      "position": "FWD",
+      "number": 23,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Mostafa Dowidar",
+      "position": "MID",
+      "number": 24,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Mohamed Ashraf",
+      "position": "MID",
+      "number": 25,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Abdelaziz El Balouti",
+      "position": "GK",
+      "number": 27,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Mostafa El Zenary",
+      "position": "DEF",
+      "number": 28,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Ahmed Yasser Rayyan",
+      "position": "FWD",
+      "number": 29,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Yaw Annor",
+      "position": "FWD",
+      "number": 30,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Ahmed Tarek Soliman",
+      "position": "GK",
+      "number": 31,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Cyrille Dao",
+      "position": "DEF",
+      "number": 33,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Mostafa Shalaby",
+      "position": "FWD",
+      "number": 77,
+      "teamId": "national-bank"
+    },
+    {
+      "name": "Amr Hossam",
+      "position": "GK",
+      "number": 1,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Shady Maher",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Omar Adly",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Islam Adel",
+      "position": "MID",
+      "number": 4,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ahmed Dahroug",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Kamal Aboul-Fetouh",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ali Hussein",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ahmed Scholes",
+      "position": "MID",
+      "number": 8,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Franck Boli",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Mahmoud Diasty",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Mohamed Abdelrahim",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ahmed Dahesh",
+      "position": "DEF",
+      "number": 12,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Mohamed Abdelaati",
+      "position": "MID",
+      "number": 14,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Mahmoud Talaat",
+      "position": "MID",
+      "number": 17,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Greisha",
+      "position": "GK",
+      "number": 18,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Mahmoud Adel",
+      "position": "DEF",
+      "number": 19,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Juhayna",
+      "position": "MID",
+      "number": 20,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ahmed Reda",
+      "position": "DEF",
+      "number": 21,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ziad Anwar",
+      "position": "MID",
+      "number": 22,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ahmed Ayman",
+      "position": "DEF",
+      "number": 23,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Mohamed Ragab",
+      "position": "DEF",
+      "number": 24,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ibrahim El Bahnasi",
+      "position": "MID",
+      "number": 25,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ahmed Refaat",
+      "position": "FWD",
+      "number": 27,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Seif Teka",
+      "position": "DEF",
+      "number": 28,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Mohamed Fathy",
+      "position": "MID",
+      "number": 30,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Mahmoud Adel",
+      "position": "MID",
+      "number": 31,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ahmed Farouk",
+      "position": "FWD",
+      "number": 32,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Halimo",
+      "position": "MID",
+      "number": 33,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Mees Kaandorp",
+      "position": "MID",
+      "number": 34,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ahmed Abdin",
+      "position": "DEF",
+      "number": 40,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ahmed El Shimi",
+      "position": "MID",
+      "number": 44,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Abdelrahman Qattawy",
+      "position": "GK",
+      "number": 99,
+      "teamId": "wadi-degla"
+    },
+    {
+      "name": "Ali Lotfi",
+      "position": "GK",
+      "number": 1,
+      "teamId": "zed"
+    },
+    {
+      "name": "Abdallah Bakri",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "zed"
+    },
+    {
+      "name": "Ahmed Castelo",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "zed"
+    },
+    {
+      "name": "Ahmed Tarek",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "zed"
+    },
+    {
+      "name": "Rafaat Khalil",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "zed"
+    },
+    {
+      "name": "Ahmed Sayed",
+      "position": "DEF",
+      "number": 8,
+      "teamId": "zed"
+    },
+    {
+      "name": "Ahmed Atef",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "zed"
+    },
+    {
+      "name": "Shady Hussein",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "zed"
+    },
+    {
+      "name": "Mostafa Saad",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "zed"
+    },
+    {
+      "name": "Youssef Osama",
+      "position": "FWD",
+      "number": 12,
+      "teamId": "zed"
+    },
+    {
+      "name": "Amara Keita",
+      "position": "DEF",
+      "number": 13,
+      "teamId": "zed"
+    },
+    {
+      "name": "Ahmed Adel",
+      "position": "FWD",
+      "number": 14,
+      "teamId": "zed"
+    },
+    {
+      "name": "Sameh Ibrahim",
+      "position": "DEF",
+      "number": 15,
+      "teamId": "zed"
+    },
+    {
+      "name": "Mohammed Mazzika",
+      "position": "GK",
+      "number": 16,
+      "teamId": "zed"
+    },
+    {
+      "name": "Abdel Rahman El Banouby",
+      "position": "MID",
+      "number": 17,
+      "teamId": "zed"
+    },
+    {
+      "name": "Ahmed El Saghiri",
+      "position": "FWD",
+      "number": 18,
+      "teamId": "zed"
+    },
+    {
+      "name": "Abdelrahman Emad",
+      "position": "MID",
+      "number": 19,
+      "teamId": "zed"
+    },
+    {
+      "name": "Hamdy Alaa",
+      "position": "MID",
+      "number": 20,
+      "teamId": "zed"
+    },
+    {
+      "name": "Ziad Tarek",
+      "position": "DEF",
+      "number": 22,
+      "teamId": "zed"
+    },
+    {
+      "name": "Tarek Alaa",
+      "position": "DEF",
+      "number": 23,
+      "teamId": "zed"
+    },
+    {
+      "name": "Mohamed Rabia",
+      "position": "DEF",
+      "number": 24,
+      "teamId": "zed"
+    },
+    {
+      "name": "Mamadou Bah",
+      "position": "FWD",
+      "number": 25,
+      "teamId": "zed"
+    },
+    {
+      "name": "Peter Zilu Mutumosi",
+      "position": "MID",
+      "number": 26,
+      "teamId": "zed"
+    },
+    {
+      "name": "Ali Gamal",
+      "position": "DEF",
+      "number": 30,
+      "teamId": "zed"
+    },
+    {
+      "name": "Abdallah Bostangy",
+      "position": "DEF",
+      "number": 32,
+      "teamId": "zed"
+    },
+    {
+      "name": "Ahmed Nader",
+      "position": "GK",
+      "number": 33,
+      "teamId": "zed"
+    },
+    {
+      "name": "Muhammed Sawaneh",
+      "position": "MID",
+      "number": 35,
+      "teamId": "zed"
+    },
+    {
+      "name": "Abdelmonem Tamer",
+      "position": "GK",
+      "number": 36,
+      "teamId": "zed"
+    },
+    {
+      "name": "Mata Magassa",
+      "position": "MID",
+      "number": 37,
+      "teamId": "zed"
+    },
+    {
+      "name": "Mahmoud Saber",
+      "position": "MID",
+      "number": 77,
+      "teamId": "zed"
+    },
+    {
+      "name": "Kabaka",
+      "position": "MID",
+      "number": 88,
+      "teamId": "zed"
+    },
+    {
+      "name": "Mazen Yasser",
+      "position": "FWD",
+      "number": 90,
+      "teamId": "zed"
+    },
+    {
+      "name": "Mohamed El-Saify",
+      "position": "GK",
+      "number": 1,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Mohamed Kamal",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Mohamed Ali",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Rida Mohsen",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Tamer Samir",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Tamer Abd El-Gwad",
+      "position": "MID",
+      "number": 6,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Mohamed Mahran",
+      "position": "MID",
+      "number": 7,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Islam Ali",
+      "position": "MID",
+      "number": 8,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Amro El-Shikh",
+      "position": "MID",
+      "number": 9,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Mohamad Atia",
+      "position": "GK",
+      "number": 12,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Hassen Mohamad",
+      "position": "DEF",
+      "number": 13,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Mohamad Said",
+      "position": "MID",
+      "number": 14,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Mohamed Mostafa",
+      "position": "MID",
+      "number": 17,
+      "teamId": "abou-qir"
+    },
+    {
+      "name": "Abdel Rahman Ahmed",
+      "position": "GK",
+      "number": 1,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Mahmoud Abd El-Aty",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Ahmed Sayed",
+      "position": "MID",
+      "number": 5,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Youssef Ahmed",
+      "position": "MID",
+      "number": 7,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Ahmed Ramadan",
+      "position": "DEF",
+      "number": 8,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Samy Abu Zaid",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Amr Shaltoot",
+      "position": "FWD",
+      "number": 11,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Mashur Ahmed",
+      "position": "MID",
+      "number": 14,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Atia Saber",
+      "position": "DEF",
+      "number": 21,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Mafinga Vital Slefri",
+      "position": "DEF",
+      "number": 24,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Nana Eshun",
+      "position": "FWD",
+      "number": 28,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Ghazaly Mohamed",
+      "position": "MID",
+      "number": 29,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Naser Farouk",
+      "position": "GK",
+      "number": 29,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Sherif Hazem",
+      "position": "DEF",
+      "number": 31,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Fathi Mabrouk",
+      "position": "DEF",
+      "number": 33,
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Ahmed Ali",
+      "position": "MID",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Ahmed Kamel",
+      "position": "FWD",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Amr Sobhy",
+      "position": "FWD",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Asraf Abdel Salaam",
+      "position": "MID",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Bahaa Yousri",
+      "position": "MID",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Hashim El-Desouqy",
+      "position": "MID",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Mahmoud Ramadan",
+      "position": "DEF",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Mohamed Aldbsi",
+      "position": "FWD",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Said Mohsen",
+      "position": "FWD",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Sherif Medhat",
+      "position": "GK",
+      "teamId": "asyut-petroleum"
+    },
+    {
+      "name": "Yasser Qadry",
+      "position": "GK",
+      "teamId": "asyut-petroleum"
+    }
+  ]
+}

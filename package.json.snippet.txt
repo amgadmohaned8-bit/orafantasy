@@ -1,0 +1,4 @@
+أضف هذين السطرين داخل "scripts" في package.json (لا تستبدل الملف كله):
+
+    "build:players": "node scripts/build-players.mjs",
+    "test:players": "node tests/parse-squad.test.mjs"

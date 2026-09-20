@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Ora Fantasy palette: lapis lazuli night, gold leaf, Nile turquoise. */
+@theme {
+  --color-ora-night: #0a0f22;
+  --color-ora-side: #070b1a;
+  --color-ora-card: #111832;
+  --color-ora-raised: #172042;
+  --color-ora-gold: #d6b35a;
+  --color-ora-gold-light: #ecd48c;
+  --color-ora-gold-deep: #a4802f;
+  --color-ora-papyrus: #f1e8d2;
+  --color-ora-nile: #2fb9a8;
+  --color-ora-carnelian: #d0583f;
+  --color-ora-pitch: #0d2521;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* The hieroglyph for water: a thin zigzag band used as a top edge on key cards. */
+.ora-nile-band {
+  height: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 6 L4 2 L8 6 L12 2 L16 6' fill='none' stroke='%23d6b35a' stroke-width='1' stroke-opacity='0.55'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}

@@ -1,0 +1,260 @@
+{
+  "season": "2026/27",
+  "updatedAt": "2026-09-20T00:00:00.000Z",
+  "teams": [
+    {
+      "id": "al-ahly",
+      "name": "Al Ahly",
+      "source": "Wikipedia: Al Ahly SC (squad as of 27 Aug 2026)",
+      "fetchedAt": "2026-09-20"
+    }
+  ],
+  "players": [
+    {
+      "name": "Mohamed El Shenawy",
+      "position": "GK",
+      "number": 1,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Yassin Marei",
+      "position": "DEF",
+      "number": 2,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Achraf Dari",
+      "position": "DEF",
+      "number": 3,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ahmed Eid",
+      "position": "DEF",
+      "number": 4,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Hady Reyad",
+      "position": "DEF",
+      "number": 5,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Yasser Ibrahim",
+      "position": "DEF",
+      "number": 6,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Taher Mohamed",
+      "position": "FWD",
+      "number": 7,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ahmed Reda",
+      "position": "MID",
+      "number": 8,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Soufiane Benjdida",
+      "position": "FWD",
+      "number": 9,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Monsef Bakrar",
+      "position": "FWD",
+      "number": 10,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Karim El Debes",
+      "position": "DEF",
+      "number": 11,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Akram Tawfik",
+      "position": "MID",
+      "number": 12,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Marwan Attia",
+      "position": "MID",
+      "number": 13,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Hussein El Shahat",
+      "position": "FWD",
+      "number": 14,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Omar El Saaiy",
+      "position": "MID",
+      "number": 15,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Achraf Bencharki",
+      "position": "FWD",
+      "number": 17,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Omar Moawad",
+      "position": "FWD",
+      "number": 18,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Afsha",
+      "position": "FWD",
+      "number": 19,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Youssef Belammari",
+      "position": "DEF",
+      "number": 20,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ali Mahmoud",
+      "position": "MID",
+      "number": 21,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Emam Ashour",
+      "position": "MID",
+      "number": 22,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Tawfik Mohamed",
+      "position": "DEF",
+      "number": 24,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Zizo",
+      "position": "FWD",
+      "number": 25,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Amr El Gazar",
+      "position": "DEF",
+      "number": 26,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Aqtay Abdallah",
+      "position": "FWD",
+      "number": 27,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Karim Fouad",
+      "position": "FWD",
+      "number": 28,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Reda Slim",
+      "position": "FWD",
+      "number": 29,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mohamed Hany",
+      "position": "DEF",
+      "number": 30,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mostafa Shobeir",
+      "position": "GK",
+      "number": 31,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mohamed Raafat",
+      "position": "FWD",
+      "number": 32,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Hamza Alaa",
+      "position": "GK",
+      "number": 33,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Kabaka",
+      "position": "MID",
+      "number": 35,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ahmed Nabil Koka",
+      "position": "MID",
+      "number": 36,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mohamed Abdallah",
+      "position": "FWD",
+      "number": 38,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mahmoud Salah",
+      "position": "FWD",
+      "number": 39,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Ibrahim El Asyuti",
+      "position": "DEF",
+      "number": 49,
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Yassin Hatem",
+      "position": "GK",
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Hamza El Degawy",
+      "position": "DEF",
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Mohanad El Shamy",
+      "position": "DEF",
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Kazeem Ibrahima",
+      "position": "MID",
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Omar El Adawy",
+      "position": "FWD",
+      "teamId": "al-ahly"
+    },
+    {
+      "name": "Abdelrahman Mano",
+      "position": "FWD",
+      "teamId": "al-ahly"
+    }
+  ]
+}

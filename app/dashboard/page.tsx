@@ -1,0 +1,341 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../src/firebase";
+import AppShell, {
+  Cartouche,
+  displayFont,
+  focusRing,
+  useProfile,
+} from "../../src/components/AppShell";
+import {
+  MatchCard,
+  MatchesError,
+  MatchesLoading,
+  StateMessage,
+} from "../../src/components/MatchCard";
+import {
+  SquadBench,
+  SquadPitch,
+} from "../../src/components/SquadPitch";
+import {
+  BUDGET,
+  SQUAD_SIZE,
+  STARTER_SLOTS,
+  type Player,
+  type PlayerPoints,
+  type SquadDoc,
+} from "../../src/fantasy/types";
+import {
+  getCurrentGameweek,
+  getMatchState,
+  getMatchTimestamp,
+} from "../../src/lib/fixtures";
+import { useFixtures } from "../../src/lib/useFixtures";
+
+type Fixtures = ReturnType<typeof useFixtures>;
+
+const money = (value: number) => `${value.toFixed(1)}M`;
+
+export default function DashboardPage() {
+  const fixtures = useFixtures();
+
+  const hasLive = useMemo(
+    () => fixtures.matches.some((match) => getMatchState(match) === "live"),
+    [fixtures.matches],
+  );
+
+  return (
+    <AppShell
+      title="Home"
+      subtitle={`${fixtures.leagueName}, season ${fixtures.season}`}
+      liveNow={hasLive}
+    >
+      <DashboardContent fixtures={fixtures} />
+    </AppShell>
+  );
+}
+
+function DashboardContent({ fixtures }: { fixtures: Fixtures }) {
+  const router = useRouter();
+  const profile = useProfile();
+  const uid = profile.uid;
+
+  /* ---------- saved squad + players + points ---------- */
+
+  const [slots, setSlots] = useState<Record<string, string>>({});
+  const [hasTeam, setHasTeam] = useState(false);
+  const [squadLoading, setSquadLoading] = useState(true);
+
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [playersReady, setPlayersReady] = useState(false);
+
+  const [points, setPoints] = useState<Record<string, PlayerPoints>>({});
+  const [pointsGw, setPointsGw] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const snap = await getDoc(doc(db, "squads", uid));
+
+        if (cancelled) return;
+
+        if (snap.exists()) {
+          const data = snap.data() as SquadDoc;
+          setSlots(data.slots || {});
+          setHasTeam(true);
+        }
+      } catch (error) {
+        console.error("Home squad load error:", error);
+      } finally {
+        if (!cancelled) setSquadLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    (async () => {
+      try {
+        const res = await fetch("/api/players", { signal: controller.signal });
+        const json = await res.json();
+
+        if (res.ok && !json.error) {
+          setPlayers(json.players as Player[]);
+          setPlayersReady(true);
+        }
+      } catch {
+        /* the pitch stays without names until the next visit */
+      }
+    })();
+
+    (async () => {
+      try {
+        const res = await fetch("/api/football/points", { signal: controller.signal });
+        const json = await res.json();
+
+        if (res.ok && !json.error) {
+          setPoints(json.players || {});
+          setPointsGw(json.gw || undefined);
+        }
+      } catch {
+        /* points stay at zero until the next visit */
+      }
+    })();
+
+    return () => controller.abort();
+  }, []);
+
+  const byId = useMemo(
+    () => new Map(players.map((player) => [player.id, player])),
+    [players],
+  );
+
+  const filled = Object.keys(slots).length;
+
+  const spent = Object.values(slots).reduce(
+    (total, id) => total + (byId.get(id)?.price ?? 0),
+    0,
+  );
+
+  const starters = STARTER_SLOTS.map((slot) => byId.get(slots[slot.key])).filter(
+    (player): player is Player => Boolean(player),
+  );
+
+  const gwPoints = starters.reduce(
+    (total, player) => total + (points[player.id]?.gw ?? 0),
+    0,
+  );
+
+  const totalPoints = starters.reduce(
+    (total, player) => total + (points[player.id]?.total ?? 0),
+    0,
+  );
+
+  const budgetText =
+    playersReady || filled === 0 ? money(BUDGET - spent) : "-";
+
+  /* ---------- fixtures ---------- */
+
+  const currentGameweek = useMemo(
+    () => getCurrentGameweek(fixtures.matches),
+    [fixtures.matches],
+  );
+
+  const gameweekMatches = useMemo(() => {
+    if (currentGameweek === undefined) {
+      return [];
+    }
+
+    return fixtures.matches
+      .filter((match) => match.gameweek === currentGameweek)
+      .sort((a, b) => getMatchTimestamp(a) - getMatchTimestamp(b));
+  }, [fixtures.matches, currentGameweek]);
+
+  const pointsLabel = pointsGw ?? currentGameweek;
+
+  const openSquad = () => router.push("/squad");
+
+  return (
+    <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">
+      {/* MY TEAM */}
+      <section className="overflow-hidden rounded-2xl border border-ora-gold/20 bg-gradient-to-b from-ora-raised to-ora-card shadow-[0_30px_70px_-40px_rgba(0,0,0,0.9)]">
+        <div className="ora-nile-band" aria-hidden="true" />
+
+        <div className="p-5 sm:p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <h1
+                className="break-words text-[30px] font-semibold leading-tight"
+                style={displayFont}
+              >
+                {profile.teamName || "Build your team"}
+              </h1>
+
+              <p className="mt-1 text-sm text-ora-papyrus/60">
+                {profile.coachName
+                  ? `Coach ${profile.coachName}`
+                  : "Name your team, then pick 11 starters and 5 substitutes."}
+              </p>
+            </div>
+
+            <div className="flex shrink-0 items-center gap-3">
+              {currentGameweek !== undefined && (
+                <Cartouche>Gameweek {currentGameweek}</Cartouche>
+              )}
+
+              <Link
+                href="/squad"
+                className={`inline-flex items-center justify-center rounded-full bg-gradient-to-b from-ora-gold-light to-ora-gold px-5 py-2 text-sm font-semibold text-ora-night transition hover:brightness-105 ${focusRing}`}
+              >
+                {hasTeam ? "Edit my team" : "Create your team"}
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            {squadLoading ? (
+              <div
+                className="min-h-[400px] animate-pulse rounded-xl border border-white/5 bg-white/[0.03] motion-reduce:animate-none"
+                aria-busy="true"
+                aria-label="Loading your squad"
+              />
+            ) : (
+              <SquadPitch
+                slots={slots}
+                byId={byId}
+                points={points}
+                onSlot={openSquad}
+              />
+            )}
+          </div>
+
+          {!squadLoading && (
+            <div className="mt-3">
+              <SquadBench
+                slots={slots}
+                byId={byId}
+                points={points}
+                onSlot={openSquad}
+              />
+            </div>
+          )}
+
+          <dl className="mt-6 grid grid-cols-2 gap-y-5 border-t border-white/5 pt-5 sm:grid-cols-4 sm:gap-y-0">
+            <Stat label="Squad" value={`${filled} / ${SQUAD_SIZE}`} />
+            <Stat
+              label={
+                pointsLabel !== undefined
+                  ? `Gameweek ${pointsLabel} points`
+                  : "Gameweek points"
+              }
+              value={String(gwPoints)}
+            />
+            <Stat label="Season points" value={String(totalPoints)} />
+            <Stat label="Budget left" value={budgetText} />
+          </dl>
+        </div>
+      </section>
+
+      {/* CURRENT GAMEWEEK */}
+      <section className="flex min-h-[420px] min-w-0 flex-col overflow-hidden rounded-2xl border border-ora-gold/15 bg-ora-card">
+        <div className="flex items-start justify-between gap-3 px-5 pb-3 pt-5">
+          <div className="min-w-0">
+            <h2
+              className="text-[26px] font-semibold leading-none"
+              style={displayFont}
+            >
+              {currentGameweek !== undefined
+                ? `Gameweek ${currentGameweek}`
+                : "Fixtures"}
+            </h2>
+
+            <p className="mt-1.5 truncate text-sm text-ora-papyrus/50">
+              {fixtures.leagueName}
+            </p>
+          </div>
+
+          <Link
+            href="/matches"
+            className={`shrink-0 rounded-full border border-ora-gold/30 px-3.5 py-1.5 text-xs font-semibold text-ora-gold-light transition-colors hover:bg-ora-gold/10 ${focusRing}`}
+          >
+            All matches
+          </Link>
+        </div>
+
+        <div className="relative min-h-[300px] flex-1">
+          <div className="max-h-[520px] overflow-y-auto px-5 pb-5 [scrollbar-color:#ffffff1f_transparent] [scrollbar-width:thin] xl:absolute xl:inset-0 xl:max-h-none">
+            {fixtures.loading ? (
+              <MatchesLoading />
+            ) : fixtures.error ? (
+              <MatchesError
+                message={fixtures.error}
+                onRetry={fixtures.reload}
+              />
+            ) : gameweekMatches.length === 0 ? (
+              <StateMessage
+                title="No matches yet"
+                text="Fixtures will show up here as soon as the league publishes them."
+              />
+            ) : (
+              <div className="space-y-2.5">
+                {gameweekMatches.map((match) => (
+                  <MatchCard key={match.id} match={match} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* =========================================================
+   STAT
+   ========================================================= */
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="border-white/5 pl-4 first:pl-0 sm:pl-6 sm:first:pl-0 sm:[&:not(:first-child)]:border-l">
+      <dt className="text-xs text-ora-papyrus/50">{label}</dt>
+
+      <dd
+        className="mt-1 text-[28px] font-semibold leading-none tabular-nums"
+        style={displayFont}
+      >
+        {value}
+      </dd>
+    </div>
+  );
+}
