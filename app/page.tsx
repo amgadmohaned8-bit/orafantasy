@@ -50,81 +50,76 @@ export default function Home() {
   const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  setError("");
-  setSuccess("");
-  setLoading(true);
-console.log("SUBMIT STARTED");
-  try {
-    if (mode === "register") {
-      if (!managerName.trim()) {
-        setError("Please enter your manager name.");
-        setLoading(false);
-        return;
-      }
+    setError("");
+    setSuccess("");
+    setLoading(true);
+    console.log("SUBMIT STARTED");
 
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email.trim(),
-        password
-      );
-      console.log("AUTH SUCCESS");
-      const user = userCredential.user;
+    try {
+      if (mode === "register") {
+        if (!managerName.trim()) {
+          setError("Please enter your manager name.");
+          setLoading(false);
+          return;
+        }
 
-      await setDoc(doc(db, "users", user.uid), {
-        managerName: managerName.trim(),
-        email: user.email,
-        createdAt: serverTimestamp(),
-      });
-      console.log("FIRESTORE SUCCESS");
-      router.push("/dashboard");
-    } else {
-      await signInWithEmailAndPassword(
-        auth,
-        email.trim(),
-        password
-      );
-
-      router.push("/dashboard");
-    }
-  } catch (err: any) {
-    console.log("FIREBASE ERROR:", err);
-    console.log("FIREBASE ERROR CODE:", err?.code);
-    console.log("FIREBASE ERROR MESSAGE:", err?.message);
-
-    switch (err?.code) {
-      case "auth/email-already-in-use":
-        setError("This email is already registered.");
-        break;
-
-      case "auth/invalid-email":
-        setError("Please enter a valid email address.");
-        break;
-
-      case "auth/weak-password":
-        setError("Password must be at least 6 characters.");
-        break;
-
-      case "auth/invalid-credential":
-      case "auth/wrong-password":
-      case "auth/user-not-found":
-        setError("Email or password is incorrect.");
-        break;
-
-      case "auth/too-many-requests":
-        setError("Too many attempts. Please try again later.");
-        break;
-
-      default:
-        setError(
-          err?.message || "Something went wrong. Please try again."
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email.trim(),
+          password
         );
+        console.log("AUTH SUCCESS");
+        const user = userCredential.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+          managerName: managerName.trim(),
+          email: user.email,
+          createdAt: serverTimestamp(),
+        });
+        console.log("FIRESTORE SUCCESS");
+        router.push("/dashboard");
+      } else {
+        await signInWithEmailAndPassword(auth, email.trim(), password);
+
+        router.push("/dashboard");
+      }
+    } catch (err: any) {
+      console.log("FIREBASE ERROR:", err);
+      console.log("FIREBASE ERROR CODE:", err?.code);
+      console.log("FIREBASE ERROR MESSAGE:", err?.message);
+
+      switch (err?.code) {
+        case "auth/email-already-in-use":
+          setError("This email is already registered.");
+          break;
+
+        case "auth/invalid-email":
+          setError("Please enter a valid email address.");
+          break;
+
+        case "auth/weak-password":
+          setError("Password must be at least 6 characters.");
+          break;
+
+        case "auth/invalid-credential":
+        case "auth/wrong-password":
+        case "auth/user-not-found":
+          setError("Email or password is incorrect.");
+          break;
+
+        case "auth/too-many-requests":
+          setError("Too many attempts. Please try again later.");
+          break;
+
+        default:
+          setError(err?.message || "Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const switchMode = () => {
     setMode(mode === "register" ? "login" : "register");
@@ -133,7 +128,8 @@ console.log("SUBMIT STARTED");
   };
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#070609] text-white">
+    // FIX: scrollable on mobile, locked to viewport only on desktop (lg)
+    <main className="relative min-h-dvh w-full overflow-x-hidden bg-[#070609] text-white lg:h-dvh lg:overflow-hidden">
       {/* BACKGROUND */}
 
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -235,23 +231,25 @@ console.log("SUBMIT STARTED");
 
       {/* MAIN */}
 
+      {/* FIX: removed h-auto, desktop height only on lg */}
       <section
         className="
-          relative z-10 mx-auto min-h-[calc(100dvh-72px)] h-auto lg:h-[calc(100dvh-72px)]
-          max-w-[1500px] 
+          relative z-10 mx-auto min-h-[calc(100dvh-72px)]
+          max-w-[1500px] lg:h-[calc(100dvh-72px)]
         "
       >
+        {/* FIX: h-full only on desktop */}
         <div
           className="
-            grid h-full min-h-0
-            grid-cols-1 lg:grid-cols-[minmax(0,1fr)_330px]
-            items-center gap-8
-            lg:gap-10
+            grid min-h-0
+            grid-cols-1 items-center gap-8
+            lg:h-full lg:grid-cols-[minmax(0,1fr)_330px] lg:gap-10
           "
         >
           {/* HERO / PLAYERS */}
 
-          <div className="relative flex h-full min-h-0 flex-col justify-center">
+          {/* FIX: side padding on mobile, h-full only on desktop */}
+          <div className="relative flex min-h-0 flex-col justify-center px-4 lg:h-full lg:px-0">
             <div className="relative z-40 mb-2 flex items-center gap-3">
               <span className="h-px w-9 bg-[#d6b35a]" />
 
@@ -300,34 +298,35 @@ console.log("SUBMIT STARTED");
 
             {/* PLAYER CARDS */}
 
+            {/* FIX: shorter container on mobile */}
             <div
               className="
                 relative z-30 mt-1
-                h-[380px]
-                w-full
-                max-w-[720px]
+                h-[300px] w-full max-w-[720px]
+                sm:h-[380px]
               "
             >
               <div
                 className="
                   pointer-events-none absolute
-                  bottom-[4%] left-[35%]
+                  bottom-[4%] left-1/2
                   h-[210px] w-[620px]
                   -translate-x-1/2
                   rounded-full
                   bg-[#70247f]/30
                   blur-[110px]
+                  lg:left-[35%]
                 "
               />
 
+              {/* FIX: centered + scaled down on mobile so it never overflows */}
               <div
                 className="
-                  absolute
-                  bottom-0
-                  left-[38%]
-                  flex
-                  -translate-x-1/2
-                  items-end
+                  absolute bottom-0 left-1/2
+                  flex origin-bottom -translate-x-1/2
+                  scale-[0.65] items-end
+                  sm:scale-100
+                  lg:left-[38%]
                 "
               >
                 {players.map((player, index) => (
@@ -355,8 +354,10 @@ console.log("SUBMIT STARTED");
 
           {/* AUTH CARD */}
 
-          <div className="relative z-50 flex items-center justify-center">
-            <div className="relative w-full max-w-[330px]">
+          {/* FIX: padding + bottom space on mobile */}
+          <div className="relative z-50 flex items-center justify-center px-4 pb-10 lg:px-0 lg:pb-0">
+            {/* FIX: 90% width up to 450px on mobile, 330px on desktop */}
+            <div className="relative box-border w-[90%] max-w-[450px] lg:w-full lg:max-w-[330px]">
               <div className="absolute -inset-2 border border-[#d6b35a]/[0.04]" />
 
               <div
@@ -483,9 +484,7 @@ console.log("SUBMIT STARTED");
                         minLength={6}
                         type={showPassword ? "text" : "password"}
                         value={password}
-                        onChange={(e) =>
-                          setPassword(e.target.value)
-                        }
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter your password"
                         className="
                           h-[46px] w-full rounded-sm
@@ -503,9 +502,7 @@ console.log("SUBMIT STARTED");
 
                       <button
                         type="button"
-                        onClick={() =>
-                          setShowPassword(!showPassword)
-                        }
+                        onClick={() => setShowPassword(!showPassword)}
                         className="
                           absolute right-3 top-1/2
                           -translate-y-1/2
@@ -593,9 +590,7 @@ console.log("SUBMIT STARTED");
                           : "Enter your squad"}
 
                       {!loading && (
-                        <span className="ml-2 text-[12px]">
-                          →
-                        </span>
+                        <span className="ml-2 text-[12px]">→</span>
                       )}
                     </span>
                   </button>
@@ -617,9 +612,7 @@ console.log("SUBMIT STARTED");
                       transition hover:text-[#f5da83]
                     "
                   >
-                    {mode === "register"
-                      ? "Sign in"
-                      : "Create account"}
+                    {mode === "register" ? "Sign in" : "Create account"}
                   </button>
                 </div>
 
@@ -680,8 +673,8 @@ function PlayerCard({
             ? `
               z-30
               -mx-[4px]
-              h-[200px]
-              w-[200px]
+              h-[320px]
+              w-[150px]
               sm:h-[340px]
               sm:w-[170px]
               lg:h-[350px]
@@ -962,11 +955,7 @@ function NavItem({
 function Corner({
   position,
 }: {
-  position:
-    | "left-top"
-    | "right-top"
-    | "left-bottom"
-    | "right-bottom";
+  position: "left-top" | "right-top" | "left-bottom" | "right-bottom";
 }) {
   const classes = {
     "left-top": "left-0 top-0 border-l border-t",
@@ -999,11 +988,7 @@ function Pyramid({
     <div
       className={`
         relative
-        ${
-          large
-            ? "h-[280px] w-[470px]"
-            : "h-[190px] w-[320px]"
-        }
+        ${large ? "h-[280px] w-[470px]" : "h-[190px] w-[320px]"}
       `}
     >
       <div
@@ -1060,32 +1045,13 @@ function HorusEye({
         strokeWidth="4"
       />
 
-      <circle
-        cx="116"
-        cy="70"
-        r="21"
-        stroke="#d6b35a"
-        strokeWidth="4"
-      />
+      <circle cx="116" cy="70" r="21" stroke="#d6b35a" strokeWidth="4" />
 
-      <circle
-        cx="116"
-        cy="70"
-        r="7"
-        fill="#d6b35a"
-      />
+      <circle cx="116" cy="70" r="7" fill="#d6b35a" />
 
-      <path
-        d="M116 91L108 132"
-        stroke="#d6b35a"
-        strokeWidth="4"
-      />
+      <path d="M116 91L108 132" stroke="#d6b35a" strokeWidth="4" />
 
-      <path
-        d="M147 45L168 15"
-        stroke="#d6b35a"
-        strokeWidth="4"
-      />
+      <path d="M147 45L168 15" stroke="#d6b35a" strokeWidth="4" />
     </svg>
   );
 }
