@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -49,7 +50,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setError("");
@@ -85,12 +86,12 @@ export default function Home() {
 
         router.push("/dashboard");
       }
-    } catch (err: any) {
-      console.log("FIREBASE ERROR:", err);
-      console.log("FIREBASE ERROR CODE:", err?.code);
-      console.log("FIREBASE ERROR MESSAGE:", err?.message);
+    } catch (err: unknown) {
+      const code = err instanceof FirebaseError ? err.code : undefined;
+      const message = err instanceof Error ? err.message : undefined;
+      console.error("FIREBASE ERROR:", code, message);
 
-      switch (err?.code) {
+      switch (code) {
         case "auth/email-already-in-use":
           setError("This email is already registered.");
           break;
@@ -114,7 +115,7 @@ export default function Home() {
           break;
 
         default:
-          setError(err?.message || "Something went wrong. Please try again.");
+          setError(message || "Something went wrong. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -924,7 +925,7 @@ function NavItem({
   children,
   active = false,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   active?: boolean;
 }) {
   return (
