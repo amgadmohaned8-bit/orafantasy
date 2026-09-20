@@ -237,14 +237,14 @@ console.log("SUBMIT STARTED");
 
       <section
         className="
-          relative z-10 mx-auto h-[calc(100dvh-72px)]
-          max-w-[1500px] overflow-hidden px-6 sm:px-10 lg:px-14
+          relative z-10 mx-auto min-h-[calc(100dvh-72px)] h-auto lg:h-[calc(100dvh-72px)]
+          max-w-[1500px] 
         "
       >
         <div
           className="
             grid h-full min-h-0
-            grid-cols-[minmax(0,1fr)_330px]
+            grid-cols-1 lg:grid-cols-[minmax(0,1fr)_330px]
             items-center gap-8
             lg:gap-10
           "

@@ -2,8 +2,9 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { mapPlayers, type RawPlayersFile } from "./mapper";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
+
+
 
 const SEASON = "2026/27";
 const DATA_FILE = path.join(process.cwd(), "data", "players-2026-27.json");
