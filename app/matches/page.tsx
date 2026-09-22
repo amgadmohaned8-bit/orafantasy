@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import AppShell, { Cartouche, focusRing } from "@/src/components/AppShell";
+import Link from "next/link";
+import AppShell, { Cartouche, displayFont, focusRing } from "@/src/components/AppShell";
 import {
-  MatchCard,
   MatchesLoading,
   MatchesError,
   StateMessage,
+  TeamBadge,
 } from "@/src/components/MatchCard";
 import { useFixtures } from "@/src/lib/useFixtures";
 import {
@@ -14,7 +15,20 @@ import {
   getCurrentGameweek,
   getMatchTimestamp,
   getMatchState,
+  formatKickoff,
+  formatLongDate,
+  type Match,
+  type MatchState,
 } from "@/src/lib/fixtures";
+
+type Filter = "all" | "live" | "upcoming" | "finished";
+
+const FILTERS: { key: Filter; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "live", label: "Live" },
+  { key: "upcoming", label: "Fixtures" },
+  { key: "finished", label: "Results" },
+];
 
 export default function MatchesPage() {
   const { matches, leagueName, loading, error, reload } = useFixtures();
@@ -30,13 +44,9 @@ export default function MatchesPage() {
     [groups],
   );
 
-  const currentGameweek = useMemo(
-    () => getCurrentGameweek(matches),
-    [matches],
-  );
+  const currentGameweek = useMemo(() => getCurrentGameweek(matches), [matches]);
 
-  // Which gameweek tab is selected. Defaults to the current one once
-  // the data has loaded; falls back to the last available week.
+  // Gameweek tab: defaults to current once loaded.
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
 
   useEffect(() => {
@@ -46,7 +56,11 @@ export default function MatchesPage() {
     setSelectedWeek(currentGameweek ?? gameweeks[gameweeks.length - 1]);
   }, [selectedWeek, currentGameweek, gameweeks]);
 
-  const activeWeek = selectedWeek ?? currentGameweek ?? gameweeks[gameweeks.length - 1];
+  const activeWeek =
+    selectedWeek ?? currentGameweek ?? gameweeks[gameweeks.length - 1];
+
+  // Status filter: All / Live / Fixtures / Results.
+  const [filter, setFilter] = useState<Filter>("all");
 
   const weekMatches = useMemo(() => {
     if (activeWeek === undefined || activeWeek === null) return [];
@@ -56,13 +70,20 @@ export default function MatchesPage() {
       .sort((a, b) => getMatchTimestamp(a) - getMatchTimestamp(b));
   }, [groups, activeWeek]);
 
+  const filteredMatches = useMemo(() => {
+    if (filter === "all") return weekMatches;
+
+    const wanted: MatchState = filter === "finished" ? "finished" : filter === "live" ? "live" : "upcoming";
+
+    return weekMatches.filter((match) => getMatchState(match) === wanted);
+  }, [weekMatches, filter]);
+
   const sortedAll = useMemo(
-    () =>
-      matches
-        .slice()
-        .sort((a, b) => getMatchTimestamp(a) - getMatchTimestamp(b)),
+    () => matches.slice().sort((a, b) => getMatchTimestamp(a) - getMatchTimestamp(b)),
     [matches],
   );
+
+  const dateGroups = useMemo(() => groupByDate(filteredMatches), [filteredMatches]);
 
   return (
     <AppShell title="Matches" liveNow={isLiveNow}>
@@ -91,19 +112,27 @@ export default function MatchesPage() {
               onSelect={setSelectedWeek}
             />
 
-            <div className="mt-4 space-y-2.5">
-              {weekMatches.length === 0 ? (
+            <FilterTabs active={filter} onSelect={setFilter} />
+
+            <div className="mt-5 space-y-6">
+              {dateGroups.length === 0 ? (
                 <StateMessage
-                  title="No matches this gameweek"
-                  text="Try a different gameweek from the list above."
+                  title="No matches here"
+                  text="Try a different filter or gameweek."
                 />
               ) : (
-                weekMatches.map((match) => (
-                  <MatchCard
-                    key={match.id}
-                    match={match}
-                    href={`/matches/${match.id}`}
-                  />
+                dateGroups.map(({ date, label, matches: dayMatches }) => (
+                  <section key={date}>
+                    <h2 className="mb-2.5 text-xs font-semibold uppercase tracking-wide text-ora-papyrus/45">
+                      {label}
+                    </h2>
+
+                    <div className="space-y-2.5">
+                      {dayMatches.map((match) => (
+                        <MatchRow key={match.id} match={match} />
+                      ))}
+                    </div>
+                  </section>
                 ))
               )}
             </div>
@@ -111,16 +140,54 @@ export default function MatchesPage() {
         ) : (
           <div className="space-y-2.5">
             {sortedAll.map((match) => (
-              <MatchCard
-                key={match.id}
-                match={match}
-                href={`/matches/${match.id}`}
-              />
+              <MatchRow key={match.id} match={match} />
             ))}
           </div>
         )}
       </div>
     </AppShell>
+  );
+}
+
+/* =========================================================
+   FILTER TABS
+   All / Live / Fixtures / Results.
+   ========================================================= */
+
+function FilterTabs({
+  active,
+  onSelect,
+}: {
+  active: Filter;
+  onSelect: (filter: Filter) => void;
+}) {
+  return (
+    <div
+      className="mt-3 flex gap-1.5"
+      role="tablist"
+      aria-label="Match status"
+    >
+      {FILTERS.map((opt) => {
+        const isActive = opt.key === active;
+
+        return (
+          <button
+            key={opt.key}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => onSelect(opt.key)}
+            className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${focusRing} ${
+              isActive
+                ? "border-ora-gold bg-ora-gold text-ora-night"
+                : "border-white/10 text-ora-papyrus/60 hover:bg-ora-gold/10 hover:text-ora-papyrus"
+            }`}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
@@ -172,4 +239,135 @@ function GameweekTabs({
       })}
     </div>
   );
+}
+
+/* =========================================================
+   MATCH ROW
+   Bigger, PL-app style card: crest + name on each side,
+   score/kickoff centered, live pulse when in play.
+   ========================================================= */
+
+function MatchRow({ match }: { match: Match }) {
+  const state = getMatchState(match);
+  const started = state !== "upcoming";
+  const detail = match.displayStatus || match.status || "";
+
+  return (
+    <Link
+      href={`/matches/${match.id}`}
+      className={`block rounded-xl border transition-transform hover:-translate-y-px ${focusRing} ${
+        state === "live"
+          ? "border-ora-nile/30 bg-ora-nile/5"
+          : "border-white/5 bg-white/[0.03]"
+      }`}
+    >
+      <div className="flex items-center gap-3 px-4 py-4">
+        <TeamSide team={match.home} align="right" />
+
+        <div className="flex w-[84px] shrink-0 flex-col items-center">
+          {state === "live" ? (
+            <>
+              <p
+                className="text-xl font-semibold leading-none tabular-nums"
+                style={displayFont}
+              >
+                {match.home.score} – {match.away.score}
+              </p>
+
+              <span className="mt-1.5 flex items-center gap-1 text-[11px] font-semibold text-ora-nile">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ora-nile motion-reduce:animate-none" />
+                {detail && detail.toLowerCase() !== "live" ? detail : "Live"}
+              </span>
+            </>
+          ) : started ? (
+            <>
+              <p
+                className="text-xl font-semibold leading-none tabular-nums"
+                style={displayFont}
+              >
+                {match.home.score} – {match.away.score}
+              </p>
+
+              <span className="mt-1.5 text-[11px] font-medium text-ora-papyrus/45">
+                Full time
+              </span>
+            </>
+          ) : (
+            <>
+              <p className="text-base font-semibold tabular-nums">
+                {formatKickoff(match.kickoff)}
+              </p>
+
+              <span className="mt-1.5 text-[11px] text-ora-papyrus/40">
+                Kickoff
+              </span>
+            </>
+          )}
+        </div>
+
+        <TeamSide team={match.away} align="left" />
+      </div>
+    </Link>
+  );
+}
+
+function TeamSide({
+  team,
+  align,
+}: {
+  team: { name: string; logo?: string };
+  align: "left" | "right";
+}) {
+  return (
+    <div
+      className={`flex min-w-0 flex-1 items-center gap-2.5 ${
+        align === "right" ? "flex-row-reverse text-right" : "text-left"
+      }`}
+    >
+      <TeamBadge team={team} size="md" />
+      <p className="min-w-0 truncate text-sm font-medium">{team.name}</p>
+    </div>
+  );
+}
+
+/* =========================================================
+   DATE GROUPING
+   "Today" / "Tomorrow" / full date, chronological.
+   ========================================================= */
+
+function groupByDate(
+  matches: Match[],
+): { date: string; label: string; matches: Match[] }[] {
+  const byDate = new Map<string, Match[]>();
+
+  matches.forEach((match) => {
+    const key = match.date || "unknown";
+    const list = byDate.get(key);
+
+    if (list) {
+      list.push(match);
+    } else {
+      byDate.set(key, [match]);
+    }
+  });
+
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const tomorrowKey = new Date(Date.now() + 86_400_000)
+    .toISOString()
+    .slice(0, 10);
+
+  return Array.from(byDate.entries())
+    .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    .map(([date, dayMatches]) => ({
+      date,
+      label:
+        date === todayKey
+          ? "Today"
+          : date === tomorrowKey
+            ? "Tomorrow"
+            : formatLongDate(date),
+      matches: dayMatches.sort(
+        (a, b) => getMatchTimestamp(a) - getMatchTimestamp(b),
+      ),
+    }));
 }
