@@ -40,6 +40,10 @@ type Fixtures = ReturnType<typeof useFixtures>;
 
 const money = (value: number) => `${value.toFixed(1)}M`;
 
+/* Points refresh cadence while a match is live. Matches the API route's
+   own 60s cache for the current gameweek, so polling faster is wasted. */
+const LIVE_POLL_MS = 60_000;
+
 export default function DashboardPage() {
   const fixtures = useFixtures();
 
@@ -54,12 +58,18 @@ export default function DashboardPage() {
       subtitle={`${fixtures.leagueName}, season ${fixtures.season}`}
       liveNow={hasLive}
     >
-      <DashboardContent fixtures={fixtures} />
+      <DashboardContent fixtures={fixtures} hasLive={hasLive} />
     </AppShell>
   );
 }
 
-function DashboardContent({ fixtures }: { fixtures: Fixtures }) {
+function DashboardContent({
+  fixtures,
+  hasLive,
+}: {
+  fixtures: Fixtures;
+  hasLive: boolean;
+}) {
   const router = useRouter();
   const profile = useProfile();
   const uid = profile.uid;
@@ -102,6 +112,7 @@ function DashboardContent({ fixtures }: { fixtures: Fixtures }) {
     };
   }, [uid]);
 
+  /* Players load once — the roster doesn't change mid-session. */
   useEffect(() => {
     const controller = new AbortController();
 
@@ -119,9 +130,20 @@ function DashboardContent({ fixtures }: { fixtures: Fixtures }) {
       }
     })();
 
-    (async () => {
+    return () => controller.abort();
+  }, []);
+
+  /* Points load once on mount, then poll every LIVE_POLL_MS while a
+     match in the current gameweek is live, so scores update without a
+     manual refresh. Polling stops as soon as nothing is live. */
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadPoints = async () => {
       try {
-        const res = await fetch("/api/football/points", { signal: controller.signal });
+        const res = await fetch("/api/football/points", {
+          signal: controller.signal,
+        });
         const json = await res.json();
 
         if (res.ok && !json.error) {
@@ -129,12 +151,23 @@ function DashboardContent({ fixtures }: { fixtures: Fixtures }) {
           setPointsGw(json.gw || undefined);
         }
       } catch {
-        /* points stay at zero until the next visit */
+        /* points stay at their last known value until the next tick */
       }
-    })();
+    };
 
-    return () => controller.abort();
-  }, []);
+    loadPoints();
+
+    if (!hasLive) {
+      return () => controller.abort();
+    }
+
+    const interval = setInterval(loadPoints, LIVE_POLL_MS);
+
+    return () => {
+      controller.abort();
+      clearInterval(interval);
+    };
+  }, [hasLive]);
 
   const byId = useMemo(
     () => new Map(players.map((player) => [player.id, player])),
@@ -196,7 +229,7 @@ function DashboardContent({ fixtures }: { fixtures: Fixtures }) {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
               <h1
-                className="break-words text-[30px] font-semibold leading-tight"
+                className="break-words text-[30px] font-black leading-tight tracking-wide"
                 style={displayFont}
               >
                 {profile.teamName || "Build your team"}
@@ -272,7 +305,7 @@ function DashboardContent({ fixtures }: { fixtures: Fixtures }) {
         <div className="flex items-start justify-between gap-3 px-5 pb-3 pt-5">
           <div className="min-w-0">
             <h2
-              className="text-[26px] font-semibold leading-none"
+              className="text-[26px] font-black leading-none tracking-wide"
               style={displayFont}
             >
               {currentGameweek !== undefined

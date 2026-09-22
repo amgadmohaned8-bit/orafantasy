@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Cinzel, Manrope } from "next/font/google";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db } from "../../src/firebase";
@@ -25,9 +25,9 @@ import {
   type SquadDoc,
 } from "../../src/fantasy/types";
 
-const display = Cormorant_Garamond({
+const display = Cinzel({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["600", "700", "900"],
   variable: "--font-display",
   display: "swap",
 });

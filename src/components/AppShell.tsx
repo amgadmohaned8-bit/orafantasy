@@ -11,7 +11,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Cinzel, Manrope } from "next/font/google";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
@@ -22,9 +22,9 @@ import { auth, db } from "../firebase";
    Manrope: quiet, readable UI text.
    ========================================================= */
 
-const display = Cormorant_Garamond({
+const display = Cinzel({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["600", "700", "900"],
   variable: "--font-display",
   display: "swap",
 });
@@ -258,7 +258,7 @@ export default function AppShell({
 
             <span>
               <span
-                className="block text-[26px] font-semibold leading-none"
+                className="block text-[26px] font-black leading-none tracking-wide"
                 style={displayFont}
               >
                 Ora
@@ -305,7 +305,7 @@ export default function AppShell({
                 />
 
                 <span
-                  className="text-xl font-semibold leading-none"
+                  className="text-xl font-black leading-none tracking-wide"
                   style={displayFont}
                 >
                   Ora Fantasy
