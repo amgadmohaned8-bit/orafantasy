@@ -125,6 +125,8 @@ export default function AppShell({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log("USER:", user);
+
       if (!user) {
         cachedProfile = null;
         router.replace("/");
