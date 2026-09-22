@@ -14,7 +14,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../src/firebase";
-import { loginWithRememberMe } from "@/src/lib/authPersistence";
+import { loginWithRememberMe, setAuthPersistence } from "@/src/lib/authPersistence";
 
 type Mode = "register" | "login";
 
@@ -57,6 +57,7 @@ export default function Home() {
 
   const [mode, setMode] = useState<Mode>("register");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
 
   const [managerName, setManagerName] = useState("");
   const [email, setEmail] = useState("");
@@ -82,6 +83,10 @@ export default function Home() {
           return;
         }
 
+        // Same persistence choice as login, so a new account also stays
+        // signed in (or not) based on the Remember me toggle.
+        await setAuthPersistence(rememberMe);
+
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           email.trim(),
@@ -98,7 +103,7 @@ export default function Home() {
         console.log("FIRESTORE SUCCESS");
         router.push("/dashboard");
       } else {
-       await loginWithRememberMe(email, password);
+       await loginWithRememberMe(email, password, rememberMe);
 
         router.push("/dashboard");
       }
@@ -314,13 +319,14 @@ export default function Home() {
             </p>
 
             {/* PLAYER CARDS */}
+            {/* Nudged smaller + shifted right, as requested. Adjust the
+                scale-[...] and translate-x-[...] values below to taste. */}
 
-            {/* FIX: shorter container on mobile */}
             <div
               className="
                 relative z-30 mt-1
-                h-[300px] w-full max-w-[720px]
-                sm:h-[380px]
+                h-[260px] w-full max-w-[620px]
+                sm:h-[320px]
               "
             >
               <div
@@ -332,18 +338,17 @@ export default function Home() {
                   rounded-full
                   bg-[#70247f]/30
                   blur-[110px]
-                  lg:left-[35%]
+                  lg:left-[42%]
                 "
               />
 
-              {/* FIX: centered + scaled down on mobile so it never overflows */}
               <div
                 className="
                   absolute bottom-0 left-1/2
                   flex origin-bottom -translate-x-1/2
-                  scale-[0.65] items-end
-                  sm:scale-100
-                  lg:left-[38%]
+                  scale-[0.55] items-end
+                  sm:scale-[0.85]
+                  lg:left-[45%] lg:scale-[0.85]
                 "
               >
                 {players.map((player, index) => (
@@ -533,6 +538,36 @@ export default function Home() {
                       </button>
                     </div>
                   </div>
+
+                  <label
+                    className="
+                      flex cursor-pointer select-none
+                      items-center gap-2 pt-0.5
+                    "
+                  >
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="
+                        h-3.5 w-3.5 shrink-0 rounded-sm
+                        border border-white/20 bg-white/[0.035]
+                        accent-[#d6b35a]
+                        outline-none
+                        focus:border-[#d6b35a]/60
+                      "
+                    />
+
+                    <span
+                      className="
+                        text-[8px] font-medium
+                        uppercase tracking-[0.15em]
+                        text-white/40
+                      "
+                    >
+                      Remember me
+                    </span>
+                  </label>
 
                   {error && (
                     <div

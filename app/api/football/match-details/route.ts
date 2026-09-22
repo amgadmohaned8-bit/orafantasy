@@ -1,15 +1,10 @@
 // app/api/football/match-details/route.ts
 //
-// Combines two live-football-api.com endpoints into one response for a
-// single match page:
-//   - /live_match_details -> score, minute, events (goals + who scored +
-//     minute + assist), stats
-//   - /lineups             -> starting XI, subs, coach, formation,
-//                             is_projected (true = predicted lineup,
-//                             false = official confirmed lineup)
-//
-// Usage from the frontend:
-//   fetch(`/api/football/match-details?match_id=${matchId}`)
+// Fix applied: live-football-api.com returns "lineups": {} (an empty
+// object, not null) when the lineup hasn't been published yet. We now
+// only treat lineups as available when it actually has a home+away
+// starting XI, otherwise we return null (so the frontend shows the
+// "not out yet" message instead of crashing).
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -38,14 +33,12 @@ export async function GET(req: NextRequest) {
   const lineupsUrl = `${BASE_URL}/lineups?api_key=${apiKey}&match_id=${matchId}&lang=${lang}`;
 
   try {
-    // Fetch both in parallel to save time.
     const [detailsRes, lineupsRes] = await Promise.all([
-      fetch(detailsUrl, { next: { revalidate: 15 } }), // refresh every 15s for live matches
-      fetch(lineupsUrl, { next: { revalidate: 60 } }), // lineups change less often
+      fetch(detailsUrl, { next: { revalidate: 15 } }),
+      fetch(lineupsUrl, { next: { revalidate: 60 } }),
     ]);
 
     const detailsJson = await detailsRes.json();
-    // Lineups may not exist yet (>1h before kickoff) -> API can 4xx/empty, don't fail the whole request for that.
     const lineupsJson = lineupsRes.ok ? await lineupsRes.json() : null;
 
     if (!detailsJson.success) {
@@ -56,9 +49,19 @@ export async function GET(req: NextRequest) {
     }
 
     const details = detailsJson.data;
-    const lineups = lineupsJson?.success ? lineupsJson.data : null;
+    const lineupsData = lineupsJson?.success ? lineupsJson.data : null;
 
-    // Shape a clean, ready-to-render payload for the match page.
+    // The provider returns {} (truthy, but empty) before the lineup is
+    // announced. Only treat it as real when both sides actually have a
+    // starting XI.
+    const hasLineups = Boolean(
+      lineupsData &&
+        Array.isArray(lineupsData.home?.starting) &&
+        lineupsData.home.starting.length > 0 &&
+        Array.isArray(lineupsData.away?.starting) &&
+        lineupsData.away.starting.length > 0
+    );
+
     const response = {
       success: true,
       match_id: matchId,
@@ -66,14 +69,12 @@ export async function GET(req: NextRequest) {
       minute: details.header?.status?.minute ?? null,
       is_live: details.header?.status?.is_live ?? false,
 
-      // Goals with scorer, minute and assist (assist is included by the
-      // provider only when one was recorded on that goal).
       events: (details.events ?? []).map((e: any) => ({
         minute: e.time,
-        type: e.type, // 'goal' | 'own_goal' | 'yellow_card' | 'red_card' | 'substitution'
-        side: e.side, // 'home' | 'away'
+        type: e.type,
+        side: e.side,
         player: e.detail?.player ?? null,
-        assist: e.detail?.assist ?? null, // present only on goal events with an assist
+        assist: e.detail?.assist ?? null,
         score_after: e.detail?.score ?? null,
       })),
 
@@ -82,16 +83,14 @@ export async function GET(req: NextRequest) {
       referee: details.referee ?? null,
       tv_channels: details.tv_channels ?? [],
       player_of_the_match: details.player_of_the_match ?? null,
-      csb_url: details.csb_url ?? null, // ready-made live match visualization iframe
+      csb_url: details.csb_url ?? null,
 
-      // Lineup: null until ~1h before kickoff. is_projected=true means it's
-      // a predicted lineup, false means it's the official confirmed one.
-      lineups: lineups
+      lineups: hasLineups
         ? {
-            home: lineups.home,
-            away: lineups.away,
-            formation: lineups.formation,
-            is_projected: lineups.is_projected,
+            home: lineupsData.home,
+            away: lineupsData.away,
+            formation: lineupsData.formation ?? { home: null, away: null },
+            is_projected: Boolean(lineupsData.is_projected),
           }
         : null,
     };

@@ -1,16 +1,14 @@
 // src/lib/authPersistence.ts
 //
-// Makes the login stay logged in across browser restarts, so the user
-// doesn't have to type their email/password every time.
-//
-// HOW TO USE:
-// Wherever you currently call signInWithEmailAndPassword(auth, email, password)
-// in your login page/component, replace that call with loginWithRememberMe(...)
-// from this file (or just copy the two lines below into your existing
-// sign-in handler, right before the sign-in call).
+// Controls whether a signed-in session survives closing the browser
+// (Remember me ON -> localStorage-backed) or ends when the tab/browser
+// closes (Remember me OFF -> session-only). Used by both the login and
+// the signup flow in app/page.tsx, so either one keeps the user signed
+// in on the dashboard until they explicitly log out.
 
 import {
   browserLocalPersistence,
+  browserSessionPersistence,
   setPersistence,
   signInWithEmailAndPassword,
   type UserCredential,
@@ -18,15 +16,27 @@ import {
 import { auth } from "@/src/firebase"; // adjust path if your firebase.ts is elsewhere
 
 /**
- * Signs the user in and makes the session persist in this browser
- * (localStorage-backed) until they explicitly log out.
+ * Sets how the NEXT sign-in on this auth instance will persist.
+ * Call this before createUserWithEmailAndPassword too (e.g. on signup),
+ * not just before signing in an existing user.
+ */
+export async function setAuthPersistence(remember: boolean): Promise<void> {
+  await setPersistence(
+    auth,
+    remember ? browserLocalPersistence : browserSessionPersistence
+  );
+}
+
+/**
+ * Signs the user in, first setting persistence based on `remember`.
+ * remember = true  -> stays signed in across browser restarts (default).
+ * remember = false -> signed out automatically when the browser closes.
  */
 export async function loginWithRememberMe(
   email: string,
-  password: string
+  password: string,
+  remember: boolean = true
 ): Promise<UserCredential> {
-  // Must be called BEFORE signInWithEmailAndPassword.
-  // browserLocalPersistence = survives closing the tab / browser.
-  await setPersistence(auth, browserLocalPersistence);
+  await setAuthPersistence(remember);
   return signInWithEmailAndPassword(auth, email, password);
 }
