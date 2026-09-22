@@ -1,106 +1,108 @@
-// app/api/football/match-details/route.ts
-//
-// Fix applied: live-football-api.com returns "lineups": {} (an empty
-// object, not null) when the lineup hasn't been published yet. We now
-// only treat lineups as available when it actually has a home+away
-// starting XI, otherwise we return null (so the frontend shows the
-// "not out yet" message instead of crashing).
+"use client";
 
-import { NextRequest, NextResponse } from "next/server";
+import { useMemo } from "react";
+import AppShell, { Cartouche, focusRing } from "@/src/components/AppShell";
+import {
+  MatchCard,
+  MatchesLoading,
+  MatchesError,
+  StateMessage,
+} from "@/src/components/MatchCard";
+import { useFixtures } from "@/src/lib/useFixtures";
+import {
+  groupByGameweek,
+  getCurrentGameweek,
+  getMatchTimestamp,
+  getMatchState,
+} from "@/src/lib/fixtures";
 
-const BASE_URL = "https://live-football-api.com/api/v1";
+export default function MatchesPage() {
+  const { matches, leagueName, loading, error, reload } = useFixtures();
 
-export async function GET(req: NextRequest) {
-  const matchId = req.nextUrl.searchParams.get("match_id");
-  const lang = req.nextUrl.searchParams.get("lang") ?? "en";
+  const isLiveNow = useMemo(
+    () => matches.some((match) => getMatchState(match) === "live"),
+    [matches],
+  );
 
-  if (!matchId) {
-    return NextResponse.json(
-      { success: false, message: "match_id is required" },
-      { status: 400 }
-    );
-  }
+  const groups = useMemo(() => groupByGameweek(matches), [matches]);
+  const gameweeks = useMemo(
+    () => Array.from(groups.keys()).sort((a, b) => a - b),
+    [groups],
+  );
 
-  const apiKey = process.env.LIVE_FOOTBALL_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json(
-      { success: false, message: "LIVE_FOOTBALL_API_KEY is not configured" },
-      { status: 500 }
-    );
-  }
+  const currentGameweek = useMemo(
+    () => getCurrentGameweek(matches),
+    [matches],
+  );
 
-  const detailsUrl = `${BASE_URL}/live_match_details?api_key=${apiKey}&match_id=${matchId}&lang=${lang}`;
-  const lineupsUrl = `${BASE_URL}/lineups?api_key=${apiKey}&match_id=${matchId}&lang=${lang}`;
+  const sortedAll = useMemo(
+    () =>
+      matches
+        .slice()
+        .sort((a, b) => getMatchTimestamp(a) - getMatchTimestamp(b)),
+    [matches],
+  );
 
-  try {
-    const [detailsRes, lineupsRes] = await Promise.all([
-      fetch(detailsUrl, { next: { revalidate: 15 } }),
-      fetch(lineupsUrl, { next: { revalidate: 60 } }),
-    ]);
+  return (
+    <AppShell title="Matches" liveNow={isLiveNow}>
+      <div className="mx-auto max-w-[760px]">
+        {leagueName && (
+          <div className="mb-4 flex justify-center">
+            <Cartouche>{leagueName}</Cartouche>
+          </div>
+        )}
 
-    const detailsJson = await detailsRes.json();
-    const lineupsJson = lineupsRes.ok ? await lineupsRes.json() : null;
+        {loading && matches.length === 0 ? (
+          <MatchesLoading />
+        ) : error ? (
+          <MatchesError message={error} onRetry={reload} />
+        ) : matches.length === 0 ? (
+          <StateMessage
+            title="No matches yet"
+            text="Fixtures will show up here once they're published."
+          />
+        ) : gameweeks.length > 0 ? (
+          <div className="space-y-6">
+            {gameweeks.map((week) => {
+              const weekMatches = (groups.get(week) ?? [])
+                .slice()
+                .sort((a, b) => getMatchTimestamp(a) - getMatchTimestamp(b));
 
-    if (!detailsJson.success) {
-      return NextResponse.json(
-        { success: false, message: detailsJson.message ?? "Failed to fetch match details" },
-        { status: detailsRes.status }
-      );
-    }
+              return (
+                <section key={week}>
+                  <div className="mb-2.5 flex items-center justify-between">
+                    <h2 className="text-sm font-semibold text-ora-papyrus/70">
+                      Gameweek {week}
+                    </h2>
 
-    const details = detailsJson.data;
-    const lineupsData = lineupsJson?.success ? lineupsJson.data : null;
+                    {week === currentGameweek && <Cartouche>Current</Cartouche>}
+                  </div>
 
-    // The provider returns {} (truthy, but empty) before the lineup is
-    // announced. Only treat it as real when both sides actually have a
-    // starting XI.
-    const hasLineups = Boolean(
-      lineupsData &&
-        Array.isArray(lineupsData.home?.starting) &&
-        lineupsData.home.starting.length > 0 &&
-        Array.isArray(lineupsData.away?.starting) &&
-        lineupsData.away.starting.length > 0
-    );
-
-    const response = {
-      success: true,
-      match_id: matchId,
-      header: details.header,
-      minute: details.header?.status?.minute ?? null,
-      is_live: details.header?.status?.is_live ?? false,
-
-      events: (details.events ?? []).map((e: any) => ({
-        minute: e.time,
-        type: e.type,
-        side: e.side,
-        player: e.detail?.player ?? null,
-        assist: e.detail?.assist ?? null,
-        score_after: e.detail?.score ?? null,
-      })),
-
-      stats: details.stats ?? [],
-      venue: details.venue ?? null,
-      referee: details.referee ?? null,
-      tv_channels: details.tv_channels ?? [],
-      player_of_the_match: details.player_of_the_match ?? null,
-      csb_url: details.csb_url ?? null,
-
-      lineups: hasLineups
-        ? {
-            home: lineupsData.home,
-            away: lineupsData.away,
-            formation: lineupsData.formation ?? { home: null, away: null },
-            is_projected: Boolean(lineupsData.is_projected),
-          }
-        : null,
-    };
-
-    return NextResponse.json(response);
-  } catch (err) {
-    console.error("match-details route error:", err);
-    return NextResponse.json(
-      { success: false, message: "Unexpected error fetching match details" },
-      { status: 500 }
-    );
-  }
+                  <div className="space-y-2.5">
+                    {weekMatches.map((match) => (
+                      <MatchCard
+                        key={match.id}
+                        match={match}
+                        href={`/matches/${match.id}`}
+                      />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="space-y-2.5">
+            {sortedAll.map((match) => (
+              <MatchCard
+                key={match.id}
+                match={match}
+                href={`/matches/${match.id}`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </AppShell>
+  );
 }
