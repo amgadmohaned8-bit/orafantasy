@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../src/firebase";
+import { loginWithRememberMe } from "@/src/lib/authPersistence";
 
 type Mode = "register" | "login";
 
@@ -82,7 +83,7 @@ export default function Home() {
         console.log("FIRESTORE SUCCESS");
         router.push("/dashboard");
       } else {
-        await signInWithEmailAndPassword(auth, email.trim(), password);
+       await loginWithRememberMe(email, password);
 
         router.push("/dashboard");
       }
