@@ -10,15 +10,25 @@ import { auth, db } from "../../src/firebase";
 import Shirt from "../../src/fantasy/Shirt";
 import { getTeamStatus } from "../../src/fantasy/scoring";
 import {
-  ALL_SLOTS,
-  BENCH_SLOTS,
   BUDGET,
-  FORMATION,
+  CHIP_DESCRIPTIONS,
+  CHIP_LABELS,
+  DEFAULT_FORMATION,
+  EMPTY_CHIPS,
+  FORMATIONS,
+  FORMATION_LIST,
   FREE_TRANSFERS,
   SQUAD_SIZE,
-  STARTER_SLOTS,
+  SQUAD_SLOTS,
+  autoFillStarters,
   slotPosition,
+  startersAreOwned,
+  startingCountFor,
   validatePick,
+  validateStarters,
+  type ChipKey,
+  type ChipState,
+  type Formation,
   type Player,
   type PlayerPoints,
   type Position,
@@ -47,6 +57,14 @@ const money = (value: number) => `${value.toFixed(1)}M`;
 
 type SortKey = "price" | "points" | "name";
 
+const POSITIONS_TOP_TO_BOTTOM: Position[] = ["FWD", "MID", "DEF", "GK"];
+
+/* A player "played" this gameweek if their breakdown has anything in
+   it — calcPoints only ever returns an empty breakdown when minutes
+   were zero. Used to decide whether the captain armband should fall
+   back to the vice-captain. */
+const didPlay = (pts?: PlayerPoints) => !!pts && pts.breakdown.length > 0;
+
 /* =========================================================
    PAGE
    ========================================================= */
@@ -60,6 +78,17 @@ export default function SquadPage() {
 
   const [squad, setSquad] = useState<SquadDoc | null>(null);
   const [slots, setSlots] = useState<Record<string, string>>({});
+
+  const [formation, setFormation] = useState<Formation>(DEFAULT_FORMATION);
+  const [starters, setStarters] = useState<string[]>([]);
+  const [captain, setCaptain] = useState<string | null>(null);
+  const [viceCaptain, setViceCaptain] = useState<string | null>(null);
+  const [chips, setChips] = useState<Record<ChipKey, ChipState>>(EMPTY_CHIPS);
+  const [activeChip, setActiveChip] = useState<ChipKey | null>(null);
+  const [activeChipGw, setActiveChipGw] = useState<number | null>(null);
+  const [confirmChip, setConfirmChip] = useState<ChipKey | null>(null);
+
+  const [swapping, setSwapping] = useState<string | null>(null); // bench player id mid-swap
 
   const [players, setPlayers] = useState<Player[]>([]);
   const [playersState, setPlayersState] = useState<"loading" | "ready" | "error">("loading");
@@ -93,9 +122,44 @@ export default function SquadPage() {
         const snap = await getDoc(doc(db, "squads", user.uid));
 
         if (snap.exists()) {
-          const data = snap.data() as SquadDoc;
-          setSquad(data);
-          setSlots(data.slots || {});
+          const data = snap.data() as Partial<SquadDoc>;
+
+          // Older squads were saved before formations, captaincy and
+          // chips existed, with a different pool size. Those can't be
+          // migrated cleanly, so they start fresh under the new rules.
+          const isLegacy = !Array.isArray(data.starters);
+
+          const normalized: SquadDoc = {
+            teamName: data.teamName ?? "",
+            coachName: data.coachName ?? "",
+            slots: isLegacy ? {} : data.slots ?? {},
+            formation: data.formation ?? DEFAULT_FORMATION,
+            starters: isLegacy ? [] : data.starters ?? [],
+            captain: isLegacy ? null : data.captain ?? null,
+            viceCaptain: isLegacy ? null : data.viceCaptain ?? null,
+            complete: isLegacy ? false : data.complete ?? false,
+            transfersUsed: data.transfersUsed ?? 0,
+            transfersGw: data.transfersGw ?? 0,
+            chips: data.chips ?? EMPTY_CHIPS,
+            activeChip: data.activeChip ?? null,
+            activeChipGw: data.activeChipGw ?? null,
+          };
+
+          setSquad(normalized);
+          setSlots(normalized.slots);
+          setFormation(normalized.formation);
+          setStarters(normalized.starters);
+          setCaptain(normalized.captain);
+          setViceCaptain(normalized.viceCaptain);
+          setChips(normalized.chips);
+          setActiveChip(normalized.activeChip);
+          setActiveChipGw(normalized.activeChipGw);
+
+          if (isLegacy) {
+            setNotice(
+              "Squad rules were updated — please rebuild your 15-player squad.",
+            );
+          }
         }
       } catch (error) {
         console.error("Squad load error:", error);
@@ -165,12 +229,14 @@ export default function SquadPage() {
 
       if (detail) setDetail(null);
       else if (picker) setPicker(null);
+      else if (confirmChip) setConfirmChip(null);
+      else if (swapping) setSwapping(null);
     };
 
     window.addEventListener("keydown", onKey);
 
     return () => window.removeEventListener("keydown", onKey);
-  }, [detail, picker]);
+  }, [detail, picker, confirmChip, swapping]);
 
   /* ---------- derived data ---------- */
 
@@ -178,7 +244,7 @@ export default function SquadPage() {
 
   const ready = playersState === "ready";
 
-  const picked = useMemo(
+  const pool = useMemo(
     () =>
       Object.values(slots)
         .map((id) => byId.get(id))
@@ -186,25 +252,84 @@ export default function SquadPage() {
     [slots, byId],
   );
 
-  const spent = picked.reduce((total, p) => total + p.price, 0);
+  const spent = pool.reduce((total, p) => total + p.price, 0);
   const budgetLeft = BUDGET - spent;
   const filled = Object.keys(slots).length;
+  const poolComplete = filled === SQUAD_SIZE;
 
-  const starters = STARTER_SLOTS.map((s) => byId.get(slots[s.key])).filter(
-    (p): p is Player => Boolean(p),
+  // Keep the starting XI valid: re-run the auto-pick whenever the pool
+  // changes (a transfer swapped someone out) or the formation changes,
+  // but only if the current starters no longer fit — so manual swaps
+  // survive as long as they're still valid.
+  useEffect(() => {
+    if (!poolComplete) return;
+
+    const ownedOk = startersAreOwned(starters, slots);
+    const countsOk = validateStarters(starters, formation, byId) === null;
+
+    if (ownedOk && countsOk) return;
+
+    setStarters(autoFillStarters(Object.values(slots), formation, byId));
+  }, [poolComplete, formation, slots, byId, starters]);
+
+  // Captain / vice-captain must always be current starters.
+  useEffect(() => {
+    if (captain && !starters.includes(captain)) setCaptain(null);
+    if (viceCaptain && !starters.includes(viceCaptain)) setViceCaptain(null);
+  }, [starters, captain, viceCaptain]);
+
+  const startersPlayers = useMemo(
+    () => starters.map((id) => byId.get(id)).filter((p): p is Player => Boolean(p)),
+    [starters, byId],
   );
 
-  const gwPoints = starters.reduce((t, p) => t + (points[p.id]?.gw ?? 0), 0);
-  const totalPoints = starters.reduce((t, p) => t + (points[p.id]?.total ?? 0), 0);
+  const benchIds = useMemo(
+    () => Object.values(slots).filter((id) => !starters.includes(id)),
+    [slots, starters],
+  );
 
-  const ranked = [...starters].sort(
+  const benchPlayers = useMemo(
+    () => benchIds.map((id) => byId.get(id)).filter((p): p is Player => Boolean(p)),
+    [benchIds, byId],
+  );
+
+  const startersByPos = useMemo(() => {
+    const grouped: Record<Position, Player[]> = { GK: [], DEF: [], MID: [], FWD: [] };
+    startersPlayers.forEach((p) => grouped[p.position].push(p));
+    return grouped;
+  }, [startersPlayers]);
+
+  const startersValid = poolComplete && validateStarters(starters, formation, byId) === null;
+
+  const isWildcardActive = activeChip === "wildcard" && activeChipGw === gw;
+  const isTripleCaptainActive = activeChip === "tripleCaptain" && activeChipGw === gw;
+  const isBenchBoostActive = activeChip === "benchBoost" && activeChipGw === gw;
+
+  const captainMultiplier = isTripleCaptainActive ? 3 : 2;
+
+  const captainPlayed = didPlay(captain ? points[captain] : undefined);
+  const vicePlayed = didPlay(viceCaptain ? points[viceCaptain] : undefined);
+  const effectiveCaptainId = captainPlayed ? captain : vicePlayed ? viceCaptain : null;
+
+  const gwPointsBase = startersPlayers.reduce((t, p) => t + (points[p.id]?.gw ?? 0), 0);
+  const captainBonus = effectiveCaptainId
+    ? (points[effectiveCaptainId]?.gw ?? 0) * (captainMultiplier - 1)
+    : 0;
+  const benchBonus = isBenchBoostActive
+    ? benchPlayers.reduce((t, p) => t + (points[p.id]?.gw ?? 0), 0)
+    : 0;
+
+  const gwPoints = gwPointsBase + captainBonus + benchBonus;
+  const totalPoints = startersPlayers.reduce((t, p) => t + (points[p.id]?.total ?? 0), 0);
+
+  const ranked = [...startersPlayers].sort(
     (a, b) => (points[b.id]?.gw ?? 0) - (points[a.id]?.gw ?? 0),
   );
 
   const highest = ranked[0];
   const lowest = ranked.length > 1 ? ranked[ranked.length - 1] : undefined;
 
-  const status = getTeamStatus(totalPoints, gw, filled === SQUAD_SIZE);
+  const status = getTeamStatus(totalPoints, gw, startersValid);
 
   const savedIds = new Set(Object.values(squad?.slots || {}));
 
@@ -213,12 +338,17 @@ export default function SquadPage() {
     : 0;
 
   const usedBefore = squad && squad.transfersGw === gw ? squad.transfersUsed : 0;
-  const transfersUsed = usedBefore + pendingTransfers;
+  const transfersUsed = isWildcardActive ? 0 : usedBefore + pendingTransfers;
 
   const dirty =
     !!squad &&
     (Object.keys(slots).length !== Object.keys(squad.slots || {}).length ||
-      Object.entries(slots).some(([k, id]) => squad.slots?.[k] !== id));
+      Object.entries(slots).some(([k, id]) => squad.slots?.[k] !== id) ||
+      formation !== squad.formation ||
+      captain !== squad.captain ||
+      viceCaptain !== squad.viceCaptain ||
+      JSON.stringify(starters) !== JSON.stringify(squad.starters || []) ||
+      activeChip !== (squad.activeChip ?? null));
 
   /* ---------- actions ---------- */
 
@@ -246,15 +376,29 @@ export default function SquadPage() {
         teamName: team,
         coachName: coach,
         slots: {},
+        formation: DEFAULT_FORMATION,
+        starters: [],
+        captain: null,
+        viceCaptain: null,
         complete: false,
         transfersUsed: 0,
         transfersGw: 0,
+        chips: EMPTY_CHIPS,
+        activeChip: null,
+        activeChipGw: null,
       };
 
       await setDoc(doc(db, "squads", uid), { ...initial, createdAt: serverTimestamp() });
 
       setSquad(initial);
       setSlots({});
+      setFormation(DEFAULT_FORMATION);
+      setStarters([]);
+      setCaptain(null);
+      setViceCaptain(null);
+      setChips(EMPTY_CHIPS);
+      setActiveChip(null);
+      setActiveChipGw(null);
     } catch (error) {
       console.error("Create squad error:", error);
       setFormError("We couldn't save your team. Please try again.");
@@ -272,9 +416,16 @@ export default function SquadPage() {
       const next: SquadDoc = {
         ...squad,
         slots,
-        complete: filled === SQUAD_SIZE,
+        formation,
+        starters,
+        captain,
+        viceCaptain,
+        complete: startersValid,
         transfersUsed,
         transfersGw: gw,
+        chips,
+        activeChip,
+        activeChipGw,
       };
 
       await setDoc(doc(db, "squads", uid), { ...next, updatedAt: serverTimestamp() });
@@ -290,7 +441,7 @@ export default function SquadPage() {
   };
 
   const autoSlot = (player: Player) =>
-    ALL_SLOTS.find((s) => s.pos === player.position && !slots[s.key])?.key ?? null;
+    SQUAD_SLOTS.find((s) => s.pos === player.position && !slots[s.key])?.key ?? null;
 
   const addPlayer = (player: Player, slotKey: string | null) => {
     const key = slotKey ?? autoSlot(player);
@@ -318,6 +469,42 @@ export default function SquadPage() {
       delete next[slotKey];
       return next;
     });
+  };
+
+  const startSwap = (benchPlayerId: string) => {
+    setSwapping((current) => (current === benchPlayerId ? null : benchPlayerId));
+  };
+
+  const completeSwap = (starterId: string) => {
+    if (!swapping) return;
+
+    const benchPlayer = byId.get(swapping);
+    const starterPlayer = byId.get(starterId);
+
+    if (!benchPlayer || !starterPlayer || benchPlayer.position !== starterPlayer.position) {
+      setNotice("You can only swap players in the same position.");
+      setSwapping(null);
+      return;
+    }
+
+    setStarters((current) => current.map((id) => (id === starterId ? benchPlayer.id : id)));
+    setSwapping(null);
+  };
+
+  const activateChip = (key: ChipKey) => {
+    if (chips[key]?.used) return;
+
+    if (activeChip && activeChipGw === gw && activeChip !== key) {
+      setNotice("Only one chip can be active per gameweek.");
+      setConfirmChip(null);
+      return;
+    }
+
+    setChips((current) => ({ ...current, [key]: { used: true, usedGw: gw } }));
+    setActiveChip(key);
+    setActiveChipGw(gw);
+    setConfirmChip(null);
+    setNotice(`${CHIP_LABELS[key]} activated for gameweek ${gw}.`);
   };
 
   /* ---------- screens ---------- */
@@ -418,50 +605,103 @@ export default function SquadPage() {
 
   /* ----- step 2: the squad ----- */
 
-  const renderSlot = (slotKey: string, position: Position, compact = false) => {
-    const player = byId.get(slots[slotKey]);
-
-    if (!player) {
-      return (
-        <button
-          key={slotKey}
-          type="button"
-          onClick={() => setPicker({ slot: slotKey })}
-          aria-label={`Add ${position}`}
-          className={`group flex flex-col items-center gap-1.5 rounded-lg ${focusRing}`}
-        >
-          <span
-            className={`flex items-center justify-center rounded-full border border-[#c9a75a]/45 bg-gradient-to-b from-[#c9a75a]/[0.16] to-[#c9a75a]/[0.03] text-xl text-[#e2c778] transition-colors group-hover:border-[#c9a75a] ${
-              compact ? "h-11 w-11" : "h-14 w-14"
-            }`}
-          >
-            +
-          </span>
-          <span className="text-[11px] font-semibold text-[#f2ebdb]/60">{position}</span>
-        </button>
-      );
-    }
+  const renderStarterTile = (player: Player) => {
+    const isCaptain = player.id === captain;
+    const isVice = player.id === viceCaptain;
+    const swapTarget = !!swapping && byId.get(swapping)?.position === player.position;
 
     return (
       <button
-        key={slotKey}
+        key={player.id}
         type="button"
-        onClick={() => setDetail({ player, slot: slotKey })}
+        onClick={() => {
+          if (swapping) {
+            completeSwap(player.id);
+            return;
+          }
+          setDetail({ player, slot: null });
+        }}
         aria-label={`${player.name}, ${player.teamName}`}
-        className={`flex w-[76px] flex-col items-center rounded-lg ${focusRing}`}
+        className={`relative flex w-[76px] flex-col items-center rounded-lg transition-transform ${focusRing} ${
+          swapTarget ? "ring-2 ring-[#c9a75a] ring-offset-2 ring-offset-[#0f150e]" : ""
+        }`}
       >
-        <Shirt team={player.teamName} number={player.number} className={compact ? "h-11 w-11" : "h-14 w-14"} />
+        {(isCaptain || isVice) && (
+          <span
+            className={`absolute -top-1 right-1 z-10 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
+              isCaptain
+                ? "bg-[#e2c778] text-[#17130a]"
+                : "border border-[#e2c778]/70 bg-[#0d0c0a] text-[#e2c778]"
+            }`}
+          >
+            {isCaptain ? "C" : "V"}
+          </span>
+        )}
+
+        <Shirt team={player.teamName} number={player.number} className="h-14 w-14" />
 
         <span className="mt-1 w-full truncate rounded bg-black/60 px-1.5 py-0.5 text-center text-[11px] font-semibold">
           {player.name.split(" ").slice(-1)[0]}
         </span>
 
         <span className="mt-0.5 w-full rounded-b bg-[#c9a75a] px-1.5 text-center text-[11px] font-semibold tabular-nums text-[#17130a]">
-          {points[player.id]?.gw ?? 0} pts
+          {(points[player.id]?.gw ?? 0) *
+            (player.id === effectiveCaptainId ? captainMultiplier : 1)}{" "}
+          pts
         </span>
       </button>
     );
   };
+
+  const renderBenchTile = (player: Player) => {
+    const isSwapping = swapping === player.id;
+
+    return (
+      <button
+        key={player.id}
+        type="button"
+        onClick={() => startSwap(player.id)}
+        aria-label={`Swap in ${player.name}`}
+        className={`relative flex w-[62px] flex-col items-center rounded-lg opacity-75 transition-opacity hover:opacity-100 ${focusRing} ${
+          isSwapping ? "opacity-100 ring-2 ring-[#c9a75a] ring-offset-2 ring-offset-black/30" : ""
+        }`}
+      >
+        <Shirt team={player.teamName} number={player.number} className="h-11 w-11" />
+
+        <span className="mt-1 w-full truncate rounded bg-black/60 px-1 py-0.5 text-center text-[10px] font-semibold">
+          {player.name.split(" ").slice(-1)[0]}
+        </span>
+
+        {isBenchBoostActive && (
+          <span className="mt-0.5 w-full rounded-b bg-[#c9a75a]/70 px-1 text-center text-[10px] font-semibold tabular-nums text-[#17130a]">
+            {points[player.id]?.gw ?? 0} pts
+          </span>
+        )}
+      </button>
+    );
+  };
+
+  const emptySquadSlot = (slotKey: string, position: Position) => (
+    <button
+      key={slotKey}
+      type="button"
+      onClick={() => setPicker({ slot: slotKey })}
+      aria-label={`Add ${position}`}
+      className={`group flex flex-col items-center gap-1.5 rounded-lg ${focusRing}`}
+    >
+      <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c9a75a]/45 bg-gradient-to-b from-[#c9a75a]/[0.16] to-[#c9a75a]/[0.03] text-xl text-[#e2c778] transition-colors group-hover:border-[#c9a75a]">
+        +
+      </span>
+      <span className="text-[11px] font-semibold text-[#f2ebdb]/60">{position}</span>
+    </button>
+  );
+
+  const rows = [
+    { pos: "FWD" as Position, count: FORMATIONS[formation].FWD },
+    { pos: "MID" as Position, count: FORMATIONS[formation].MID },
+    { pos: "DEF" as Position, count: FORMATIONS[formation].DEF },
+    { pos: "GK" as Position, count: 1 },
+  ];
 
   return (
     <main className={shell} style={shellStyle}>
@@ -496,9 +736,63 @@ export default function SquadPage() {
           <dl className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
             <TopStat label="Budget" value={money(budgetLeft)} warn={budgetLeft < 0} />
             <TopStat label="Points" value={String(totalPoints)} />
-            <TopStat label="Transfers" value={`${transfersUsed} used`} hint={`${FREE_TRANSFERS} free per gameweek`} />
+            <TopStat
+              label="Transfers"
+              value={isWildcardActive ? "Unlimited" : `${transfersUsed} used`}
+              hint={isWildcardActive ? "Wildcard active this gameweek" : `${FREE_TRANSFERS} free per gameweek`}
+            />
             <TopStat label="Team status" value={status} />
           </dl>
+
+          {/* FORMATION */}
+
+          <div className="-mx-4 mt-3 flex gap-1.5 overflow-x-auto px-4 pb-1">
+            {FORMATION_LIST.map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setFormation(f)}
+                aria-pressed={formation === f}
+                className={`shrink-0 rounded-full border px-3 py-1 text-xs font-semibold ${focusRing} ${
+                  formation === f
+                    ? "border-[#c9a75a] bg-[#c9a75a]/[0.16] text-[#e2c778]"
+                    : "border-white/[0.08] text-[#f2ebdb]/55"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+
+          {/* CHIPS */}
+
+          <div className="mt-2.5 flex gap-1.5">
+            {(Object.keys(CHIP_LABELS) as ChipKey[]).map((key) => {
+              const state = chips[key];
+              const isActiveNow = activeChip === key && activeChipGw === gw;
+
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  disabled={state?.used && !isActiveNow}
+                  onClick={() => setConfirmChip(key)}
+                  className={`flex-1 rounded-lg border px-2 py-1.5 text-[11px] font-semibold transition-colors ${focusRing} ${
+                    isActiveNow
+                      ? "border-[#c9a75a] bg-[#c9a75a] text-[#17130a]"
+                      : state?.used
+                        ? "border-white/[0.06] text-[#f2ebdb]/30"
+                        : "border-white/[0.1] text-[#f2ebdb]/70 hover:border-[#c9a75a]/50"
+                  }`}
+                >
+                  {CHIP_LABELS[key]}
+                  <span className="block text-[10px] font-normal opacity-70">
+                    {isActiveNow ? "Active this GW" : state?.used ? "Used" : "Tap to use"}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </header>
 
@@ -513,10 +807,67 @@ export default function SquadPage() {
             <p className="mt-1 text-[52px] font-semibold leading-none tabular-nums text-[#e2c778]" style={displayFont}>
               {gwPoints}
             </p>
+            {(isTripleCaptainActive || isBenchBoostActive) && (
+              <p className="mt-1 text-[11px] font-semibold text-[#e2c778]">
+                {isTripleCaptainActive ? "Triple Captain active" : "Bench Boost active"}
+              </p>
+            )}
           </div>
 
           <ExtremeCard title="Highest" player={highest} pts={highest ? points[highest.id]?.gw ?? 0 : 0} onOpen={(p) => setDetail({ player: p, slot: null })} />
         </section>
+
+        {/* CAPTAINCY */}
+
+        <section className="mt-3 grid grid-cols-2 gap-2">
+          <label className="rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2">
+            <span className="text-xs text-[#f2ebdb]/50">Captain</span>
+            <select
+              value={captain ?? ""}
+              onChange={(e) => {
+                const id = e.target.value || null;
+                setCaptain(id);
+                if (id && id === viceCaptain) setViceCaptain(null);
+              }}
+              disabled={startersPlayers.length === 0}
+              className={`mt-0.5 block w-full bg-transparent text-sm font-semibold ${focusRing}`}
+            >
+              <option value="">Choose a starter</option>
+              {startersPlayers.map((p) => (
+                <option key={p.id} value={p.id} disabled={p.id === viceCaptain}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2">
+            <span className="text-xs text-[#f2ebdb]/50">Vice-captain</span>
+            <select
+              value={viceCaptain ?? ""}
+              onChange={(e) => {
+                const id = e.target.value || null;
+                setViceCaptain(id);
+                if (id && id === captain) setCaptain(null);
+              }}
+              disabled={startersPlayers.length === 0}
+              className={`mt-0.5 block w-full bg-transparent text-sm font-semibold ${focusRing}`}
+            >
+              <option value="">Choose a starter</option>
+              {startersPlayers.map((p) => (
+                <option key={p.id} value={p.id} disabled={p.id === captain}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </section>
+
+        {swapping && (
+          <p className="mt-3 rounded-lg border border-[#c9a75a]/30 bg-[#c9a75a]/[0.08] px-3 py-2 text-center text-xs text-[#e2c778]">
+            Tap a starter in the same position to swap with {byId.get(swapping)?.name}, or tap them again to cancel.
+          </p>
+        )}
 
         {/* PITCH */}
 
@@ -539,25 +890,49 @@ export default function SquadPage() {
           </div>
 
           <div className="relative flex min-h-[520px] flex-col justify-between px-3 py-8">
-            {FORMATION.map((row) => (
-              <div key={row.key} className="mx-auto flex w-full max-w-[520px] items-start justify-evenly">
-                {Array.from({ length: row.count }, (_, i) => renderSlot(`${row.key}-${i}`, row.label))}
-              </div>
-            ))}
+            {rows.map((row) => {
+              const rowPlayers = startersByPos[row.pos];
+              const missing = row.count - rowPlayers.length;
+
+              return (
+                <div key={row.pos} className="mx-auto flex w-full max-w-[560px] items-start justify-evenly">
+                  {rowPlayers.map((p) => renderStarterTile(p))}
+                  {Array.from({ length: Math.max(missing, 0) }, (_, i) =>
+                    emptySquadSlot(`missing-${row.pos}-${i}`, row.pos),
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {/* BENCH */}
 
         <div className="mt-3 rounded-xl border border-white/[0.07] bg-black/30 px-3 pb-4 pt-3.5">
-          <p className="text-sm font-semibold">Bench</p>
+          <p className="text-sm font-semibold">
+            Bench{isBenchBoostActive ? " · counts this gameweek" : ""}
+          </p>
           <div className="mx-auto mt-3 flex max-w-[520px] items-start justify-between gap-1">
-            {BENCH_SLOTS.map((s) => renderSlot(s.key, s.pos, true))}
+            {benchPlayers.map((p) => renderBenchTile(p))}
+            {benchPlayers.length === 0 && poolComplete && startersValid && (
+              <p className="w-full py-2 text-center text-xs text-[#f2ebdb]/40">No reserves picked.</p>
+            )}
           </div>
         </div>
 
+        {/* MISSING SQUAD SLOTS (still building the 15-player pool) */}
+
+        {!poolComplete && (
+          <div className="mt-3 rounded-xl border border-white/[0.07] bg-black/30 px-3 pb-4 pt-3.5">
+            <p className="text-sm font-semibold">Complete your squad</p>
+            <div className="mx-auto mt-3 grid max-w-[520px] grid-cols-4 gap-2 sm:grid-cols-5">
+              {SQUAD_SLOTS.filter((s) => !slots[s.key]).map((s) => emptySquadSlot(s.key, s.pos))}
+            </div>
+          </div>
+        )}
+
         <p className="mt-3 text-center text-xs text-[#f2ebdb]/45">
-          {filled} of {SQUAD_SIZE} players picked. Max 3 from one club. Only starters score points.
+          {filled} of {SQUAD_SIZE} players picked. Max 3 from one club.
         </p>
       </div>
 
@@ -582,6 +957,43 @@ export default function SquadPage() {
       {notice && (
         <div role="status" className="fixed inset-x-4 bottom-20 z-50 mx-auto max-w-md rounded-xl border border-[#c9a75a]/30 bg-[#1c1911] px-4 py-3 text-center text-sm shadow-2xl">
           {notice}
+        </div>
+      )}
+
+      {/* CHIP CONFIRM */}
+
+      {confirmChip && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center px-4" role="dialog" aria-modal="true">
+          <button type="button" aria-label="Cancel" onClick={() => setConfirmChip(null)} className="absolute inset-0 bg-black/75" />
+
+          <div className="relative w-full max-w-sm rounded-2xl border border-[#c9a75a]/[0.2] bg-gradient-to-b from-[#1c1911] to-[#131110] p-6">
+            <h3 className="text-2xl font-semibold" style={displayFont}>
+              Use {CHIP_LABELS[confirmChip]}?
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-[#f2ebdb]/65">
+              {CHIP_DESCRIPTIONS[confirmChip]}
+            </p>
+            <p className="mt-3 text-xs text-[#f2ebdb]/45">
+              You can only use this chip once all season, and it can&apos;t be undone.
+            </p>
+
+            <div className="mt-6 flex gap-2">
+              <button
+                type="button"
+                onClick={() => activateChip(confirmChip)}
+                className={`flex-1 rounded-full bg-gradient-to-b from-[#dcbf74] to-[#b8964a] px-4 py-2.5 text-sm font-semibold text-[#17130a] ${focusRing}`}
+              >
+                Use it
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmChip(null)}
+                className={`rounded-full border border-white/[0.12] px-4 py-2.5 text-sm text-[#f2ebdb]/70 ${focusRing}`}
+              >
+                Not now
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -861,7 +1273,7 @@ function PlayerPicker({
 
           <ul className="space-y-2">
             {list.map((player) => {
-              const targetSlot = slot ?? ALL_SLOTS.find((s) => s.pos === player.position && !slots[s.key])?.key;
+              const targetSlot = slot ?? SQUAD_SLOTS.find((s) => s.pos === player.position && !slots[s.key])?.key;
               const blocked = targetSlot ? validatePick(player, targetSlot, slots, byId) : "No free slot.";
               const owned = Object.values(slots).includes(player.id);
 
