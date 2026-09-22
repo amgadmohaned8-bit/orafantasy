@@ -1,123 +1,105 @@
-import { NextResponse } from "next/server";
+// app/api/football/match-details/route.ts
+//
+// Fix applied: live-football-api.com returns "lineups": {} (an empty
+// object, not null) when the lineup hasn't been published yet. We now
+// only treat lineups as available when it actually has a home+away
+// starting XI, otherwise we return null (so the frontend shows the
+// "not out yet" message instead of crashing).
 
-const LEAGUE_ID = "8k1xcsyvxapl4jlsluh3eomre";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  try {
-    const apiKey = process.env.LIVE_FOOTBALL_API_KEY;
+const BASE_URL = "https://live-football-api.com/api/v1";
 
-    if (!apiKey) {
-      return NextResponse.json(
-        {
-          error: "LIVE_FOOTBALL_API_KEY is missing",
-        },
-        { status: 500 }
-      );
-    }
+export async function GET(req: NextRequest) {
+  const matchId = req.nextUrl.searchParams.get("match_id");
+  const lang = req.nextUrl.searchParams.get("lang") ?? "en";
 
-    const apiUrl =
-      `https://live-football-api.com/api/v1/league_fixtures` +
-      `?api_key=${encodeURIComponent(apiKey)}` +
-      `&league_id=${encodeURIComponent(LEAGUE_ID)}`;
-
-    const response = await fetch(apiUrl, {
-      cache: "no-store",
-    });
-
-    const text = await response.text();
-
-    console.log("FOOTBALL API STATUS:", response.status);
-    console.log("FOOTBALL API RESPONSE:", text.slice(0, 1000));
-
-    if (!response.ok) {
-      return NextResponse.json(
-        {
-          error: "Football API request failed",
-          status: response.status,
-          details: text.slice(0, 500),
-        },
-        { status: response.status }
-      );
-    }
-
-    let data: any;
-
-    try {
-      data = JSON.parse(text);
-    } catch {
-      return NextResponse.json(
-        {
-          error: "Football API returned invalid JSON",
-          details: text.slice(0, 500),
-        },
-        { status: 502 }
-      );
-    }
-
-    const weeks = Array.isArray(data?.data?.weeks)
-      ? data.data.weeks
-      : [];
-
-    const normalizedWeeks = weeks.map((week: any) => ({
-      week: Number(week?.week ?? 0),
-
-      matches: Array.isArray(week?.matches)
-        ? week.matches.map((match: any) => ({
-            id: String(match?.id ?? ""),
-
-            date: match?.date ?? "",
-            kickoff: match?.kickoff ?? "",
-
-            status: match?.status?.status ?? "",
-            displayStatus: match?.status?.display ?? "",
-            isLive: Boolean(match?.status?.is_live),
-
-            home: {
-              id: match?.home?.id
-                ? String(match.home.id)
-                : undefined,
-
-              name: match?.home?.name ?? "Home",
-
-              logo: match?.home?.logo ?? "",
-
-              score: Number(match?.home?.score ?? 0),
-            },
-
-            away: {
-              id: match?.away?.id
-                ? String(match.away.id)
-                : undefined,
-
-              name: match?.away?.name ?? "Away",
-
-              logo: match?.away?.logo ?? "",
-
-              score: Number(match?.away?.score ?? 0),
-            },
-          }))
-        : [],
-    }));
-
-    return NextResponse.json({
-      success: true,
-
-      season: data?.data?.season ?? "",
-
-      league: {
-        id: data?.data?.league_id ?? LEAGUE_ID,
-        name: data?.data?.league_name ?? "Egyptian Premier League",
-      },
-
-      weeks: normalizedWeeks,
-    });
-  } catch (error) {
-    console.error("Football route error:", error);
-
+  if (!matchId) {
     return NextResponse.json(
-      {
-        error: "Something went wrong",
-      },
+      { success: false, message: "match_id is required" },
+      { status: 400 }
+    );
+  }
+
+  const apiKey = process.env.LIVE_FOOTBALL_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json(
+      { success: false, message: "LIVE_FOOTBALL_API_KEY is not configured" },
+      { status: 500 }
+    );
+  }
+
+  const detailsUrl = `${BASE_URL}/live_match_details?api_key=${apiKey}&match_id=${matchId}&lang=${lang}`;
+  const lineupsUrl = `${BASE_URL}/lineups?api_key=${apiKey}&match_id=${matchId}&lang=${lang}`;
+
+  try {
+    const [detailsRes, lineupsRes] = await Promise.all([
+      fetch(detailsUrl, { next: { revalidate: 15 } }),
+      fetch(lineupsUrl, { next: { revalidate: 60 } }),
+    ]);
+
+    const detailsJson = await detailsRes.json();
+    const lineupsJson = lineupsRes.ok ? await lineupsRes.json() : null;
+
+    if (!detailsJson.success) {
+      return NextResponse.json(
+        { success: false, message: detailsJson.message ?? "Failed to fetch match details" },
+        { status: detailsRes.status }
+      );
+    }
+
+    const details = detailsJson.data;
+    const lineupsData = lineupsJson?.success ? lineupsJson.data : null;
+
+    // The provider returns {} (truthy, but empty) before the lineup is
+    // announced. Only treat it as real when both sides actually have a
+    // starting XI.
+    const hasLineups = Boolean(
+      lineupsData &&
+        Array.isArray(lineupsData.home?.starting) &&
+        lineupsData.home.starting.length > 0 &&
+        Array.isArray(lineupsData.away?.starting) &&
+        lineupsData.away.starting.length > 0
+    );
+
+    const response = {
+      success: true,
+      match_id: matchId,
+      header: details.header,
+      minute: details.header?.status?.minute ?? null,
+      is_live: details.header?.status?.is_live ?? false,
+
+      events: (details.events ?? []).map((e: any) => ({
+        minute: e.time,
+        type: e.type,
+        side: e.side,
+        player: e.detail?.player ?? null,
+        assist: e.detail?.assist ?? null,
+        score_after: e.detail?.score ?? null,
+      })),
+
+      stats: details.stats ?? [],
+      venue: details.venue ?? null,
+      referee: details.referee ?? null,
+      tv_channels: details.tv_channels ?? [],
+      player_of_the_match: details.player_of_the_match ?? null,
+      csb_url: details.csb_url ?? null,
+
+      lineups: hasLineups
+        ? {
+            home: lineupsData.home,
+            away: lineupsData.away,
+            formation: lineupsData.formation ?? { home: null, away: null },
+            is_projected: Boolean(lineupsData.is_projected),
+          }
+        : null,
+    };
+
+    return NextResponse.json(response);
+  } catch (err) {
+    console.error("match-details route error:", err);
+    return NextResponse.json(
+      { success: false, message: "Unexpected error fetching match details" },
       { status: 500 }
     );
   }
