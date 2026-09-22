@@ -1,11 +1,16 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
+import {
+  useEffect,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from "react";
 import { useRouter } from "next/navigation";
 import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../src/firebase";
@@ -39,6 +44,16 @@ const players = [
 
 export default function Home() {
   const router = useRouter();
+  useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      router.replace("/dashboard");
+    }
+  });
+
+  return () => unsubscribe();
+}, [router]);
+
 
   const [mode, setMode] = useState<Mode>("register");
   const [showPassword, setShowPassword] = useState(false);
