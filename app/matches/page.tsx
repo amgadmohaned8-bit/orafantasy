@@ -165,7 +165,12 @@ function MatchesContent({ fixtures }: { fixtures: Fixtures }) {
 
                 <div className="space-y-2.5">
                   {day.items.map((match) => (
-                    <MatchCard key={match.id} match={match} showMeta={false} />
+                    <MatchCard
+                      key={match.id}
+                      match={match}
+                      showMeta={false}
+                      href={`/matches/${match.id}`}
+                    />
                   ))}
                 </div>
               </div>
