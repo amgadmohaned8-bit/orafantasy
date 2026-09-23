@@ -6,14 +6,14 @@ import AppShell, {
   Cartouche,
   displayFont,
   focusRing,
-} from "@/components/AppShell";
+} from "@/src/components/AppShell";
 import {
   MatchesLoading,
   MatchesError,
   StateMessage,
   TeamBadge,
-} from "@/components/MatchCard";
-import { useFixtures } from "@/lib/useFixtures";
+} from "@/src/components/MatchCard";
+import { useFixtures } from "@/src/lib/useFixtures";
 import {
   groupByGameweek,
   getCurrentGameweek,
@@ -23,7 +23,7 @@ import {
   formatLongDate,
   type Match,
   type MatchState,
-} from "@/lib/fixtures";
+} from "@/src/lib/fixtures";
 
 type Filter = "all" | "live" | "upcoming" | "finished";
 
@@ -54,6 +54,7 @@ export default function MatchesPage() {
     [matches],
   );
 
+  // Gameweek tab: defaults to current once loaded.
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function MatchesPage() {
     currentGameweek ??
     gameweeks[gameweeks.length - 1];
 
+  // Status filter: All / Live / Fixtures / Results.
   const [filter, setFilter] = useState<Filter>("all");
 
   const weekMatches = useMemo(() => {
@@ -186,6 +188,11 @@ export default function MatchesPage() {
   );
 }
 
+/* =========================================================
+   FILTER TABS
+   All / Live / Fixtures / Results.
+   ========================================================= */
+
 function FilterTabs({
   active,
   onSelect,
@@ -222,6 +229,11 @@ function FilterTabs({
     </div>
   );
 }
+
+/* =========================================================
+   GAMEWEEK TABS
+   Horizontal scrollable row of gameweek numbers, 1 through N.
+   ========================================================= */
 
 function GameweekTabs({
   gameweeks,
@@ -268,6 +280,12 @@ function GameweekTabs({
     </div>
   );
 }
+
+/* =========================================================
+   MATCH ROW
+   Bigger, PL-app style card: crest + name on each side,
+   score/kickoff centered, live pulse when in play.
+   ========================================================= */
 
 function MatchRow({ match }: { match: Match }) {
   const state = getMatchState(match);
@@ -359,6 +377,11 @@ function TeamSide({
     </div>
   );
 }
+
+/* =========================================================
+   DATE GROUPING
+   "Today" / "Tomorrow" / full date, chronological.
+   ========================================================= */
 
 function groupByDate(
   matches: Match[],

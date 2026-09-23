@@ -14,7 +14,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../src/firebase";
-import { loginWithRememberMe, setAuthPersistence } from "@/lib/authPersistence";
+import { loginWithRememberMe, setAuthPersistence } from "@/src/lib/authPersistence";
 
 type Mode = "register" | "login";
 
