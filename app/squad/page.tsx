@@ -289,10 +289,20 @@ export default function SquadPage() {
     [slots, starters],
   );
 
-  const benchPlayers = useMemo(
-    () => benchIds.map((id) => byId.get(id)).filter((p): p is Player => Boolean(p)),
-    [benchIds, byId],
-  );
+  const benchPlayers = useMemo(() => {
+  const available = benchIds
+    .map((id) => byId.get(id))
+    .filter((p): p is Player => Boolean(p));
+
+  const gk = available.find((p) => p.position === "GK");
+  const outfield = available.filter((p) => p.position !== "GK");
+
+  return [
+    ...(gk ? [gk] : []),
+    ...outfield.slice(0, 3),
+  ];
+}, [benchIds, byId]);
+
 
   const startersByPos = useMemo(() => {
     const grouped: Record<Position, Player[]> = { GK: [], DEF: [], MID: [], FWD: [] };
@@ -796,8 +806,8 @@ export default function SquadPage() {
           </div>
         </div>
       </header>
-
-      <div className="mx-auto max-w-[980px] px-4 pb-24 pt-6">
+      <div
+       className="mx-auto max-w-[980px] px-4 pb-24 pt-6">
         {/* GAMEWEEK POINTS: lowest, total, highest */}
 
         <section aria-label={`Gameweek ${gw} points`} className="grid grid-cols-3 gap-2 sm:gap-3">
@@ -907,35 +917,48 @@ export default function SquadPage() {
           </div>
         </div>
 
-        {/* BENCH — always 4 reserves: 1 GK + 3 outfield */}
+       {/* BENCH */}
 
-        <div className="mt-3 rounded-xl border border-white/[0.07] bg-black/30 px-3 pb-4 pt-3.5">
-          <p className="text-sm font-bold">
-            Bench{isBenchBoostActive ? " · counts this gameweek" : ""}
-          </p>
-          <div className="mx-auto mt-3 flex max-w-[520px] items-start justify-between gap-1">
-            {benchPlayers.map((p) => renderBenchTile(p))}
-            {benchPlayers.length === 0 && poolComplete && startersValid && (
-              <p className="w-full py-2 text-center text-xs font-medium text-ora-papyrus/40">No reserves picked.</p>
-            )}
-          </div>
-        </div>
+<div className="mt-3 rounded-xl border border-white/[0.07] bg-black/30 px-3 pb-4 pt-3.5">
+  <p className="text-sm font-bold">
+    Bench{isBenchBoostActive ? " · counts this gameweek" : ""}
+  </p>
 
-        {/* MISSING SQUAD SLOTS (still building the 15-player pool) */}
+  <div className="mx-auto mt-3 grid max-w-[520px] grid-cols-4 gap-2">
+    {Array.from({ length: 4 }, (_, index) => {
+      const player = benchPlayers[index];
 
-        {!poolComplete && (
-          <div className="mt-3 rounded-xl border border-white/[0.07] bg-black/30 px-3 pb-4 pt-3.5">
-            <p className="text-sm font-bold">Complete your squad</p>
-            <div className="mx-auto mt-3 grid max-w-[520px] grid-cols-4 gap-2 sm:grid-cols-5">
-              {SQUAD_SLOTS.filter((s) => !slots[s.key]).map((s) => emptySquadSlot(s.key, s.pos))}
-            </div>
-          </div>
-        )}
+      if (player) {
+        return renderBenchTile(player);
+      }
 
-        <p className="mt-3 text-center text-xs font-medium text-ora-papyrus/45">
-          {filled} of {SQUAD_SIZE} players picked. Max 3 from one club.
-        </p>
-      </div>
+      return (
+        <button
+          key={`empty-bench-${index}`}
+          type="button"
+          onClick={() => setPicker({ slot: null })}
+          aria-label={
+            index === 0
+              ? "Choose bench goalkeeper"
+              : "Choose bench substitute"
+          }
+          className={`flex w-[62px] flex-col items-center rounded-lg ${focusRing}`}
+        >
+          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-ora-gold/45 bg-ora-gold/[0.08] text-xl font-bold text-ora-gold-light">
+            +
+          </span>
+
+          <span className="mt-1 w-full truncate text-center text-[10px] font-bold text-ora-papyrus/50">
+            {index === 0 ? "GK" : "SUB"}
+          </span>
+        </button>
+      );
+    })}
+  </div>
+</div>
+</div>
+
+
 
       {/* SAVE BAR */}
 
