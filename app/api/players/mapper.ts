@@ -1,5 +1,5 @@
-import { computePrice } from "@/src/fantasy/pricing";
-import type { Player, Position } from "@/src/fantasy/types";
+import { computePrice } from "@/fantasy/pricing";
+import type { Player, Position } from "@/fantasy/types";
 
 export interface RawTeam {
   id: string;

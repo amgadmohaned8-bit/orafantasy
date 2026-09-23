@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
-import { calcPoints, type MatchStats } from "@/src/fantasy/scoring";
-import type { Position, PlayerPoints } from "@/src/fantasy/types";
+import { calcPoints, type MatchStats } from "@/fantasy/scoring";
+import type { Position, PlayerPoints } from "@/fantasy/types";
 const BASE = "https://v3.football.api-sports.io";
 const KEY = process.env.FOOTBALL_API_KEY ?? "";
 const LEAGUE = process.env.FOOTBALL_LEAGUE_ID ?? "233";
