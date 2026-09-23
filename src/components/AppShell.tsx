@@ -18,25 +18,28 @@ import { auth, db } from "../firebase";
 
 /* =========================================================
    FONTS
-   Cormorant Garamond: carved-inscription feel for headings.
-   Manrope: quiet, readable UI text.
+   Cinzel: carved, monumental feel for headings — pulled up to
+   its heaviest weight so it reads bold at every size.
+   Manrope: quiet, readable UI text, also pulled to bold weights.
    ========================================================= */
 
 const display = Cinzel({
   subsets: ["latin"],
-  weight: ["600", "700", "900"],
+  weight: ["700", "800", "900"],
   variable: "--font-display",
   display: "swap",
 });
 
 const sans = Manrope({
   subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
   variable: "--font-sans",
   display: "swap",
 });
 
 export const displayFont = {
   fontFamily: "var(--font-display), Georgia, serif",
+  fontWeight: 800,
 } as const;
 
 export const focusRing =
@@ -91,7 +94,8 @@ type IconName =
   | "leagues"
   | "players"
   | "logout"
-  | "plus";
+  | "plus"
+  | "info";
 
 const NAV: { label: string; href: string; icon: IconName }[] = [
   { label: "Home", href: "/dashboard", icon: "home" },
@@ -125,8 +129,6 @@ export default function AppShell({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log("USER:", user);
-
       if (!user) {
         cachedProfile = null;
         router.replace("/");
@@ -221,7 +223,9 @@ export default function AppShell({
       >
         <div className="text-center">
           <div className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-ora-gold/20 border-t-ora-gold motion-reduce:animate-none" />
-          <p className="mt-5 text-sm text-ora-papyrus/60">Loading Ora</p>
+          <p className="mt-5 text-sm font-semibold text-ora-papyrus/60">
+            Loading Ora
+          </p>
         </div>
       </main>
     );
@@ -240,18 +244,14 @@ export default function AppShell({
         className={`${display.variable} ${sans.variable} relative isolate min-h-dvh bg-ora-night text-ora-papyrus lg:flex`}
         style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
       >
-        {/* soft lapis glow behind everything */}
+        {/* stadium-light glow behind everything */}
         <div
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(900px 520px at 12% -10%, rgba(74,63,160,0.30), transparent 60%), radial-gradient(700px 420px at 100% 0%, rgba(214,179,90,0.07), transparent 65%)",
-          }}
+          className="ora-glow pointer-events-none fixed inset-0 -z-10"
         />
 
         {/* SIDEBAR */}
-        <aside className="sticky top-0 hidden h-dvh w-[220px] shrink-0 flex-col border-r border-ora-gold/10 bg-ora-side px-4 py-5 lg:flex">
+        <aside className="sticky top-0 hidden h-dvh w-[224px] shrink-0 flex-col border-r border-ora-gold/10 bg-ora-side px-4 py-5 lg:flex">
           <Link
             href="/dashboard"
             className={`flex items-center gap-3 rounded-lg px-1 py-1 ${focusRing}`}
@@ -260,17 +260,17 @@ export default function AppShell({
 
             <span>
               <span
-                className="block text-[26px] font-black leading-none tracking-wide"
+                className="block text-[27px] font-black leading-none tracking-wide"
                 style={displayFont}
               >
                 Ora
               </span>
 
-              <span className="mt-1 block text-xs text-ora-gold">Fantasy</span>
+              <span className="ora-eyebrow mt-1 block">Fantasy</span>
             </span>
           </Link>
 
-          <div className="ora-nile-band mt-5 opacity-80" aria-hidden="true" />
+          <div className="ora-nile-band mt-5 opacity-90" aria-hidden="true" />
 
           <nav className="mt-5 flex flex-col gap-1" aria-label="Main">
             {NAV.map((item) => {
@@ -281,9 +281,9 @@ export default function AppShell({
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${focusRing} ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-bold transition-colors ${focusRing} ${
                     active
-                      ? "bg-ora-gold/10 text-ora-gold-light"
+                      ? "bg-gradient-to-r from-ora-gold/20 to-transparent text-ora-gold-light"
                       : "text-ora-papyrus/60 hover:bg-white/5 hover:text-ora-papyrus"
                   }`}
                 >
@@ -293,6 +293,13 @@ export default function AppShell({
               );
             })}
           </nav>
+
+          <div className="mt-auto rounded-xl border border-ora-nile/20 bg-ora-nile/[0.06] px-3 py-3">
+            <p className="ora-eyebrow text-ora-nile">Season status</p>
+            <p className="mt-1 text-xs font-semibold text-ora-papyrus/70">
+              Egyptian Premier League, live scoring
+            </p>
+          </div>
         </aside>
 
         {/* CONTENT */}
@@ -315,15 +322,16 @@ export default function AppShell({
               </div>
 
               <div className="hidden min-w-0 lg:block">
+                <p className="ora-eyebrow">Ora Fantasy</p>
                 <h2
-                  className="truncate text-[24px] font-semibold leading-none"
+                  className="truncate text-[26px] font-black leading-tight"
                   style={displayFont}
                 >
                   {title}
                 </h2>
 
                 {subtitle && (
-                  <p className="mt-1.5 text-xs text-ora-papyrus/50">
+                  <p className="mt-1 text-xs font-semibold text-ora-papyrus/50">
                     {subtitle}
                   </p>
                 )}
@@ -331,7 +339,7 @@ export default function AppShell({
 
               <div className="flex items-center gap-2.5">
                 {liveNow && (
-                  <span className="flex items-center gap-2 rounded-full border border-ora-nile/30 bg-ora-nile/10 px-3 py-1.5 text-xs font-medium text-ora-nile">
+                  <span className="flex items-center gap-2 rounded-full border border-ora-nile/40 bg-ora-nile/10 px-3 py-1.5 text-xs font-bold text-ora-nile">
                     <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ora-nile motion-reduce:animate-none" />
                     Live now
                   </span>
@@ -341,11 +349,11 @@ export default function AppShell({
                   <Avatar name={profile.managerName} />
 
                   <div className="hidden min-w-0 max-w-[170px] sm:block">
-                    <p className="truncate text-sm font-semibold leading-tight">
+                    <p className="truncate text-sm font-bold leading-tight">
                       {profile.managerName}
                     </p>
 
-                    <p className="truncate text-xs leading-tight text-ora-papyrus/50">
+                    <p className="truncate text-xs font-medium leading-tight text-ora-papyrus/50">
                       {secondLine}
                     </p>
                   </div>
@@ -386,7 +394,7 @@ export default function AppShell({
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex min-w-0 flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-medium transition-colors ${focusRing} ${
+                  className={`flex min-w-0 flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold transition-colors ${focusRing} ${
                     active
                       ? "bg-ora-gold/10 text-ora-gold-light"
                       : "text-ora-papyrus/60 hover:text-ora-papyrus"
@@ -411,7 +419,7 @@ export default function AppShell({
 /* A cartouche: the oval ring the ancient Egyptians wrote royal names in. */
 export function Cartouche({ children }: { children: ReactNode }) {
   return (
-    <span className="relative inline-flex items-center rounded-full border border-ora-gold/60 bg-ora-gold/10 py-1 pl-4 pr-6 text-sm font-semibold text-ora-gold-light">
+    <span className="relative inline-flex items-center rounded-full border border-ora-gold/60 bg-ora-gold/10 py-1 pl-4 pr-6 text-sm font-bold text-ora-gold-light">
       {children}
 
       <span
@@ -434,7 +442,7 @@ function Avatar({ name }: { name: string }) {
       .toUpperCase() || "?";
 
   return (
-    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ora-gold/15 text-xs font-semibold text-ora-gold-light">
+    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-ora-gold-light to-ora-gold text-xs font-black text-ora-night">
       {initials}
     </div>
   );
@@ -490,6 +498,13 @@ const ICONS: Record<IconName, ReactNode> = {
     </>
   ),
   plus: <path d="M12 5v14M5 12h14" />,
+  info: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 16v-5" />
+      <path d="M12 8h.01" />
+    </>
+  ),
 };
 
 export function Icon({

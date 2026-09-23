@@ -37,21 +37,22 @@ import {
 
 const display = Cinzel({
   subsets: ["latin"],
-  weight: ["600", "700", "900"],
+  weight: ["700", "800", "900"],
   variable: "--font-display",
   display: "swap",
 });
 
 const sans = Manrope({
   subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const displayFont = { fontFamily: "var(--font-display), Georgia, serif" } as const;
+const displayFont = { fontFamily: "var(--font-display), Georgia, serif", fontWeight: 800 } as const;
 
 const focusRing =
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c9a75a]";
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ora-gold";
 
 const money = (value: number) => `${value.toFixed(1)}M`;
 
@@ -509,15 +510,15 @@ export default function SquadPage() {
 
   /* ---------- screens ---------- */
 
-  const shell = `${display.variable} ${sans.variable} min-h-dvh bg-[#0d0c0a] text-[#f2ebdb]`;
+  const shell = `${display.variable} ${sans.variable} min-h-dvh bg-ora-night text-ora-papyrus`;
   const shellStyle = { fontFamily: "var(--font-sans), system-ui, sans-serif" };
 
   if (loading) {
     return (
       <main className={`${shell} flex items-center justify-center`} style={shellStyle}>
         <div className="text-center">
-          <div className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-[#c9a75a]/20 border-t-[#c9a75a] motion-reduce:animate-none" />
-          <p className="mt-5 text-sm text-[#f2ebdb]/55">Loading your squad</p>
+          <div className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-ora-gold/20 border-t-ora-gold motion-reduce:animate-none" />
+          <p className="mt-5 text-sm font-semibold text-ora-papyrus/55">Loading your squad</p>
         </div>
       </main>
     );
@@ -526,7 +527,7 @@ export default function SquadPage() {
   if (loadError) {
     return (
       <main className={`${shell} flex items-center justify-center px-6`} style={shellStyle}>
-        <p className="max-w-sm text-center text-sm text-[#f2ebdb]/70">{loadError}</p>
+        <p className="max-w-sm text-center text-sm font-medium text-ora-papyrus/70">{loadError}</p>
       </main>
     );
   }
@@ -536,56 +537,56 @@ export default function SquadPage() {
   if (!squad) {
     return (
       <main
-        className={`${shell} flex items-center justify-center px-4 py-10`}
+        className={`${shell} ora-glow flex items-center justify-center px-4 py-10`}
         style={shellStyle}
       >
-        <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-[#c9a75a]/[0.16] bg-gradient-to-b from-[#1c1911] to-[#131110] p-7 sm:p-9">
+        <div className="ora-flash relative w-full max-w-md overflow-hidden rounded-2xl border border-ora-gold/[0.2] bg-gradient-to-b from-ora-raised to-ora-card p-7 sm:p-9">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#c9a75a]/70 to-transparent"
+            className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-ora-nile/70 to-transparent"
           />
 
           <Link
             href="/dashboard"
-            className={`text-sm text-[#f2ebdb]/55 hover:text-[#f2ebdb] ${focusRing}`}
+            className={`text-sm font-bold text-ora-papyrus/55 hover:text-ora-papyrus ${focusRing}`}
           >
             Back to dashboard
           </Link>
 
-          <h1 className="mt-5 text-[40px] font-semibold leading-[1.05]" style={displayFont}>
+          <h1 className="mt-5 text-[40px] font-black leading-[1.05]" style={displayFont}>
             Create your team
           </h1>
 
-          <p className="mt-3 text-[15px] leading-relaxed text-[#f2ebdb]/60">
+          <p className="mt-3 text-[15px] leading-relaxed text-ora-papyrus/60">
             Pick a name for your team and your coach. You can build your squad next.
           </p>
 
           <div className="mt-7 space-y-5">
             <label className="block">
-              <span className="text-sm font-medium">Choose your team name</span>
+              <span className="text-sm font-bold">Choose your team name</span>
               <input
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
                 maxLength={24}
                 placeholder="For example, Nile Kings"
-                className={`mt-2 w-full rounded-xl border border-white/[0.1] bg-black/30 px-4 py-3 text-[15px] placeholder:text-[#f2ebdb]/30 ${focusRing}`}
+                className={`mt-2 w-full rounded-xl border border-white/[0.1] bg-black/30 px-4 py-3 text-[15px] font-medium placeholder:text-ora-papyrus/30 ${focusRing}`}
               />
             </label>
 
             <label className="block">
-              <span className="text-sm font-medium">Choose your coach name</span>
+              <span className="text-sm font-bold">Choose your coach name</span>
               <input
                 value={coachName}
                 onChange={(e) => setCoachName(e.target.value)}
                 maxLength={24}
                 placeholder="For example, Coach Hassan"
-                className={`mt-2 w-full rounded-xl border border-white/[0.1] bg-black/30 px-4 py-3 text-[15px] placeholder:text-[#f2ebdb]/30 ${focusRing}`}
+                className={`mt-2 w-full rounded-xl border border-white/[0.1] bg-black/30 px-4 py-3 text-[15px] font-medium placeholder:text-ora-papyrus/30 ${focusRing}`}
               />
             </label>
           </div>
 
           {formError && (
-            <p role="alert" className="mt-4 text-sm text-red-300">
+            <p role="alert" className="mt-4 text-sm font-semibold text-ora-carnelian">
               {formError}
             </p>
           )}
@@ -594,7 +595,7 @@ export default function SquadPage() {
             type="button"
             onClick={createSquad}
             disabled={saving}
-            className={`mt-7 w-full rounded-full bg-gradient-to-b from-[#dcbf74] to-[#b8964a] px-6 py-3 text-sm font-semibold text-[#17130a] transition hover:from-[#e6cb85] hover:to-[#c4a155] disabled:opacity-50 ${focusRing}`}
+            className={`mt-7 w-full rounded-full bg-gradient-to-b from-ora-gold-light to-ora-gold px-6 py-3 text-sm font-bold text-ora-night transition hover:brightness-105 disabled:opacity-50 ${focusRing}`}
           >
             {saving ? "Saving" : "Continue to squad"}
           </button>
@@ -623,15 +624,15 @@ export default function SquadPage() {
         }}
         aria-label={`${player.name}, ${player.teamName}`}
         className={`relative flex w-[76px] flex-col items-center rounded-lg transition-transform ${focusRing} ${
-          swapTarget ? "ring-2 ring-[#c9a75a] ring-offset-2 ring-offset-[#0f150e]" : ""
+          swapTarget ? "ring-2 ring-ora-gold ring-offset-2 ring-offset-ora-pitch" : ""
         }`}
       >
         {(isCaptain || isVice) && (
           <span
-            className={`absolute -top-1 right-1 z-10 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
+            className={`absolute -top-1 right-1 z-10 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black ${
               isCaptain
-                ? "bg-[#e2c778] text-[#17130a]"
-                : "border border-[#e2c778]/70 bg-[#0d0c0a] text-[#e2c778]"
+                ? "bg-ora-gold-light text-ora-night"
+                : "border border-ora-gold-light/70 bg-ora-night text-ora-gold-light"
             }`}
           >
             {isCaptain ? "C" : "V"}
@@ -640,11 +641,11 @@ export default function SquadPage() {
 
         <Shirt team={player.teamName} number={player.number} className="h-14 w-14" />
 
-        <span className="mt-1 w-full truncate rounded bg-black/60 px-1.5 py-0.5 text-center text-[11px] font-semibold">
+        <span className="mt-1 w-full truncate rounded bg-black/60 px-1.5 py-0.5 text-center text-[11px] font-bold">
           {player.name.split(" ").slice(-1)[0]}
         </span>
 
-        <span className="mt-0.5 w-full rounded-b bg-[#c9a75a] px-1.5 text-center text-[11px] font-semibold tabular-nums text-[#17130a]">
+        <span className="mt-0.5 w-full rounded-b bg-ora-gold px-1.5 text-center text-[11px] font-bold tabular-nums text-ora-night">
           {(points[player.id]?.gw ?? 0) *
             (player.id === effectiveCaptainId ? captainMultiplier : 1)}{" "}
           pts
@@ -663,17 +664,17 @@ export default function SquadPage() {
         onClick={() => startSwap(player.id)}
         aria-label={`Swap in ${player.name}`}
         className={`relative flex w-[62px] flex-col items-center rounded-lg opacity-75 transition-opacity hover:opacity-100 ${focusRing} ${
-          isSwapping ? "opacity-100 ring-2 ring-[#c9a75a] ring-offset-2 ring-offset-black/30" : ""
+          isSwapping ? "opacity-100 ring-2 ring-ora-gold ring-offset-2 ring-offset-black/30" : ""
         }`}
       >
         <Shirt team={player.teamName} number={player.number} className="h-11 w-11" />
 
-        <span className="mt-1 w-full truncate rounded bg-black/60 px-1 py-0.5 text-center text-[10px] font-semibold">
+        <span className="mt-1 w-full truncate rounded bg-black/60 px-1 py-0.5 text-center text-[10px] font-bold">
           {player.name.split(" ").slice(-1)[0]}
         </span>
 
         {isBenchBoostActive && (
-          <span className="mt-0.5 w-full rounded-b bg-[#c9a75a]/70 px-1 text-center text-[10px] font-semibold tabular-nums text-[#17130a]">
+          <span className="mt-0.5 w-full rounded-b bg-ora-gold/70 px-1 text-center text-[10px] font-bold tabular-nums text-ora-night">
             {points[player.id]?.gw ?? 0} pts
           </span>
         )}
@@ -689,10 +690,10 @@ export default function SquadPage() {
       aria-label={`Add ${position}`}
       className={`group flex flex-col items-center gap-1.5 rounded-lg ${focusRing}`}
     >
-      <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c9a75a]/45 bg-gradient-to-b from-[#c9a75a]/[0.16] to-[#c9a75a]/[0.03] text-xl text-[#e2c778] transition-colors group-hover:border-[#c9a75a]">
+      <span className="flex h-11 w-11 items-center justify-center rounded-full border border-ora-gold/45 bg-gradient-to-b from-ora-gold/[0.16] to-ora-gold/[0.03] text-xl text-ora-gold-light transition-colors group-hover:border-ora-gold">
         +
       </span>
-      <span className="text-[11px] font-semibold text-[#f2ebdb]/60">{position}</span>
+      <span className="text-[11px] font-bold text-ora-papyrus/60">{position}</span>
     </button>
   );
 
@@ -704,30 +705,30 @@ export default function SquadPage() {
   ];
 
   return (
-    <main className={shell} style={shellStyle}>
+    <main className={`${shell} ora-glow`} style={shellStyle}>
       {/* TOP BAR */}
 
-      <header className="sticky top-0 z-30 border-b border-white/[0.07] bg-[#0a0908]/95 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-white/[0.07] bg-ora-side/95 backdrop-blur">
         <div className="mx-auto max-w-[980px] px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <Link
               href="/dashboard"
-              className={`shrink-0 text-sm text-[#f2ebdb]/55 hover:text-[#f2ebdb] ${focusRing}`}
+              className={`shrink-0 text-sm font-bold text-ora-papyrus/55 hover:text-ora-papyrus ${focusRing}`}
             >
               Dashboard
             </Link>
 
             <div className="min-w-0 text-center">
-              <p className="truncate text-2xl font-semibold leading-none" style={displayFont}>
+              <p className="truncate text-2xl font-black leading-none" style={displayFont}>
                 {squad.teamName}
               </p>
-              <p className="mt-1 truncate text-xs text-[#f2ebdb]/50">Coach {squad.coachName}</p>
+              <p className="mt-1 truncate text-xs font-medium text-ora-papyrus/50">Coach {squad.coachName}</p>
             </div>
 
             <button
               type="button"
               onClick={() => setPicker({ slot: null })}
-              className={`shrink-0 rounded-full border border-[#c9a75a]/40 px-4 py-1.5 text-sm font-semibold text-[#e2c778] hover:bg-[#c9a75a]/10 ${focusRing}`}
+              className={`shrink-0 rounded-full border border-ora-gold/40 px-4 py-1.5 text-sm font-bold text-ora-gold-light hover:bg-ora-gold/10 ${focusRing}`}
             >
               Players
             </button>
@@ -753,10 +754,10 @@ export default function SquadPage() {
                 type="button"
                 onClick={() => setFormation(f)}
                 aria-pressed={formation === f}
-                className={`shrink-0 rounded-full border px-3 py-1 text-xs font-semibold ${focusRing} ${
+                className={`shrink-0 rounded-full border px-3 py-1 text-xs font-bold ${focusRing} ${
                   formation === f
-                    ? "border-[#c9a75a] bg-[#c9a75a]/[0.16] text-[#e2c778]"
-                    : "border-white/[0.08] text-[#f2ebdb]/55"
+                    ? "border-ora-gold bg-ora-gold/[0.16] text-ora-gold-light"
+                    : "border-white/[0.08] text-ora-papyrus/55"
                 }`}
               >
                 {f}
@@ -777,16 +778,16 @@ export default function SquadPage() {
                   type="button"
                   disabled={state?.used && !isActiveNow}
                   onClick={() => setConfirmChip(key)}
-                  className={`flex-1 rounded-lg border px-2 py-1.5 text-[11px] font-semibold transition-colors ${focusRing} ${
+                  className={`flex-1 rounded-lg border px-2 py-1.5 text-[11px] font-bold transition-colors ${focusRing} ${
                     isActiveNow
-                      ? "border-[#c9a75a] bg-[#c9a75a] text-[#17130a]"
+                      ? "border-ora-gold bg-ora-gold text-ora-night"
                       : state?.used
-                        ? "border-white/[0.06] text-[#f2ebdb]/30"
-                        : "border-white/[0.1] text-[#f2ebdb]/70 hover:border-[#c9a75a]/50"
+                        ? "border-white/[0.06] text-ora-papyrus/30"
+                        : "border-white/[0.1] text-ora-papyrus/70 hover:border-ora-gold/50"
                   }`}
                 >
                   {CHIP_LABELS[key]}
-                  <span className="block text-[10px] font-normal opacity-70">
+                  <span className="block text-[10px] font-medium opacity-70">
                     {isActiveNow ? "Active this GW" : state?.used ? "Used" : "Tap to use"}
                   </span>
                 </button>
@@ -802,13 +803,13 @@ export default function SquadPage() {
         <section aria-label={`Gameweek ${gw} points`} className="grid grid-cols-3 gap-2 sm:gap-3">
           <ExtremeCard title="Lowest" player={lowest} pts={lowest ? points[lowest.id]?.gw ?? 0 : 0} onOpen={(p) => setDetail({ player: p, slot: null })} />
 
-          <div className="flex flex-col items-center justify-center rounded-xl border border-[#c9a75a]/30 bg-[#c9a75a]/[0.07] px-2 py-4 text-center">
-            <p className="text-xs text-[#f2ebdb]/60">Gameweek {gw} points</p>
-            <p className="mt-1 text-[52px] font-semibold leading-none tabular-nums text-[#e2c778]" style={displayFont}>
+          <div className="ora-flash relative flex flex-col items-center justify-center overflow-hidden rounded-xl border border-ora-gold/30 bg-ora-gold/[0.07] px-2 py-4 text-center">
+            <p className="text-xs font-bold text-ora-papyrus/60">Gameweek {gw} points</p>
+            <p className="mt-1 text-[52px] font-black leading-none tabular-nums text-ora-gold-light" style={displayFont}>
               {gwPoints}
             </p>
             {(isTripleCaptainActive || isBenchBoostActive) && (
-              <p className="mt-1 text-[11px] font-semibold text-[#e2c778]">
+              <p className="mt-1 text-[11px] font-bold text-ora-gold-light">
                 {isTripleCaptainActive ? "Triple Captain active" : "Bench Boost active"}
               </p>
             )}
@@ -821,7 +822,7 @@ export default function SquadPage() {
 
         <section className="mt-3 grid grid-cols-2 gap-2">
           <label className="rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2">
-            <span className="text-xs text-[#f2ebdb]/50">Captain</span>
+            <span className="text-xs font-semibold text-ora-papyrus/50">Captain</span>
             <select
               value={captain ?? ""}
               onChange={(e) => {
@@ -830,7 +831,7 @@ export default function SquadPage() {
                 if (id && id === viceCaptain) setViceCaptain(null);
               }}
               disabled={startersPlayers.length === 0}
-              className={`mt-0.5 block w-full bg-transparent text-sm font-semibold ${focusRing}`}
+              className={`mt-0.5 block w-full bg-transparent text-sm font-bold ${focusRing}`}
             >
               <option value="">Choose a starter</option>
               {startersPlayers.map((p) => (
@@ -842,7 +843,7 @@ export default function SquadPage() {
           </label>
 
           <label className="rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2">
-            <span className="text-xs text-[#f2ebdb]/50">Vice-captain</span>
+            <span className="text-xs font-semibold text-ora-papyrus/50">Vice-captain</span>
             <select
               value={viceCaptain ?? ""}
               onChange={(e) => {
@@ -851,7 +852,7 @@ export default function SquadPage() {
                 if (id && id === captain) setCaptain(null);
               }}
               disabled={startersPlayers.length === 0}
-              className={`mt-0.5 block w-full bg-transparent text-sm font-semibold ${focusRing}`}
+              className={`mt-0.5 block w-full bg-transparent text-sm font-bold ${focusRing}`}
             >
               <option value="">Choose a starter</option>
               {startersPlayers.map((p) => (
@@ -864,7 +865,7 @@ export default function SquadPage() {
         </section>
 
         {swapping && (
-          <p className="mt-3 rounded-lg border border-[#c9a75a]/30 bg-[#c9a75a]/[0.08] px-3 py-2 text-center text-xs text-[#e2c778]">
+          <p className="mt-3 rounded-lg border border-ora-gold/30 bg-ora-gold/[0.08] px-3 py-2 text-center text-xs font-semibold text-ora-gold-light">
             Tap a starter in the same position to swap with {byId.get(swapping)?.name}, or tap them again to cancel.
           </p>
         )}
@@ -872,21 +873,21 @@ export default function SquadPage() {
         {/* PITCH */}
 
         {playersState === "error" && (
-          <p role="alert" className="mt-5 rounded-xl border border-red-400/25 bg-red-400/[0.06] px-4 py-3 text-sm text-red-200">
+          <p role="alert" className="mt-5 rounded-xl border border-ora-carnelian/25 bg-ora-carnelian/[0.06] px-4 py-3 text-sm font-medium text-ora-carnelian">
             Players couldn&apos;t load: {playersError}
           </p>
         )}
 
         <div
-          className="relative mt-5 overflow-hidden rounded-xl border border-white/[0.07] bg-[#0f150e] shadow-[inset_0_0_80px_rgba(0,0,0,0.55)]"
+          className="relative mt-5 overflow-hidden rounded-xl border border-white/[0.07] bg-ora-pitch shadow-[inset_0_0_80px_rgba(0,0,0,0.55)]"
           style={{
             backgroundImage:
               "repeating-linear-gradient(to bottom, rgba(255,255,255,0.024) 0 48px, transparent 48px 96px)",
           }}
         >
-          <div aria-hidden="true" className="pointer-events-none absolute inset-3 rounded-md border border-[#f2ebdb]/[0.14]">
-            <div className="absolute left-1/2 top-0 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#f2ebdb]/[0.14]" />
-            <div className="absolute bottom-0 left-1/2 h-[17%] w-[56%] -translate-x-1/2 border border-b-0 border-[#f2ebdb]/[0.14]" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-3 rounded-md border border-ora-papyrus/[0.14]">
+            <div className="absolute left-1/2 top-0 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ora-papyrus/[0.14]" />
+            <div className="absolute bottom-0 left-1/2 h-[17%] w-[56%] -translate-x-1/2 border border-b-0 border-ora-papyrus/[0.14]" />
           </div>
 
           <div className="relative flex min-h-[520px] flex-col justify-between px-3 py-8">
@@ -906,16 +907,16 @@ export default function SquadPage() {
           </div>
         </div>
 
-        {/* BENCH */}
+        {/* BENCH — always 4 reserves: 1 GK + 3 outfield */}
 
         <div className="mt-3 rounded-xl border border-white/[0.07] bg-black/30 px-3 pb-4 pt-3.5">
-          <p className="text-sm font-semibold">
+          <p className="text-sm font-bold">
             Bench{isBenchBoostActive ? " · counts this gameweek" : ""}
           </p>
           <div className="mx-auto mt-3 flex max-w-[520px] items-start justify-between gap-1">
             {benchPlayers.map((p) => renderBenchTile(p))}
             {benchPlayers.length === 0 && poolComplete && startersValid && (
-              <p className="w-full py-2 text-center text-xs text-[#f2ebdb]/40">No reserves picked.</p>
+              <p className="w-full py-2 text-center text-xs font-medium text-ora-papyrus/40">No reserves picked.</p>
             )}
           </div>
         </div>
@@ -924,30 +925,30 @@ export default function SquadPage() {
 
         {!poolComplete && (
           <div className="mt-3 rounded-xl border border-white/[0.07] bg-black/30 px-3 pb-4 pt-3.5">
-            <p className="text-sm font-semibold">Complete your squad</p>
+            <p className="text-sm font-bold">Complete your squad</p>
             <div className="mx-auto mt-3 grid max-w-[520px] grid-cols-4 gap-2 sm:grid-cols-5">
               {SQUAD_SLOTS.filter((s) => !slots[s.key]).map((s) => emptySquadSlot(s.key, s.pos))}
             </div>
           </div>
         )}
 
-        <p className="mt-3 text-center text-xs text-[#f2ebdb]/45">
+        <p className="mt-3 text-center text-xs font-medium text-ora-papyrus/45">
           {filled} of {SQUAD_SIZE} players picked. Max 3 from one club.
         </p>
       </div>
 
       {/* SAVE BAR */}
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-white/[0.07] bg-[#0a0908]/95 px-4 py-3 backdrop-blur">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-white/[0.07] bg-ora-side/95 px-4 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-[980px] items-center justify-between gap-3">
-          <p className="text-sm text-[#f2ebdb]/60">
+          <p className="text-sm font-semibold text-ora-papyrus/60">
             {dirty ? "You have unsaved changes." : "All changes saved."}
           </p>
           <button
             type="button"
             onClick={saveSquad}
             disabled={!dirty || saving || !ready}
-            className={`rounded-full bg-gradient-to-b from-[#dcbf74] to-[#b8964a] px-6 py-2.5 text-sm font-semibold text-[#17130a] disabled:opacity-40 ${focusRing}`}
+            className={`rounded-full bg-gradient-to-b from-ora-gold-light to-ora-gold px-6 py-2.5 text-sm font-bold text-ora-night disabled:opacity-40 ${focusRing}`}
           >
             {saving ? "Saving" : "Save squad"}
           </button>
@@ -955,7 +956,7 @@ export default function SquadPage() {
       </div>
 
       {notice && (
-        <div role="status" className="fixed inset-x-4 bottom-20 z-50 mx-auto max-w-md rounded-xl border border-[#c9a75a]/30 bg-[#1c1911] px-4 py-3 text-center text-sm shadow-2xl">
+        <div role="status" className="fixed inset-x-4 bottom-20 z-50 mx-auto max-w-md rounded-xl border border-ora-gold/30 bg-ora-raised px-4 py-3 text-center text-sm font-semibold shadow-2xl">
           {notice}
         </div>
       )}
@@ -966,14 +967,14 @@ export default function SquadPage() {
         <div className="fixed inset-0 z-[70] flex items-center justify-center px-4" role="dialog" aria-modal="true">
           <button type="button" aria-label="Cancel" onClick={() => setConfirmChip(null)} className="absolute inset-0 bg-black/75" />
 
-          <div className="relative w-full max-w-sm rounded-2xl border border-[#c9a75a]/[0.2] bg-gradient-to-b from-[#1c1911] to-[#131110] p-6">
-            <h3 className="text-2xl font-semibold" style={displayFont}>
+          <div className="relative w-full max-w-sm rounded-2xl border border-ora-gold/[0.2] bg-gradient-to-b from-ora-raised to-ora-card p-6">
+            <h3 className="text-2xl font-black" style={displayFont}>
               Use {CHIP_LABELS[confirmChip]}?
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-[#f2ebdb]/65">
+            <p className="mt-2 text-sm leading-relaxed text-ora-papyrus/65">
               {CHIP_DESCRIPTIONS[confirmChip]}
             </p>
-            <p className="mt-3 text-xs text-[#f2ebdb]/45">
+            <p className="mt-3 text-xs font-medium text-ora-papyrus/45">
               You can only use this chip once all season, and it can&apos;t be undone.
             </p>
 
@@ -981,14 +982,14 @@ export default function SquadPage() {
               <button
                 type="button"
                 onClick={() => activateChip(confirmChip)}
-                className={`flex-1 rounded-full bg-gradient-to-b from-[#dcbf74] to-[#b8964a] px-4 py-2.5 text-sm font-semibold text-[#17130a] ${focusRing}`}
+                className={`flex-1 rounded-full bg-gradient-to-b from-ora-gold-light to-ora-gold px-4 py-2.5 text-sm font-bold text-ora-night ${focusRing}`}
               >
                 Use it
               </button>
               <button
                 type="button"
                 onClick={() => setConfirmChip(null)}
-                className={`rounded-full border border-white/[0.12] px-4 py-2.5 text-sm text-[#f2ebdb]/70 ${focusRing}`}
+                className={`rounded-full border border-white/[0.12] px-4 py-2.5 text-sm font-bold text-ora-papyrus/70 ${focusRing}`}
               >
                 Not now
               </button>
@@ -1067,8 +1068,8 @@ function TopStat({
 }) {
   return (
     <div className="rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-2" title={hint}>
-      <dt className="text-xs text-[#f2ebdb]/50">{label}</dt>
-      <dd className={`mt-0.5 text-xl font-semibold leading-tight tabular-nums ${warn ? "text-red-300" : ""}`} style={displayFont}>
+      <dt className="text-xs font-semibold text-ora-papyrus/50">{label}</dt>
+      <dd className={`mt-0.5 text-xl font-black leading-tight tabular-nums ${warn ? "text-ora-carnelian" : ""}`} style={displayFont}>
         {value}
       </dd>
     </div>
@@ -1089,8 +1090,8 @@ function ExtremeCard({
   if (!player) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.02] px-2 py-4 text-center">
-        <p className="text-xs text-[#f2ebdb]/50">{title}</p>
-        <p className="mt-2 text-sm text-[#f2ebdb]/40">Pick your starters</p>
+        <p className="text-xs font-semibold text-ora-papyrus/50">{title}</p>
+        <p className="mt-2 text-sm font-medium text-ora-papyrus/40">Pick your starters</p>
       </div>
     );
   }
@@ -1101,10 +1102,10 @@ function ExtremeCard({
       onClick={() => onOpen(player)}
       className={`flex flex-col items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.02] px-2 py-4 text-center hover:bg-white/[0.04] ${focusRing}`}
     >
-      <p className="text-xs text-[#f2ebdb]/50">{title}</p>
+      <p className="text-xs font-semibold text-ora-papyrus/50">{title}</p>
       <PlayerPhoto player={player} size={44} />
-      <p className="mt-1.5 w-full truncate text-sm font-semibold">{player.name}</p>
-      <p className="text-lg font-semibold tabular-nums text-[#e2c778]" style={displayFont}>
+      <p className="mt-1.5 w-full truncate text-sm font-bold">{player.name}</p>
+      <p className="text-lg font-black tabular-nums text-ora-gold-light" style={displayFont}>
         {pts} pts
       </p>
     </button>
@@ -1197,13 +1198,13 @@ function PlayerPicker({
     <div className="fixed inset-0 z-40 flex justify-end" role="dialog" aria-modal="true" aria-label="Choose a player">
       <button type="button" aria-label="Close players" onClick={onClose} className="absolute inset-0 bg-black/70" />
 
-      <div className="relative flex h-full w-full max-w-md flex-col border-l border-white/[0.08] bg-[#131110]">
+      <div className="relative flex h-full w-full max-w-md flex-col border-l border-white/[0.08] bg-ora-card">
         <div className="shrink-0 border-b border-white/[0.07] px-4 pb-3 pt-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-[28px] font-semibold leading-none" style={displayFont}>
+            <h2 className="text-[28px] font-black leading-none" style={displayFont}>
               {locked ? `Choose a ${locked}` : "Players"}
             </h2>
-            <button type="button" onClick={onClose} className={`rounded-full px-3 py-1 text-sm text-[#f2ebdb]/60 hover:text-[#f2ebdb] ${focusRing}`}>
+            <button type="button" onClick={onClose} className={`rounded-full px-3 py-1 text-sm font-bold text-ora-papyrus/60 hover:text-ora-papyrus ${focusRing}`}>
               Close
             </button>
           </div>
@@ -1213,7 +1214,7 @@ function PlayerPicker({
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by name"
             aria-label="Search players"
-            className={`mt-3 w-full rounded-xl border border-white/[0.1] bg-black/30 px-3 py-2 text-sm placeholder:text-[#f2ebdb]/30 ${focusRing}`}
+            className={`mt-3 w-full rounded-xl border border-white/[0.1] bg-black/30 px-3 py-2 text-sm font-medium placeholder:text-ora-papyrus/30 ${focusRing}`}
           />
 
           {!locked && (
@@ -1224,10 +1225,10 @@ function PlayerPicker({
                   type="button"
                   onClick={() => setPosition(p)}
                   aria-pressed={position === p}
-                  className={`rounded-full border px-3 py-1 text-xs font-semibold ${focusRing} ${
+                  className={`rounded-full border px-3 py-1 text-xs font-bold ${focusRing} ${
                     position === p
-                      ? "border-[#c9a75a] bg-[#c9a75a]/[0.14] text-[#e2c778]"
-                      : "border-white/[0.08] text-[#f2ebdb]/55"
+                      ? "border-ora-gold bg-ora-gold/[0.14] text-ora-gold-light"
+                      : "border-white/[0.08] text-ora-papyrus/55"
                   }`}
                 >
                   {p === "ALL" ? "All" : p}
@@ -1241,7 +1242,7 @@ function PlayerPicker({
               value={team}
               onChange={(e) => setTeam(e.target.value)}
               aria-label="Filter by club"
-              className={`rounded-lg border border-white/[0.1] bg-[#0d0c0a] px-2 py-2 text-sm ${focusRing}`}
+              className={`rounded-lg border border-white/[0.1] bg-ora-night px-2 py-2 text-sm font-medium ${focusRing}`}
             >
               <option value="ALL">All clubs</option>
               {teams.map(([id, name]) => (
@@ -1255,7 +1256,7 @@ function PlayerPicker({
               value={sort}
               onChange={(e) => setSort(e.target.value as SortKey)}
               aria-label="Sort players"
-              className={`rounded-lg border border-white/[0.1] bg-[#0d0c0a] px-2 py-2 text-sm ${focusRing}`}
+              className={`rounded-lg border border-white/[0.1] bg-ora-night px-2 py-2 text-sm font-medium ${focusRing}`}
             >
               <option value="price">Highest price</option>
               <option value="points">Most points</option>
@@ -1265,10 +1266,10 @@ function PlayerPicker({
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 py-3">
-          {state === "loading" && <p className="py-10 text-center text-sm text-[#f2ebdb]/50">Loading players</p>}
-          {state === "error" && <p className="py-10 text-center text-sm text-red-200">{error}</p>}
+          {state === "loading" && <p className="py-10 text-center text-sm font-medium text-ora-papyrus/50">Loading players</p>}
+          {state === "error" && <p className="py-10 text-center text-sm font-medium text-ora-carnelian">{error}</p>}
           {state === "ready" && list.length === 0 && (
-            <p className="py-10 text-center text-sm text-[#f2ebdb]/50">No players match these filters.</p>
+            <p className="py-10 text-center text-sm font-medium text-ora-papyrus/50">No players match these filters.</p>
           )}
 
           <ul className="space-y-2">
@@ -1282,16 +1283,16 @@ function PlayerPicker({
                   <button type="button" onClick={() => onOpen(player)} className={`flex min-w-0 flex-1 items-center gap-3 rounded-lg text-left ${focusRing}`}>
                     <PlayerPhoto player={player} size={44} />
                     <span className="min-w-0">
-                      <span className="block truncate text-sm font-semibold">{player.name}</span>
-                      <span className="block truncate text-xs text-[#f2ebdb]/50">
+                      <span className="block truncate text-sm font-bold">{player.name}</span>
+                      <span className="block truncate text-xs font-medium text-ora-papyrus/50">
                         {player.teamName}, {player.position}
                       </span>
                     </span>
                   </button>
 
                   <div className="shrink-0 text-right">
-                    <p className="text-sm font-semibold tabular-nums">{money(player.price)}</p>
-                    <p className="text-xs tabular-nums text-[#f2ebdb]/45">{points[player.id]?.total ?? 0} pts</p>
+                    <p className="text-sm font-bold tabular-nums">{money(player.price)}</p>
+                    <p className="text-xs font-medium tabular-nums text-ora-papyrus/45">{points[player.id]?.total ?? 0} pts</p>
                   </div>
 
                   <button
@@ -1299,7 +1300,7 @@ function PlayerPicker({
                     onClick={() => onAdd(player)}
                     disabled={owned || !!blocked}
                     title={owned ? "Already in your squad" : blocked || undefined}
-                    className={`shrink-0 rounded-full border border-[#c9a75a]/50 px-3 py-1.5 text-xs font-semibold text-[#e2c778] hover:bg-[#c9a75a]/10 disabled:opacity-30 ${focusRing}`}
+                    className={`shrink-0 rounded-full border border-ora-gold/50 px-3 py-1.5 text-xs font-bold text-ora-gold-light hover:bg-ora-gold/10 disabled:opacity-30 ${focusRing}`}
                   >
                     {owned ? "Added" : "Add"}
                   </button>
@@ -1340,42 +1341,42 @@ function PlayerDetail({
     <div className="fixed inset-0 z-[60] flex items-center justify-center px-4" role="dialog" aria-modal="true" aria-label={player.name}>
       <button type="button" aria-label="Close player details" onClick={onClose} className="absolute inset-0 bg-black/75" />
 
-      <div className="relative max-h-[90dvh] w-full max-w-sm overflow-y-auto rounded-2xl border border-[#c9a75a]/[0.2] bg-gradient-to-b from-[#1c1911] to-[#131110] p-6">
+      <div className="relative max-h-[90dvh] w-full max-w-sm overflow-y-auto rounded-2xl border border-ora-gold/[0.2] bg-gradient-to-b from-ora-raised to-ora-card p-6">
         <div className="flex items-center gap-4">
           <PlayerPhoto player={player} size={96} />
           <Shirt team={player.teamName} number={player.number} className="h-20 w-20" />
         </div>
 
-        <h3 className="mt-4 text-[32px] font-semibold leading-tight" style={displayFont}>
+        <h3 className="mt-4 text-[32px] font-black leading-tight" style={displayFont}>
           {player.name}
         </h3>
 
-        <p className="mt-1 flex items-center gap-2 text-sm text-[#f2ebdb]/60">
+        <p className="mt-1 flex items-center gap-2 text-sm font-medium text-ora-papyrus/60">
           {player.teamLogo && <img src={player.teamLogo} alt="" className="h-5 w-5 object-contain" />}
           {player.teamName}, {player.position}
         </p>
 
         <dl className="mt-5 grid grid-cols-3 gap-2 text-center">
           <div className="rounded-lg bg-white/[0.04] py-2">
-            <dt className="text-xs text-[#f2ebdb]/50">Price</dt>
-            <dd className="text-lg font-semibold tabular-nums">{money(player.price)}</dd>
+            <dt className="text-xs font-semibold text-ora-papyrus/50">Price</dt>
+            <dd className="text-lg font-black tabular-nums">{money(player.price)}</dd>
           </div>
           <div className="rounded-lg bg-white/[0.04] py-2">
-            <dt className="text-xs text-[#f2ebdb]/50">GW {gw}</dt>
-            <dd className="text-lg font-semibold tabular-nums">{pts?.gw ?? 0}</dd>
+            <dt className="text-xs font-semibold text-ora-papyrus/50">GW {gw}</dt>
+            <dd className="text-lg font-black tabular-nums">{pts?.gw ?? 0}</dd>
           </div>
           <div className="rounded-lg bg-white/[0.04] py-2">
-            <dt className="text-xs text-[#f2ebdb]/50">Season</dt>
-            <dd className="text-lg font-semibold tabular-nums">{pts?.total ?? 0}</dd>
+            <dt className="text-xs font-semibold text-ora-papyrus/50">Season</dt>
+            <dd className="text-lg font-black tabular-nums">{pts?.total ?? 0}</dd>
           </div>
         </dl>
 
         {pts && pts.breakdown.length > 0 && (
           <ul className="mt-4 space-y-1 text-sm">
             {pts.breakdown.map((row, i) => (
-              <li key={`${row.label}-${i}`} className="flex justify-between text-[#f2ebdb]/70">
-                <span>{row.label}</span>
-                <span className={`tabular-nums ${row.points < 0 ? "text-red-300" : "text-[#e2c778]"}`}>
+              <li key={`${row.label}-${i}`} className="flex justify-between text-ora-papyrus/70">
+                <span className="font-medium">{row.label}</span>
+                <span className={`font-bold tabular-nums ${row.points < 0 ? "text-ora-carnelian" : "text-ora-gold-light"}`}>
                   {row.points > 0 ? `+${row.points}` : row.points}
                 </span>
               </li>
@@ -1387,21 +1388,21 @@ function PlayerDetail({
           {inSquad ? (
             <>
               {onReplace && (
-                <button type="button" onClick={onReplace} className={`flex-1 rounded-full border border-[#c9a75a]/50 px-4 py-2.5 text-sm font-semibold text-[#e2c778] ${focusRing}`}>
+                <button type="button" onClick={onReplace} className={`flex-1 rounded-full border border-ora-gold/50 px-4 py-2.5 text-sm font-bold text-ora-gold-light ${focusRing}`}>
                   Replace
                 </button>
               )}
-              <button type="button" onClick={onRemove} className={`flex-1 rounded-full border border-red-400/40 px-4 py-2.5 text-sm font-semibold text-red-200 ${focusRing}`}>
+              <button type="button" onClick={onRemove} className={`flex-1 rounded-full border border-ora-carnelian/40 px-4 py-2.5 text-sm font-bold text-ora-carnelian ${focusRing}`}>
                 Remove
               </button>
             </>
           ) : (
-            <button type="button" onClick={onAdd} className={`flex-1 rounded-full bg-gradient-to-b from-[#dcbf74] to-[#b8964a] px-4 py-2.5 text-sm font-semibold text-[#17130a] ${focusRing}`}>
+            <button type="button" onClick={onAdd} className={`flex-1 rounded-full bg-gradient-to-b from-ora-gold-light to-ora-gold px-4 py-2.5 text-sm font-bold text-ora-night ${focusRing}`}>
               Add to squad
             </button>
           )}
 
-          <button type="button" onClick={onClose} className={`rounded-full border border-white/[0.12] px-4 py-2.5 text-sm text-[#f2ebdb]/70 ${focusRing}`}>
+          <button type="button" onClick={onClose} className={`rounded-full border border-white/[0.12] px-4 py-2.5 text-sm font-bold text-ora-papyrus/70 ${focusRing}`}>
             Close
           </button>
         </div>

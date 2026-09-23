@@ -12,19 +12,29 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* Ora Fantasy palette: lapis lazuli night, gold leaf, Nile turquoise. */
+/* =========================================================
+   ORA FANTASY — "Nile Royale" palette
+   Deep royal purple (Premier League DNA) + electric pitch
+   green + warm gold. Purple carries the whole shell; green
+   is the "alive / winning" signal; gold is reserved for
+   points, prices and anything premium.
+   ========================================================= */
 @theme {
-  --color-ora-night: #0a0f22;
-  --color-ora-side: #070b1a;
-  --color-ora-card: #111832;
-  --color-ora-raised: #172042;
-  --color-ora-gold: #d6b35a;
-  --color-ora-gold-light: #ecd48c;
-  --color-ora-gold-deep: #a4802f;
-  --color-ora-papyrus: #f1e8d2;
-  --color-ora-nile: #2fb9a8;
-  --color-ora-carnelian: #d0583f;
-  --color-ora-pitch: #0d2521;
+  --color-ora-night: #100a26;   /* page background */
+  --color-ora-side: #0a0619;    /* sidebar / deepest surface */
+  --color-ora-card: #1c1242;    /* card surfaces */
+  --color-ora-raised: #271a5c;  /* raised / hero panels */
+  --color-ora-line: #ffffff;    /* hairline base, used at low opacity */
+
+  --color-ora-gold: #d9a84e;
+  --color-ora-gold-light: #f2cd7e;
+  --color-ora-gold-deep: #a97e2c;
+
+  --color-ora-papyrus: #f3effc; /* primary text, faint lavender-white */
+
+  --color-ora-nile: #00e37a;    /* electric pitch green — live, positive, "on form" */
+  --color-ora-carnelian: #ff4d6d; /* negative points, warnings */
+  --color-ora-pitch: #0b2317;   /* squad-pitch background */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,16 +44,78 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
 }
 
-/* The hieroglyph for water: a thin zigzag band used as a top edge on key cards. */
+body {
+  background: var(--color-ora-night);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+}
+
+/* Bump the whole app's default weight up a notch — the brief asked
+   for a bolder feel everywhere, not just in headings. */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+}
+
+button, a, label, input, select {
+  font-weight: 600;
+}
+
+/* =========================================================
+   DECORATIVE PRIMITIVES
+   ========================================================= */
+
+/* Thin zig-zag "Nile" band, now in electric green, used as a
+   top edge on hero/standings cards. */
 .ora-nile-band {
   height: 8px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 6 L4 2 L8 6 L12 2 L16 6' fill='none' stroke='%23d6b35a' stroke-width='1' stroke-opacity='0.55'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 6 L4 2 L8 6 L12 2 L16 6' fill='none' stroke='%2300e37a' stroke-width='1' stroke-opacity='0.6'/%3E%3C/svg%3E");
   background-repeat: repeat-x;
   background-position: center;
+}
+
+/* Diagonal "kit stripe" corner flash — a small EPL-style accent
+   for hero cards and section headers. Purely decorative. */
+.ora-flash {
+  position: relative;
+  overflow: hidden;
+}
+.ora-flash::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  right: -18%;
+  width: 55%;
+  height: 220%;
+  background: linear-gradient(
+    100deg,
+    rgba(0, 227, 122, 0.14),
+    rgba(217, 168, 78, 0.1) 55%,
+    transparent 70%
+  );
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+/* Uppercase, tracked-out label used for section eyebrows
+   ("GAMEWEEK", "STANDINGS", etc.) — the sports-broadcast feel. */
+.ora-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ora-gold-light);
+}
+
+/* Stadium-light glow, used once per page behind the shell. */
+.ora-glow {
+  background:
+    radial-gradient(900px 520px at 12% -10%, rgba(0, 227, 122, 0.16), transparent 60%),
+    radial-gradient(760px 460px at 100% 0%, rgba(217, 168, 78, 0.1), transparent 65%),
+    radial-gradient(1200px 700px at 50% 120%, rgba(39, 26, 92, 0.55), transparent 70%);
 }
