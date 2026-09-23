@@ -6,14 +6,14 @@ import AppShell, {
   Cartouche,
   displayFont,
   focusRing,
-} from "@/src/components/AppShell";
+} from "@/components/AppShell";
 import {
   MatchesLoading,
   MatchesError,
   StateMessage,
   TeamBadge,
-} from "@/src/components/MatchCard";
-import { useFixtures } from "@/src/lib/useFixtures";
+} from "@/components/MatchCard";
+import { useFixtures } from "@/lib/useFixtures";
 import {
   groupByGameweek,
   getCurrentGameweek,
@@ -23,7 +23,7 @@ import {
   formatLongDate,
   type Match,
   type MatchState,
-} from "@/src/lib/fixtures";
+} from "@/lib/fixtures";
 
 type Filter = "all" | "live" | "upcoming" | "finished";
 

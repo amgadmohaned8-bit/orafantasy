@@ -137,8 +137,8 @@ app/api/players/route.ts
 استخدم:
 
 ```ts
-import { computePrice } from "@/src/fantasy/pricing";
-import type { Player, Position } from "@/src/fantasy/types";
+import { computePrice } from "@/fantasy/pricing";
+import type { Player, Position } from "@/fantasy/types";
 ```
 
 واحسِب السعر لكل لاعب باستخدام:

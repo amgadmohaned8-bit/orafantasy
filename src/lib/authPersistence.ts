@@ -13,7 +13,7 @@ import {
   signInWithEmailAndPassword,
   type UserCredential,
 } from "firebase/auth";
-import { auth } from "@/src/firebase"; // adjust path if your firebase.ts is elsewhere
+import { auth } from "@/firebase"; // adjust path if your firebase.ts is elsewhere
 
 /**
  * Sets how the NEXT sign-in on this auth instance will persist.
