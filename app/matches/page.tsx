@@ -2,7 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import AppShell, { Cartouche, displayFont, focusRing } from "@/src/components/AppShell";
+import AppShell, {
+  Cartouche,
+  displayFont,
+  focusRing,
+} from "@/src/components/AppShell";
 import {
   MatchesLoading,
   MatchesError,
@@ -39,12 +43,16 @@ export default function MatchesPage() {
   );
 
   const groups = useMemo(() => groupByGameweek(matches), [matches]);
+
   const gameweeks = useMemo(
     () => Array.from(groups.keys()).sort((a, b) => a - b),
     [groups],
   );
 
-  const currentGameweek = useMemo(() => getCurrentGameweek(matches), [matches]);
+  const currentGameweek = useMemo(
+    () => getCurrentGameweek(matches),
+    [matches],
+  );
 
   // Gameweek tab: defaults to current once loaded.
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
@@ -53,11 +61,15 @@ export default function MatchesPage() {
     if (selectedWeek !== null) return;
     if (gameweeks.length === 0) return;
 
-    setSelectedWeek(currentGameweek ?? gameweeks[gameweeks.length - 1]);
+    setSelectedWeek(
+      currentGameweek ?? gameweeks[gameweeks.length - 1],
+    );
   }, [selectedWeek, currentGameweek, gameweeks]);
 
   const activeWeek =
-    selectedWeek ?? currentGameweek ?? gameweeks[gameweeks.length - 1];
+    selectedWeek ??
+    currentGameweek ??
+    gameweeks[gameweeks.length - 1];
 
   // Status filter: All / Live / Fixtures / Results.
   const [filter, setFilter] = useState<Filter>("all");
@@ -67,23 +79,42 @@ export default function MatchesPage() {
 
     return (groups.get(activeWeek) ?? [])
       .slice()
-      .sort((a, b) => getMatchTimestamp(a) - getMatchTimestamp(b));
+      .sort(
+        (a, b) =>
+          getMatchTimestamp(a) - getMatchTimestamp(b),
+      );
   }, [groups, activeWeek]);
 
   const filteredMatches = useMemo(() => {
     if (filter === "all") return weekMatches;
 
-    const wanted: MatchState = filter === "finished" ? "finished" : filter === "live" ? "live" : "upcoming";
+    const wanted: MatchState =
+      filter === "finished"
+        ? "finished"
+        : filter === "live"
+          ? "live"
+          : "upcoming";
 
-    return weekMatches.filter((match) => getMatchState(match) === wanted);
+    return weekMatches.filter(
+      (match) => getMatchState(match) === wanted,
+    );
   }, [weekMatches, filter]);
 
   const sortedAll = useMemo(
-    () => matches.slice().sort((a, b) => getMatchTimestamp(a) - getMatchTimestamp(b)),
+    () =>
+      matches
+        .slice()
+        .sort(
+          (a, b) =>
+            getMatchTimestamp(a) - getMatchTimestamp(b),
+        ),
     [matches],
   );
 
-  const dateGroups = useMemo(() => groupByDate(filteredMatches), [filteredMatches]);
+  const dateGroups = useMemo(
+    () => groupByDate(filteredMatches),
+    [filteredMatches],
+  );
 
   return (
     <AppShell title="Matches" liveNow={isLiveNow}>
@@ -112,7 +143,10 @@ export default function MatchesPage() {
               onSelect={setSelectedWeek}
             />
 
-            <FilterTabs active={filter} onSelect={setFilter} />
+            <FilterTabs
+              active={filter}
+              onSelect={setFilter}
+            />
 
             <div className="mt-5 space-y-6">
               {dateGroups.length === 0 ? (
@@ -121,19 +155,24 @@ export default function MatchesPage() {
                   text="Try a different filter or gameweek."
                 />
               ) : (
-                dateGroups.map(({ date, label, matches: dayMatches }) => (
-                  <section key={date}>
-                    <h2 className="mb-2.5 text-xs font-semibold uppercase tracking-wide text-ora-papyrus/45">
-                      {label}
-                    </h2>
+                dateGroups.map(
+                  ({ date, label, matches: dayMatches }) => (
+                    <section key={date}>
+                      <h2 className="mb-2.5 text-xs font-semibold uppercase tracking-wide text-ora-papyrus/45">
+                        {label}
+                      </h2>
 
-                    <div className="space-y-2.5">
-                      {dayMatches.map((match) => (
-                        <MatchRow key={match.id} match={match} />
-                      ))}
-                    </div>
-                  </section>
-                ))
+                      <div className="space-y-2.5">
+                        {dayMatches.map((match) => (
+                          <MatchRow
+                            key={match.id}
+                            match={match}
+                          />
+                        ))}
+                      </div>
+                    </section>
+                  ),
+                )
               )}
             </div>
           </>
@@ -231,6 +270,7 @@ function GameweekTabs({
             }`}
           >
             {week}
+
             {isCurrent && !isActive && (
               <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-ora-nile" />
             )}
@@ -276,7 +316,10 @@ function MatchRow({ match }: { match: Match }) {
 
               <span className="mt-1.5 flex items-center gap-1 text-[11px] font-semibold text-ora-nile">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ora-nile motion-reduce:animate-none" />
-                {detail && detail.toLowerCase() !== "live" ? detail : "Live"}
+                {detail &&
+                detail.toLowerCase() !== "live"
+                  ? detail
+                  : "Live"}
               </span>
             </>
           ) : started ? (
@@ -321,11 +364,16 @@ function TeamSide({
   return (
     <div
       className={`flex min-w-0 flex-1 items-center gap-2.5 ${
-        align === "right" ? "flex-row-reverse text-right" : "text-left"
+        align === "right"
+          ? "flex-row-reverse text-right"
+          : "text-left"
       }`}
     >
       <TeamBadge team={team} size="md" />
-      <p className="min-w-0 truncate text-sm font-medium">{team.name}</p>
+
+      <p className="min-w-0 truncate text-sm font-medium">
+        {team.name}
+      </p>
     </div>
   );
 }
@@ -337,7 +385,11 @@ function TeamSide({
 
 function groupByDate(
   matches: Match[],
-): { date: string; label: string; matches: Match[] }[] {
+): {
+  date: string;
+  label: string;
+  matches: Match[];
+}[] {
   const byDate = new Map<string, Match[]>();
 
   matches.forEach((match) => {
@@ -351,13 +403,20 @@ function groupByDate(
     }
   });
 
-  const todayKey = new Date().toISOString().slice(0, 10);
-  const tomorrowKey = new Date(Date.now() + 86_400_000)
+  const todayKey = new Date()
+    .toISOString()
+    .slice(0, 10);
+
+  const tomorrowKey = new Date(
+    Date.now() + 86_400_000,
+  )
     .toISOString()
     .slice(0, 10);
 
   return Array.from(byDate.entries())
-    .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    .sort(([a], [b]) =>
+      a < b ? -1 : a > b ? 1 : 0,
+    )
     .map(([date, dayMatches]) => ({
       date,
       label:
@@ -367,7 +426,9 @@ function groupByDate(
             ? "Tomorrow"
             : formatLongDate(date),
       matches: dayMatches.sort(
-        (a, b) => getMatchTimestamp(a) - getMatchTimestamp(b),
+        (a, b) =>
+          getMatchTimestamp(a) -
+          getMatchTimestamp(b),
       ),
     }));
 }

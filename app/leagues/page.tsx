@@ -43,6 +43,14 @@ function makeCode(): string {
 }
 
 export default function LeaguesPage() {
+  return (
+    <AppShell title="Leagues" subtitle="Compete with friends">
+      <LeaguesContent />
+    </AppShell>
+  );
+}
+
+function LeaguesContent() {
   const profile = useProfile();
   const uid = profile.uid;
 
@@ -245,8 +253,7 @@ export default function LeaguesPage() {
   };
 
   return (
-    <AppShell title="Leagues" subtitle="Compete with friends">
-      <div className="mx-auto max-w-[760px]">
+    <div className="mx-auto max-w-[760px]">
         <h1 className="text-[28px] font-black leading-none lg:hidden" style={displayFont}>
           Leagues
         </h1>
@@ -346,8 +353,7 @@ export default function LeaguesPage() {
             ))
           )}
         </div>
-      </div>
-    </AppShell>
+    </div>
   );
 }
 

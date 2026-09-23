@@ -7,16 +7,19 @@ import AppShell, {
   Cartouche,
   displayFont,
   focusRing,
-  Icon,
 } from "../../../src/components/AppShell";
 import { TeamBadge, StateMessage } from "../../../src/components/MatchCard";
 
 /* =========================================================
    TYPES
-   Mirrors /api/football/match-details.
    ========================================================= */
 
-type TeamInfo = { id: string; name: string; logo?: string; score: string };
+type TeamInfo = {
+  id: string;
+  name: string;
+  logo?: string;
+  score: string;
+};
 
 type Player = {
   id: string;
@@ -48,16 +51,28 @@ type MatchDetails = {
   header: {
     home: TeamInfo;
     away: TeamInfo;
-    status: { display: string; state: string };
+    status: {
+      display: string;
+      state: string;
+    };
   };
   events: MatchEvent[];
-  stats: { label: string; home: string; away: string }[];
-  venue: { name: string } | null;
+  stats: {
+    label: string;
+    home: string;
+    away: string;
+  }[];
+  venue: {
+    name: string;
+  } | null;
   referee: string | null;
   lineups: {
     home: LineupSide;
     away: LineupSide;
-    formation: { home: string; away: string };
+    formation: {
+      home: string;
+      away: string;
+    };
     is_projected: boolean;
   } | null;
 };
@@ -72,13 +87,22 @@ export default function MatchPage() {
 
   const [data, setData] = useState<MatchDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
+
   const [tab, setTab] = useState<"events" | "lineups" | "stats">("events");
 
   const load = useCallback(async () => {
+    if (!matchId) {
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/football/match-details?match_id=${matchId}`, {
-        cache: "no-store",
-      });
+      const res = await fetch(
+        `/api/football/match-details?match_id=${encodeURIComponent(matchId)}`,
+        {
+          cache: "no-store",
+        },
+      );
+
       const json = (await res.json()) as MatchDetails;
 
       if (!json.success) {
@@ -98,8 +122,12 @@ export default function MatchPage() {
   }, [load]);
 
   useEffect(() => {
-    if (!data?.is_live) return;
+    if (!data?.is_live) {
+      return;
+    }
+
     const interval = setInterval(load, 20000);
+
     return () => clearInterval(interval);
   }, [data?.is_live, load]);
 
@@ -130,7 +158,11 @@ export default function MatchPage() {
 
               <div className="mt-5">
                 {tab === "events" && <Events events={data.events} />}
-                {tab === "lineups" && <Lineups lineups={data.lineups} />}
+
+                {tab === "lineups" && (
+                  <Lineups lineups={data.lineups} />
+                )}
+
                 {tab === "stats" && <Stats stats={data.stats} />}
               </div>
             </>
@@ -147,6 +179,7 @@ export default function MatchPage() {
 
 function MatchHeader({ data }: { data: MatchDetails }) {
   const { header } = data;
+
   const started = header.status.state !== "upcoming";
 
   return (
@@ -174,7 +207,9 @@ function MatchHeader({ data }: { data: MatchDetails }) {
             className="text-[32px] font-semibold leading-none tabular-nums"
             style={displayFont}
           >
-            {started ? `${header.home.score} – ${header.away.score}` : "vs"}
+            {started
+              ? `${header.home.score} – ${header.away.score}`
+              : "vs"}
           </p>
 
           {!data.is_live && (
@@ -190,27 +225,47 @@ function MatchHeader({ data }: { data: MatchDetails }) {
       {(data.venue || data.referee) && (
         <div className="mt-5 flex justify-center gap-4 border-t border-white/5 pt-4 text-xs text-ora-papyrus/40">
           {data.venue && <span>{data.venue.name}</span>}
-          {data.referee && <span>Referee: {data.referee}</span>}
+
+          {data.referee && (
+            <span>Referee: {data.referee}</span>
+          )}
         </div>
       )}
     </div>
   );
 }
 
-function TeamColumn({ team, align }: { team: TeamInfo; align: "left" | "right" }) {
+/* =========================================================
+   TEAM COLUMN
+   ========================================================= */
+
+function TeamColumn({
+  team,
+  align,
+}: {
+  team: TeamInfo;
+  align: "left" | "right";
+}) {
   return (
     <div
       className={`flex flex-col items-center gap-2 ${
-        align === "right" ? "items-end sm:items-center" : "items-start sm:items-center"
+        align === "right"
+          ? "items-end sm:items-center"
+          : "items-start sm:items-center"
       }`}
     >
       <TeamBadge team={team} size="md" />
+
       <p className="max-w-[100px] truncate text-center text-sm font-medium">
         {team.name}
       </p>
     </div>
   );
 }
+
+/* =========================================================
+   HEADER SKELETON
+   ========================================================= */
 
 function MatchHeaderSkeleton() {
   return (
@@ -229,14 +284,30 @@ function Tabs({
   tab: "events" | "lineups" | "stats";
   onChange: (tab: "events" | "lineups" | "stats") => void;
 }) {
-  const options: { key: "events" | "lineups" | "stats"; label: string }[] = [
-    { key: "events", label: "Events" },
-    { key: "lineups", label: "Lineups" },
-    { key: "stats", label: "Stats" },
+  const options: {
+    key: "events" | "lineups" | "stats";
+    label: string;
+  }[] = [
+    {
+      key: "events",
+      label: "Events",
+    },
+    {
+      key: "lineups",
+      label: "Lineups",
+    },
+    {
+      key: "stats",
+      label: "Stats",
+    },
   ];
 
   return (
-    <div className="mt-5 flex gap-1.5" role="tablist" aria-label="Match view">
+    <div
+      className="mt-5 flex gap-1.5"
+      role="tablist"
+      aria-label="Match view"
+    >
       {options.map((opt) => {
         const active = tab === opt.key;
 
@@ -281,14 +352,18 @@ function Events({ events }: { events: MatchEvent[] }) {
         <li
           key={index}
           className={`flex items-center gap-3 rounded-xl border border-white/5 bg-white/[0.03] px-3.5 py-3 ${
-            event.side === "away" ? "flex-row-reverse text-right" : ""
+            event.side === "away"
+              ? "flex-row-reverse text-right"
+              : ""
           }`}
         >
           <span className="w-9 shrink-0 text-xs font-medium text-ora-papyrus/40 tabular-nums">
             {event.minute}&apos;
           </span>
 
-          <span className="text-lg leading-none">{eventIcon(event.type)}</span>
+          <span className="text-lg leading-none">
+            {eventIcon(event.type)}
+          </span>
 
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium">
@@ -307,18 +382,27 @@ function Events({ events }: { events: MatchEvent[] }) {
   );
 }
 
+/* =========================================================
+   EVENT ICON
+   ========================================================= */
+
 function eventIcon(type: MatchEvent["type"]) {
   switch (type) {
     case "goal":
       return "⚽";
+
     case "own_goal":
       return "⚽️➖";
+
     case "yellow_card":
       return "🟨";
+
     case "red_card":
       return "🟥";
+
     case "substitution":
       return "⇄";
+
     default:
       return "•";
   }
@@ -328,7 +412,11 @@ function eventIcon(type: MatchEvent["type"]) {
    LINEUPS
    ========================================================= */
 
-function Lineups({ lineups }: { lineups: MatchDetails["lineups"] }) {
+function Lineups({
+  lineups,
+}: {
+  lineups: MatchDetails["lineups"];
+}) {
   if (!lineups) {
     return (
       <StateMessage
@@ -342,17 +430,30 @@ function Lineups({ lineups }: { lineups: MatchDetails["lineups"] }) {
     <div>
       <div className="mb-4 flex justify-center">
         <Cartouche>
-          {lineups.is_projected ? "Predicted lineup" : "Confirmed lineup"}
+          {lineups.is_projected
+            ? "Predicted lineup"
+            : "Confirmed lineup"}
         </Cartouche>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <LineupColumn side={lineups.home} formation={lineups.formation.home} />
-        <LineupColumn side={lineups.away} formation={lineups.formation.away} />
+        <LineupColumn
+          side={lineups.home}
+          formation={lineups.formation.home}
+        />
+
+        <LineupColumn
+          side={lineups.away}
+          formation={lineups.formation.away}
+        />
       </div>
     </div>
   );
 }
+
+/* =========================================================
+   LINEUP COLUMN
+   ========================================================= */
 
 function LineupColumn({
   side,
@@ -367,6 +468,7 @@ function LineupColumn({
         <span className="text-xs font-medium text-ora-gold-light">
           {formation}
         </span>
+
         {side.coach && (
           <span className="truncate text-xs text-ora-papyrus/40">
             {side.coach.name}
@@ -376,11 +478,17 @@ function LineupColumn({
 
       <ul className="space-y-1.5">
         {side.starting.map((player) => (
-          <li key={player.id} className="flex items-center gap-2 text-sm">
+          <li
+            key={player.id}
+            className="flex items-center gap-2 text-sm"
+          >
             <span className="w-5 shrink-0 text-ora-papyrus/40 tabular-nums">
               {player.number}
             </span>
-            <span className="truncate">{player.name}</span>
+
+            <span className="truncate">
+              {player.name}
+            </span>
           </li>
         ))}
       </ul>
@@ -398,7 +506,10 @@ function LineupColumn({
                 <span className="w-5 shrink-0 tabular-nums">
                   {player.number}
                 </span>
-                <span className="truncate">{player.name}</span>
+
+                <span className="truncate">
+                  {player.name}
+                </span>
               </li>
             ))}
           </ul>
@@ -412,10 +523,21 @@ function LineupColumn({
    STATS
    ========================================================= */
 
-function Stats({ stats }: { stats: { label: string; home: string; away: string }[] }) {
+function Stats({
+  stats,
+}: {
+  stats: {
+    label: string;
+    home: string;
+    away: string;
+  }[];
+}) {
   if (stats.length === 0) {
     return (
-      <StateMessage title="No stats yet" text="Match stats will appear here once available." />
+      <StateMessage
+        title="No stats yet"
+        text="Match stats will appear here once available."
+      />
     );
   }
 
@@ -424,27 +546,55 @@ function Stats({ stats }: { stats: { label: string; home: string; away: string }
       {stats.map((stat) => (
         <div key={stat.label}>
           <div className="mb-1.5 flex items-center justify-between text-xs text-ora-papyrus/50">
-            <span className="font-medium text-ora-papyrus">{stat.home}</span>
+            <span className="font-medium text-ora-papyrus">
+              {stat.home}
+            </span>
+
             <span>{stat.label}</span>
-            <span className="font-medium text-ora-papyrus">{stat.away}</span>
+
+            <span className="font-medium text-ora-papyrus">
+              {stat.away}
+            </span>
           </div>
 
-          <StatBar home={stat.home} away={stat.away} />
+          <StatBar
+            home={stat.home}
+            away={stat.away}
+          />
         </div>
       ))}
     </div>
   );
 }
 
-function StatBar({ home, away }: { home: string; away: string }) {
+/* =========================================================
+   STAT BAR
+   ========================================================= */
+
+function StatBar({
+  home,
+  away,
+}: {
+  home: string;
+  away: string;
+}) {
   const h = parseFloat(home) || 0;
   const a = parseFloat(away) || 0;
+
   const total = h + a || 1;
-  const homePct = useMemo(() => (h / total) * 100, [h, total]);
+
+  const homePct = useMemo(
+    () => (h / total) * 100,
+    [h, total],
+  );
 
   return (
     <div className="flex h-1 overflow-hidden rounded-full bg-white/5">
-      <div className="bg-ora-gold" style={{ width: `${homePct}%` }} />
+      <div
+        className="bg-ora-gold"
+        style={{ width: `${homePct}%` }}
+      />
+
       <div className="flex-1 bg-white/10" />
     </div>
   );
