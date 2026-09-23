@@ -2,8 +2,8 @@
 
 import Shirt from "../fantasy/Shirt";
 import {
-  BENCH_SLOTS,
-  FORMATION,
+  FORMATIONS,
+  type Formation,
   type Player,
   type PlayerPoints,
   type Position,
@@ -13,44 +13,33 @@ import { Icon } from "./AppShell";
 const ring =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ora-gold";
 
-type SlotHandler = (
-  slotKey: string,
-  position: Position,
-  player: Player | undefined,
-) => void;
-
-type SquadViewProps = {
-  slots: Record<string, string>;
-  byId: Map<string, Player>;
-  points: Record<string, PlayerPoints>;
-  onSlot: SlotHandler;
-};
+const BENCH_SIZE = 4;
 
 /* =========================================================
    ONE SLOT
+   Read-only preview tile: filled or empty, both just open
+   the squad editor when tapped.
    ========================================================= */
 
 function SlotButton({
-  slotKey,
-  position,
   player,
   pts,
+  emptyLabel,
   compact,
-  onSlot,
+  onOpen,
 }: {
-  slotKey: string;
-  position: Position;
   player: Player | undefined;
   pts: number;
+  emptyLabel: string;
   compact?: boolean;
-  onSlot: SlotHandler;
+  onOpen: () => void;
 }) {
   if (!player) {
     return (
       <button
         type="button"
-        onClick={() => onSlot(slotKey, position, undefined)}
-        aria-label={`Add ${position}`}
+        onClick={onOpen}
+        aria-label={`Add ${emptyLabel}`}
         className={`group flex w-[72px] flex-col items-center gap-1.5 rounded-lg ${ring}`}
       >
         <span
@@ -62,7 +51,7 @@ function SlotButton({
         </span>
 
         <span className="text-[11px] font-semibold text-ora-papyrus/60">
-          {position}
+          {emptyLabel}
         </span>
       </button>
     );
@@ -73,7 +62,7 @@ function SlotButton({
   return (
     <button
       type="button"
-      onClick={() => onSlot(slotKey, position, player)}
+      onClick={onOpen}
       aria-label={`${player.name}, ${player.teamName}`}
       className={`flex w-[72px] flex-col items-center rounded-lg ${ring}`}
     >
@@ -96,9 +85,35 @@ function SlotButton({
 
 /* =========================================================
    PITCH (starting eleven)
+   Shape follows the chosen formation. `starters` only needs
+   to contain the players that are actually starting — any
+   position short of the formation's count is drawn as an
+   empty slot.
    ========================================================= */
 
-export function SquadPitch({ slots, byId, points, onSlot }: SquadViewProps) {
+export function SquadPitch({
+  formation,
+  starters,
+  points,
+  onOpen,
+}: {
+  formation: Formation;
+  starters: Player[];
+  points: Record<string, PlayerPoints>;
+  onOpen: () => void;
+}) {
+  const need = { GK: 1, ...FORMATIONS[formation] };
+
+  const rows: { pos: Position; count: number }[] = [
+    { pos: "FWD", count: need.FWD },
+    { pos: "MID", count: need.MID },
+    { pos: "DEF", count: need.DEF },
+    { pos: "GK", count: need.GK },
+  ];
+
+  const byPos: Record<Position, Player[]> = { GK: [], DEF: [], MID: [], FWD: [] };
+  starters.forEach((p) => byPos[p.position].push(p));
+
   return (
     <div
       className="relative min-h-[400px] overflow-hidden rounded-xl border border-ora-gold/15 bg-ora-pitch shadow-[inset_0_0_70px_rgba(0,0,0,0.5)]"
@@ -120,28 +135,37 @@ export function SquadPitch({ slots, byId, points, onSlot }: SquadViewProps) {
       </div>
 
       <div className="relative flex min-h-[400px] flex-col justify-between px-3 py-6">
-        {FORMATION.map((row) => (
-          <div
-            key={row.key}
-            className="mx-auto flex w-full max-w-[460px] items-start justify-evenly"
-          >
-            {Array.from({ length: row.count }, (_, index) => {
-              const slotKey = `${row.key}-${index}`;
-              const player = byId.get(slots[slotKey]);
+        {rows.map((row) => {
+          const rowPlayers = byPos[row.pos].slice(0, row.count);
+          const missing = Math.max(row.count - rowPlayers.length, 0);
 
-              return (
+          return (
+            <div
+              key={row.pos}
+              className="mx-auto flex w-full max-w-[460px] items-start justify-evenly"
+            >
+              {rowPlayers.map((player) => (
                 <SlotButton
-                  key={slotKey}
-                  slotKey={slotKey}
-                  position={row.label}
+                  key={player.id}
                   player={player}
-                  pts={player ? (points[player.id]?.gw ?? 0) : 0}
-                  onSlot={onSlot}
+                  pts={points[player.id]?.gw ?? 0}
+                  emptyLabel={row.pos}
+                  onOpen={onOpen}
                 />
-              );
-            })}
-          </div>
-        ))}
+              ))}
+
+              {Array.from({ length: missing }, (_, index) => (
+                <SlotButton
+                  key={`empty-${row.pos}-${index}`}
+                  player={undefined}
+                  pts={0}
+                  emptyLabel={row.pos}
+                  onOpen={onOpen}
+                />
+              ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -149,35 +173,54 @@ export function SquadPitch({ slots, byId, points, onSlot }: SquadViewProps) {
 
 /* =========================================================
    BENCH
+   Always 4 reserves: whatever's left over from the 15-player
+   pool once the starting XI is set.
    ========================================================= */
 
-export function SquadBench({ slots, byId, points, onSlot }: SquadViewProps) {
+export function SquadBench({
+  bench,
+  points,
+  onOpen,
+}: {
+  bench: Player[];
+  points: Record<string, PlayerPoints>;
+  onOpen: () => void;
+}) {
+  const shown = bench.slice(0, BENCH_SIZE);
+  const missing = Math.max(BENCH_SIZE - shown.length, 0);
+
   return (
     <div className="rounded-xl border border-white/5 bg-black/20 px-3 pb-4 pt-3.5">
       <div className="flex items-center justify-between gap-3 px-1">
         <p className="text-sm font-semibold">Bench</p>
 
         <p className="text-xs text-ora-papyrus/50">
-          {BENCH_SLOTS.length} substitutes. Bench players don&apos;t score.
+          {BENCH_SIZE} substitutes. Bench players don&apos;t score.
         </p>
       </div>
 
       <div className="mx-auto mt-3 flex max-w-[460px] items-start justify-between gap-1">
-        {BENCH_SLOTS.map((slot) => {
-          const player = byId.get(slots[slot.key]);
+        {shown.map((player) => (
+          <SlotButton
+            key={player.id}
+            player={player}
+            pts={points[player.id]?.gw ?? 0}
+            emptyLabel="Sub"
+            compact
+            onOpen={onOpen}
+          />
+        ))}
 
-          return (
-            <SlotButton
-              key={slot.key}
-              slotKey={slot.key}
-              position={slot.pos}
-              player={player}
-              pts={player ? (points[player.id]?.gw ?? 0) : 0}
-              compact
-              onSlot={onSlot}
-            />
-          );
-        })}
+        {Array.from({ length: missing }, (_, index) => (
+          <SlotButton
+            key={`empty-bench-${index}`}
+            player={undefined}
+            pts={0}
+            emptyLabel="Sub"
+            compact
+            onOpen={onOpen}
+          />
+        ))}
       </div>
     </div>
   );

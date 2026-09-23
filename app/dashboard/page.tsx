@@ -23,8 +23,9 @@ import {
 } from "../../src/components/SquadPitch";
 import {
   BUDGET,
+  DEFAULT_FORMATION,
   SQUAD_SIZE,
-  STARTER_SLOTS,
+  type Formation,
   type Player,
   type PlayerPoints,
   type SquadDoc,
@@ -39,6 +40,12 @@ import { useFixtures } from "../../src/lib/useFixtures";
 type Fixtures = ReturnType<typeof useFixtures>;
 
 const money = (value: number) => `${value.toFixed(1)}M`;
+
+/* A player "played" this gameweek if their breakdown has anything in
+   it — calcPoints only ever returns an empty breakdown when minutes
+   were zero. Used to decide whether the captain armband should fall
+   back to the vice-captain. */
+const didPlay = (pts?: PlayerPoints) => !!pts && pts.breakdown.length > 0;
 
 /* Points refresh cadence while a match is live. Matches the API route's
    own 60s cache for the current gameweek, so polling faster is wasted. */
@@ -77,6 +84,12 @@ function DashboardContent({
   /* ---------- saved squad + players + points ---------- */
 
   const [slots, setSlots] = useState<Record<string, string>>({});
+  const [formation, setFormation] = useState<Formation>(DEFAULT_FORMATION);
+  const [starterIds, setStarterIds] = useState<string[]>([]);
+  const [captain, setCaptain] = useState<string | null>(null);
+  const [viceCaptain, setViceCaptain] = useState<string | null>(null);
+  const [activeChip, setActiveChip] = useState<string | null>(null);
+  const [activeChipGw, setActiveChipGw] = useState<number | null>(null);
   const [hasTeam, setHasTeam] = useState(false);
   const [squadLoading, setSquadLoading] = useState(true);
 
@@ -96,8 +109,15 @@ function DashboardContent({
         if (cancelled) return;
 
         if (snap.exists()) {
-          const data = snap.data() as SquadDoc;
+          const data = snap.data() as Partial<SquadDoc>;
+
           setSlots(data.slots || {});
+          setFormation(data.formation ?? DEFAULT_FORMATION);
+          setStarterIds(Array.isArray(data.starters) ? data.starters : []);
+          setCaptain(data.captain ?? null);
+          setViceCaptain(data.viceCaptain ?? null);
+          setActiveChip(data.activeChip ?? null);
+          setActiveChipGw(data.activeChipGw ?? null);
           setHasTeam(true);
         }
       } catch (error) {
@@ -181,14 +201,39 @@ function DashboardContent({
     0,
   );
 
-  const starters = STARTER_SLOTS.map((slot) => byId.get(slots[slot.key])).filter(
-    (player): player is Player => Boolean(player),
-  );
+  const starters = starterIds
+    .map((id) => byId.get(id))
+    .filter((player): player is Player => Boolean(player));
 
-  const gwPoints = starters.reduce(
+  const bench = Object.values(slots)
+    .filter((id) => !starterIds.includes(id))
+    .map((id) => byId.get(id))
+    .filter((player): player is Player => Boolean(player));
+
+  const gw = pointsGw ?? 1;
+
+  const isTripleCaptainActive = activeChip === "tripleCaptain" && activeChipGw === gw;
+  const isBenchBoostActive = activeChip === "benchBoost" && activeChipGw === gw;
+  const captainMultiplier = isTripleCaptainActive ? 3 : 2;
+
+  const captainPlayed = didPlay(captain ? points[captain] : undefined);
+  const vicePlayed = didPlay(viceCaptain ? points[viceCaptain] : undefined);
+  const effectiveCaptainId = captainPlayed ? captain : vicePlayed ? viceCaptain : null;
+
+  const gwPointsBase = starters.reduce(
     (total, player) => total + (points[player.id]?.gw ?? 0),
     0,
   );
+
+  const captainBonus = effectiveCaptainId
+    ? (points[effectiveCaptainId]?.gw ?? 0) * (captainMultiplier - 1)
+    : 0;
+
+  const benchBonus = isBenchBoostActive
+    ? bench.reduce((total, player) => total + (points[player.id]?.gw ?? 0), 0)
+    : 0;
+
+  const gwPoints = gwPointsBase + captainBonus + benchBonus;
 
   const totalPoints = starters.reduce(
     (total, player) => total + (points[player.id]?.total ?? 0),
@@ -238,7 +283,7 @@ function DashboardContent({
               <p className="mt-1 text-sm text-ora-papyrus/60">
                 {profile.coachName
                   ? `Coach ${profile.coachName}`
-                  : "Name your team, then pick 11 starters and 5 substitutes."}
+                  : "Name your team, then pick your 15-player squad."}
               </p>
             </div>
 
@@ -265,22 +310,17 @@ function DashboardContent({
               />
             ) : (
               <SquadPitch
-                slots={slots}
-                byId={byId}
+                formation={formation}
+                starters={starters}
                 points={points}
-                onSlot={openSquad}
+                onOpen={openSquad}
               />
             )}
           </div>
 
           {!squadLoading && (
             <div className="mt-3">
-              <SquadBench
-                slots={slots}
-                byId={byId}
-                points={points}
-                onSlot={openSquad}
-              />
+              <SquadBench bench={bench} points={points} onOpen={openSquad} />
             </div>
           )}
 
